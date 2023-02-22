@@ -1022,7 +1022,7 @@ tourdefrance :-
 /*                         Interface avec le serveur                     */
 /*                                                                       */
 /* --------------------------------------------------------------------- */
-
+/*
 interroger(X) :-
    new_memory_file(InFile),
    open_memory_file(InFile, write, InW),
@@ -1038,11 +1038,11 @@ interroger(X) :-
    ecrire_reponse(L_ligne_reponse),
    close(OutW).
 
-
+*/
 /* --------------------------------------------------------------------- */
 /*                                                                       */
 /*             ACTIVATION DU PROGRAMME APRES COMPILATION                 */
 /*                                                                       */
 /* --------------------------------------------------------------------- */
 
-exec :- tourdefrance.
+:- tourdefrance. /*exec pour le serveur*/
