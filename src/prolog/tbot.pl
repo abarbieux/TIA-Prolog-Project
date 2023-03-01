@@ -170,7 +170,7 @@ mclef(jaune, 5).
 
 regle_rep(commence,1,
   [ qui, commence, le, jeu ],
-  [  [ "c", '\'', est, au, joueur, ayant, la, plus, haute, carte, secondes, de ],
+  [  [ c, '\'', est, au, joueur, ayant, la, plus, haute, carte, secondes, de ],
     [ "commencer." ] ] ).
 /* Qui commence le jeu ? */
 
@@ -178,21 +178,21 @@ regle_rep(commence,1,
 
 regle_rep(pays,3,
     [ [ quels ], 3, [ pays ], 5, [ participent ], 2, [ jeu ] ],
-    [ [ "La", belgique, la, italie, la, hollande, et, l, '\'', "allemagne." ] ]).
+    [ [ la, belgique, l, '\'', italie, la, hollande, et, l, '\'', "allemagne." ] ]).
 /* Quels pays sont les pays qui participent au jeu ?*/
 
 % ----------------------------------------------------------------%
 
 regle_rep(bots,3,
     [ [ quels ], 3, [ pays ], 5, [ jouent ], 2, [ bots ] ],
-    [ [ "La", hollande, et, l, '\'', "allemagne." ] ]).
+    [ [ la, hollande, et, l, '\'', "allemagne." ] ]).
 /* Quels pays jouent les bots ?  */
 
 % ----------------------------------------------------------------%
 
 regle_rep(cartes,3,
     [ [ combien ], 3, [ cartes ], 5, [ possede ], 2, [ joueur ] ],
-    [ [ "Un", joueur, possede, X, cartes, secondes, "maximum." ] ]) :-
+    [ [ un, joueur, possede, X, cartes, secondes, "maximum." ] ]) :-
 
       nb_cartes(X).
 /* Combien de cartes possede un joueur au maximum ? */
@@ -201,7 +201,7 @@ regle_rep(cartes,3,
 
 regle_rep(gagner,4,
     [ [ comment ], 5, [ gagner ], 5, [ jeu ] ],
-    [ [ "Le", joueur, qui, gagne, est, celui, dont, "le", temps, total, est, "le", plus, "faible."],
+    [ [ le, joueur, qui, gagne, est, celui, dont, le, temps, total, est, le, plus, "faible."],
       [ "Le", temps, total, correspond, a, la, somme, des, temps, des, differents, "coureurs." ] ]).
 
 /* Comment peut on gagner le jeu ? */
@@ -210,7 +210,7 @@ regle_rep(gagner,4,
 
 regle_rep(equipe,5,
   [ [ combien ], 3, [ coureurs ], 5, [ equipe ] ],
-  [ [ "chaque", equipe, compte, X, "coureurs." ] ]) :-
+  [ [ chaque, equipe, compte, X, "coureurs." ] ]) :-
 
      nb_coureurs(X).
 
@@ -220,10 +220,10 @@ regle_rep(equipe,5,
 
 regle_rep(maillots, 6,
     [ [ quelle ], 5, [ couleur ], 3, [ maillots ] ],
-    [ [ "Les", belges, portent, des, "maillots", "rouges." ],
-      [ "Les", italiens, portent, des, "maillots", "bleus." ],
-      [ "Les", hollandais, portent, des, "maillots", "oranges." ],
-      [ "Les", allemends, portent, des, "maillots", "blancs." ]
+    [ [ les, belges, portent, des, maillots, "rouges." ],
+      [ "Les", italiens, portent, des, maillots, "bleus." ],
+      [ "Les", hollandais, portent, des, maillots, "oranges." ],
+      [ "Les", allemands, portent, des, maillots, "blancs." ]
     ]).
 
 /* quelle est la couleur des maillots ? */
@@ -232,7 +232,7 @@ regle_rep(maillots, 6,
 
 regle_rep(hollandais,5,
   [ [ liste ], 3, [coureurs], 2, [hollandais] ],
-  [ [ "hollande-1", "hollande-2", "hollande-3" ] ]).
+  [ [ "hollande-1", "Hollande-2", "Hollande-3" ] ]).
 
 /* Donne moi la liste des coureurs hollandais .*/
 
@@ -240,7 +240,7 @@ regle_rep(hollandais,5,
 
 regle_rep(belges,5,
   [ [ liste ], 3, [coureurs], 2, [belges] ],
-  [ [ "belgique-1", "belgique-2", "belgique-3" ] ]).
+  [ [ "belgique-1", "Belgique-2", "Belgique-3" ] ]).
 
 /* Donne moi la liste des coureurs belges .*/
 
@@ -248,7 +248,7 @@ regle_rep(belges,5,
 
 regle_rep(italiens,5,
   [ [ liste ], 3, [coureurs], 2, [ italiens ] ],
-  [ [ "italie-1", "italie-2", "italie-3" ] ]).
+  [ [ "italie-1", "Italie-2", "Italie-3" ] ]).
 
 /* Donne moi la liste des coureurs italiens . */
 
@@ -256,7 +256,7 @@ regle_rep(italiens,5,
 
 regle_rep(allemands,5,
   [ [ liste ], 3, [coureurs], 2, [ allemands ] ],
-  [ [ "allemagne-1", "allemagne-2", "allemagne-3" ] ]).
+  [ [ "allemagne-1", "Allemagne-2", "Allemagne-3" ] ]).
 
 /* Donne moi la liste des coureurs allemands . */
 
@@ -264,7 +264,7 @@ regle_rep(allemands,5,
 
 regle_rep(valeurs,5,
   [ [ quelles ], 3, [ valeurs ], 2, [ cartes ], 2, [ secondes ] ],
-  [ [ "Un", nombre, entre, 1, et, "12." ] ]).
+  [ [ un, nombre, entre, 1, et, "12." ] ]).
 
 /* Quelles sont les valeurs des cartes secondes ? */
 
@@ -272,7 +272,7 @@ regle_rep(valeurs,5,
 
 regle_rep(paquet,5,
   [ [ combien ], 3, [ cartes ], 3, [ secondes ], 10, [ paquet ] ],
-  [ [ "Il", y, a, "96", cartes, "secondes." ],
+  [ [ il, y, a, "96", cartes, "secondes." ],
     [ "8", fois, chaque, "carte." ] ]).
 
 /* Combien de cartes secondes y a t'il par paquet ? */
@@ -281,7 +281,7 @@ regle_rep(paquet,5,
 
 regle_rep(vide,5,
   [ [ que ], 5, [ main ], 3, [ vide ] ],
-  [ [ "Il", faut, piocher, 5, nouvelles, "cartes." ] ]).
+  [ [ il, faut, piocher, 5, nouvelles, "cartes." ] ]).
 
 /* Que fait la main vide ? */
 
@@ -289,7 +289,7 @@ regle_rep(vide,5,
 
 regle_rep(chance,5,
   [ [ quelles ], 5, [ valeurs ], 3, [ chance ] ],
-  [ [ "Les", valeurs, des, cartes, chance, sont, entre, -3, et, "3." ] ]).
+  [ [ les, valeurs, des, cartes, chance, sont, entre, -3, et, "3." ] ]).
 
 /* Quelles sont les valeurs des cartes chance ? */
 
@@ -301,7 +301,7 @@ regle_rep(chance,5,
 
 regle_rep(negative,5,
   [ [ que ], 5, [ valeur ], 5, [ negative ] ],
-  [ [ "Les", cartes, a, valeur, negative, signfie, que, le, coureur, doit, "reculer." ] ]).
+  [ [ les, cartes, a, valeur, negative, signifie, que, le, coureur, doit, "reculer." ] ]).
 
 /* Que fait une valeur negative ?*/
 
@@ -309,7 +309,7 @@ regle_rep(negative,5,
 
 regle_rep(negative,5,
   [ [ quoi ], 5, [ valeur ], 5, [ negative ] ],
-  [ [ "Les", cartes, a, valeur, negative, signfie, que, le, coureur, doit, "reculer." ] ]).
+  [ [ les, cartes, a, valeur, negative, signifie, que, le, coureur, doit, "reculer." ] ]).
 
 /* c'est quoi une valeur negative ?*/
 
@@ -319,7 +319,7 @@ regle_rep(negative,5,
 
 regle_rep(depasser,5,
   [ [ peut ], 5, [ depasser ], 5, [ coureur ] ],
-  [ [ "Oui", il, est, possible, de, depasser, un, autre, coureur, ou, un, groupe, de, "coureurs." ],
+  [ [ oui, il, est, possible, de, depasser, un, autre, coureur, ou, un, groupe, de, "coureurs." ],
     [ "On", depasse, en, prenant, le, bas, -, cote, de, la, route, si, il, arrive, a, depasser, completement,
       le, groupe, c, '\'', est-a-dire, a, se, positionner, sur, une, case, "libre." ],
     [ "Sinon", le, coureur, chute, et, entraine, le, groupe, dans, sa, "chute."]
@@ -331,10 +331,10 @@ regle_rep(depasser,5,
 
 regle_rep(presente,5,
   [ [presente],3,[jeu] ],
-  [ ["Le", jeu, de, societe, du, tour, de, france, se, joue, avec, des, cates, "seconde."],
+  [ [le, jeu, de, societe, du, tour, de, france, se, joue, avec, des, cartes, "seconde."],
     ["En",jouant,une, carte, seconde, vous, pouvez, faire, avancer, votre, coureur, sur, le, plateau, de, "jeu."],
-    ["Faite", preuve, de, tactique, pour, laisser, vos, advessaires, faire, le, travail, en, tete, de, peloton, et, prenez, de, la, vitesse, grace, au, phenomene, d, '\'', "aspiration."],
-    ["Gardez", vos, meilleurs, cartes, pour, lancer, un, sprint, lorsque, vous, estimez, que, vos, adversaires, n, '\'', en, sont, pas, "capables."]
+    ["Faite", preuve, de, tactique, pour, laisser, vos, adversaires, faire, le, travail, en, tete, de, peloton, et, prenez, de, la, vitesse, grace, au, phenomene, d, '\'', "aspiration."],
+    ["Gardez", vos, meilleures, cartes, pour, lancer, un, sprint, lorsque, vous, estimez, que, vos, adversaires, n, '\'', en, sont, pas, "capables."]
   ]).
 
 /* Presente moi le jeu */
@@ -344,7 +344,7 @@ regle_rep(presente,5,
 
 regle_rep(but,5,
   [ [but],3,[jeu] ],
-  [ ["Dans", le, jeu, du, tour, de, france, ',', vous, participez, a, une, etape, par, equipe, de, trois, "coureurs." ],
+  [ [dans, le, jeu, du, tour, de, france, ',', vous, participez, a, une, etape, par, equipe, de, trois, "coureurs." ],
     ["Votre", equipe, doit, tenter, d, '\'', obtenir, le, meilleur, temps, "possible."],
     ["Un", classement, est, tenu, par, joueur, et, par, "equipe." ],
     ["Le", coureur, le, plus, rapide, sur, l, '\'', ensemble, des, etapes, porte, le, maillot, "jaune."],
@@ -356,8 +356,8 @@ regle_rep(but,5,
 % ----------------------------------------------------------------%
 regle_rep(preparer,5,
   [ [comment],3,[preparer],3,[jeu] ],
-  [ ["Le", joueur, qui, pioche, la, carte, seconde, la, plus, elevee, "commence."],
-    ["Le", jeu, va, ensuite, vous, distribuez, vos, "cartes."],
+  [ [le, joueur, qui, pioche, la, carte, seconde, la, plus, elevee, "commence."],
+    ["Le", jeu, va, ensuite, vous, distribuer, vos, "cartes."],
     ["Lorsque", vous, aurez, joue, toutes, vos, cartes, vous, recevrez, 5, nouvelles, cartes, seconde, par, "coureur."]
   ]).
 
@@ -367,39 +367,39 @@ regle_rep(preparer,5,
 
 regle_rep(depart,5,
   [ [situation],3,[depart] ],
-  [ ["Tout", les, joueurs, dispose, de, 3, coureurs, et, de, 15, cartes, "seconde."] ]).
+  [ [tous, les, joueurs, disposent, de, 3, coureurs, et, de, 15, cartes, "seconde."] ]).
 
-/* C'est quoi la situation de départ ? */
+/* C'est quoi la situation de depart ? */
 
 %----------------------------------------------------------------%
 
 regle_rep(debut,5,
   [ [debut],3,[partie] ],
-  [ ["Une", fois, les, cartes, distribuee, ',', le, premier, joueur, choisit, une, de, ses, cartes, seconde, et, la, pose, sur, la,"table."],
+  [ [une, fois, les, cartes, distribuees, ',', le, premier, joueur, choisit, une, de, ses, cartes, seconde, et, la, pose, sur, la,"table."],
     ["Il", deplace, son, premier, coureur, du, nombre, de, seconde, '(', '=', cases, ')', correspondant, a, la, carte, seconde, "jouee."],
-    ["Vous", determinez, vous, '-', meme, le, rythme, de, votre, "coureur."],
-    ["Le", coureur, peut, se, deplacer, tout, droit, ou, en, diagonal, ',', mais, pas, sur, le, cotee, '(', '=', meme, numero, de, case, ')', ni, en, "arriere."],
-    ["Vous", ne, pouvez, pas, traverser, de, case, deja, "occupee.", '(', plus, d, '\'', info, en, posant, la, question, '\'', qu, '\'', est, qu, '\'', une, chute, '\'']
+    ["Vous", determinez, vous, meme, le, rythme, de, votre, "coureur."],
+    ["Le", coureur, peut, se, deplacer, tout, droit, ou, en, diagonale, ',', mais, pas, sur, le, cote, '(', '=', meme, numero, de, case, ')', ni, en, "arriere."],
+    ["Vous", ne, pouvez, pas, traverser, de, case, deja, "occupee.", '(', plus, d, '\'', info, en, posant, la, question, '\"', qu, '\'', est, ce, qu, '\'', une, chute, '\"', ')']
   ]).
 
-/* comment fonction le debut de partie */
+/* comment fonctionne le debut de partie */
 
 %----------------------------------------------------------------%
 
 regle_rep(premiere,5,
   [ [premiere],3,[phase],3,[jeu] ],
-  [ ["Une", fois, que, le, premier, joueur, a, deplace, son, coureur, numero, 1, ',', les, autres, joueurs, deplacent, leur, coureur, numero, 1 ],
-    ["Une" , fois, que, chaque, joueur, a, deplace, son, coureur, numero, 1, '(', dans, le, sens, des, aiguilles, d, '\'', une, montre, ')', ',', le, premier, joueur, deplace, son, coureur, numero, 2, puis, les, autres, joueur, deplace, leur, coureur, numero, 2, ',', et, ainsi, de, suite, jusqu, '\'', a, ce, que, chaque, joueur, ait, place, ses, coureurs, sur, le, plateau, de, jeu]
+  [ [ une, fois, que, le, premier, joueur, a, deplace, son, coureur, numero, 1, ',', les, autres, joueurs, deplacent, leur, coureur, numero, 1 ],
+    ["Une" , fois, que, chaque, joueur, a, deplace, son, coureur, numero, 1, '(', dans, le, sens, des, aiguilles, d, '\'', une, montre, ')', ',', le, premier, joueur, deplace, son, coureur, numero, 2, puis, les, autres, joueurs, deplacent, leur, coureur, numero, 2, ',', et, ainsi, de, suite, jusqu, '\'', a, ce, que, chaque, joueur, ai, place, ses, coureurs, sur, le, plateau, de, jeu]
   ]).
 
-/* que faire pour la première phase de jeu */
+/* que faire pour la premiere phase de jeu */
 
 
 %----------------------------------------------------------------%
 
 regle_rep(dynamique,5,
   [ [phase],3,[dynamique] ],
-  [ ["Une", fois, que, tout, les, coureurs, sont, place, sur, le, plateau, de, jeu, ',', la, phase, de, jeu, dynamique, "commence."],
+  [ [ une, fois, que, tous, les, coureurs, sont, place, sur, le, plateau, de, jeu, ',', la, phase, de, jeu, dynamique, "commence."],
     ["Le", coureur, de, tete, est, deplace, en, premier, ',', puis, c, '\'', est, le, tour, du, coureur, en, position, 2, ',', puis, 3, ',', puis, 4, ',', etc, jusqu, '\'', au, coureur, en, queue, de, "peloton."],
     ["Puis", on, recommence, avec, le, '(', nouveau, ')', coureur, de, tete, et, ainsi, de, "suite."]
   ]).
@@ -409,32 +409,32 @@ regle_rep(dynamique,5,
 %----------------------------------------------------------------%
 regle_rep(case,5,
   [ [numero],3,[case] ],
-  [ ["Un", cote, du, parcours, est, constitue, de, cases, numerotees, sur, lesquelles, les, coureurs, sont, a, l, '\'', abri, du, vent, et, avancent, plus, rapidement, ':', il, s, '\'', agit, du, cote, "prioritaire."],
+  [ [ un, cote, du, parcours, est, constitue, de, cases, numerotees, sur, lesquelles, les, coureurs, sont, a, l, '\'', abri, du, vent, et, avancent, plus, rapidement, ':', il, s, '\'', agit, du, cote, "prioritaire."],
     ["Le", coureur, situe, sur, le, cote, prioritaire, passe, avant, le, '(', s, ')', joueurs, situees, sur, la, case, "voisine."],
     ["Dans", les, virages, ',', les, numeros, sont, accompagnes, de, lettre, pour, faciliter, la, comprehension, de, la, decoupe, des, "cases." ]
   ]).
 
-/* a quoi servent les numero de case */
+/* a quoi servent les numero de case */ 
 
 %----------------------------------------------------------------%
 
 regle_rep(aspiration,5, 
   [ [ quoi],3, [aspiration] ],
-  [ ["Un", coureur, profite, du, phenomene, d, '\'', aspiration, '(', et, de, la, prise, de, vitesse, qui, en, resulte, ')',lorsqu, '\'', il, est, au, sein, d, '\'', un, peloton, ou, directement, derriere, un, autre, "coureur." ],
-    ["La", prise, de, vitesse, permet, d, '\'', avancer, d, '\'', une, de, plus, que, la, valeur, de, la, carte, jouee, si, cela, lui, permet, ensuite, de, se, positionner, derrire, ou, a, cote, d,'\'', un, autre, "coureur."],
-    ["Le", coureur, de, tete, ne, peut, pas, profiter, du, pheneomene, d, '\'', aspiration, mais, il, en, fait, profiter, les, coureur, qui ,le, "suivent."],
+  [ [ un, coureur, profite, du, phenomene, d, '\'', aspiration, '(', et, de, la, prise, de, vitesse, qui, en, resulte, ')',lorsqu, '\'', il, est, au, sein, d, '\'', un, peloton, ou, directement, derriere, un, autre, "coureur." ],
+    ["La", prise, de, vitesse, permet, d, '\'', avancer, d, '\'', une, case, de, plus, que, la, valeur, de, la, carte, jouee, si, cela, lui, permet, ensuite, de, se, positionner, derriere, ou, a, cote, d,'\'', un, autre, "coureur."],
+    ["Le", coureur, de, tete, ne, peut, pas, profiter, du, pheneomene, d, '\'', aspiration, mais, il, fait, profiter, les, coureurs, qui ,le, "suivent."],
     ["La", prise, de, vitesse, n, '\'', est, pas, obligatoire, si, elle, n , '\'', est, pas, "avantageuse."]
   ]).
 
-/* C'est quoi l'aspiartion ? */
+/* C'est quoi l'aspiration ? */
 
 %----------------------------------------------------------------%
 
 
 regle_rep(echange,5,
   [ [case],3,[echange] ],
-  [ ["Dans", cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, "echange."],
-	["cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
+  [ [dans, cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, "echange."],
+	["Cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
 	["Sur", le, parcours, ',', vous, trouverez, des, cases, "echange."],
     ["Si", l, '\'', un, de, vos, coureurs, s, '\'', arrete, sur, cette, case, ',', vous, devez, vous, defausser, de, 3, cartes, seconde, et, en, piocher, 3, "nouvelle."],
     ["Si", vous, avez, moins, de, 3, cartes, en, main, a, cet, instant, ',', vous, devez, echnager, toutes, vos, cartes, "secondes.", '(', 1, ou, 2, ')']
@@ -446,7 +446,7 @@ regle_rep(echange,5,
 
 regle_rep(chance,5,
   [ [case],3,[chance] ],
-  [ ["Si", vous, vous, arretez, sur, une, case, chance, ',', vous, devrez, piocher, une, carte, chance, et , l, '\'', utiliser, immediatement, ',', sauf, mention, "contraire."],
+  [ [si, vous, vous, arretez, sur, une, case, chance, ',', vous, devrez, piocher, une, carte, chance, et , l, '\'', utiliser, immediatement, ',', sauf, mention, "contraire."],
     ["La", carte, chance, doit, etre, utiliser, par, le, coureur, qui, s, '\'', y, "arrete."],
     ["Un", deplacement, du, a, une, carte, chance, ne, peut , pas, provoquer, de, chute, en, "serie."],
     ["Il", est, tout, de, fois, possible, que, la, carte, deplace, le, coureur, vers, une, chute, ayant,deja, eu, lieu, ou, que, la,carte, chance, soit, destinee, a, provoquer, une, chute, en, "serie."]
@@ -458,9 +458,9 @@ regle_rep(chance,5,
 
 regle_rep(sprint,5,
   [ [sprint],3,[intermediaire] ],
-  [ ["En", passant, un, sprint, intermediaire, ',', 1, ou, plusieurs, coureurs, peuvent, gagner, des, secondes, de,  "bonification." ],
-    ["ceux", '-', ci, sont, indique, au, niveau, des, sprints, "intermediaires."],
-    ["ces", seconde,'(',s,')', sont, notee, directement, sur, le, "classement."],
+  [ [en, passant, un, sprint, intermediaire, ',', 1, ou, plusieurs, coureurs, peuvent, gagner, des, secondes, de,  "bonification." ],
+    ["Ceux", '-', ci, sont, indique, au, niveau, des, sprints, "intermediaires."],
+    ["Ces", seconde,'(',s,')', sont, notees, directement, sur, le, "classement."],
     ["Pour", determiner, le, classement, a, la, fin, de, la, partie,  ',', les, secondes, de, bonification, sont, retirees, du, temps, du, "coureur.",  '(', pour, plus, d, '\'', information, ',', voir, seconde, de, bonification, ')']
   ]).
 
@@ -469,7 +469,7 @@ regle_rep(sprint,5,
 
 regle_rep(monte,5, 
   [ [quoi],3,[monte] ],
-  [ ["En", montee, ',', les, coureurs, avancent, nettement, mois, vite, que, sur, une, etape, de, "plaine." ],
+  [ [en, montee, ',', les, coureurs, avancent, nettement, mois, vite, que, sur, une, etape, de, "plaine." ],
     ["Les", cases, situees, en, montee, sont, marquees, par,des,fleches, "rouge."],
     ["Pour", determiner, la, vitesse, d, '\'', un, coureur, en, montee, ',', divisez, par, deux, la, valeur, de, la, carte, jouee, et, arrondissez, au, plus, "bas."],
     ["Un", coureur, en, montee, ne, peut, pas, profiter, du, phenomene, d, '\'', "aspiration."]
@@ -481,12 +481,12 @@ regle_rep(monte,5,
 
 regle_rep(descente,5, 
   [ [quoi],3, [descente] ],
-  [ ["Les", cases, situees, en, descente, sont, marquees, par, des, fleches, "bleues." ],
+  [ [ les, cases, situees, en, descente, sont, marquees, par, des, fleches, "bleues." ],
     ["En", descente, ',', les, regles, sont, les, memes, que, sur, une, etape, de, plaine, a, l, '\'', exception, du, phenomene, d, '\'', aspiration, ':', la, prise, de, vitesse, equivaut, alors, a , 2, secondes, au, lieu, de, 1, "seconde."],
     ["Autre", difference, importante, ':', en, utilisant, une, prise, de ,vitesse, de, 2 , secondes, ',', vous, pouvez, doubler, le, coureur, situee, devant, "vous."],
     ["Vous", pouvez, depasser, le , coureur, de, 1 , case, maximum, et , prendre, la , tete, de, la, "course."],
-    ["Comme", les, etapes, de, plaines, ',', vous, n, '\'', etes, pas, obliger, d, '\'', utiliser, la, prise, de, "vitesse."],
-    ["Vous", pouvez, donc, avncer, de, 1 , seconde, au, lieu, de, 2, secondes, si, cela, s, '\'', avere, plus, "prioritaire."]
+    ["Comme", les, etapes, de, plaines, ',', vous, n, '\'', etes, pas, oblige, d, '\'', utiliser, la, prise, de, "vitesse."],
+    ["Vous", pouvez, donc, avancer, de, 1 , seconde, au, lieu, de, 2, si, cela, s, '\'', avere, plus, "avantageux."]
   ]).
 
 /* c'est quoi une descente */
@@ -495,12 +495,12 @@ regle_rep(descente,5,
 
 regle_rep(classement,5,
   [ [classement],3,[points] ],
-  [	["Dans", cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, par, "point."],
-	["cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
+  [	[dans, cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, par, "point."],
+	["Cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
 	["Le", classement, par, points, est, un, classement, par, "equipe." ],
     ["Vos", coureurs, peuvent, gagner, des, points, pour, votre, equipe, tout, "entiere."],
     ["A", chaque, etape, ',', en, plus, des, secondes, de, bonification, ',', vous, pouvez, gagner, des, points, en, fonction, de, la, place, d, '\'', arrivee, de, vos, coureurs, a, la, fin, de, l, '\'', "etape."],
-    ["L", '\'', ordinateur, calculera, automatiquemnt, vos, points, mais, si, vous, souhaiter, verifier, les, scores, voici, la, formule, de, calcule, ':'],
+    ["L", '\'', ordinateur, calculera, automatiquemnt, vos, points, mais, si, vous, souhaiter, verifier, les, scores, voici, la, formule, de, calcul, ':'],
     ["Total", des, points, '=' , 11, '-', position, d, '\'', arrivee, du, coureur, '(', resultat, '=', zero, si, negatif, ')', '+', points, de, bonification, "obtenus."]
   ]).
 
@@ -511,8 +511,8 @@ regle_rep(classement,5,
 
 regle_rep(intermediaire,5,
   [ [classement],3,[intermediaire] ],
-  [ ["Dans", cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, "intermediaire."],
-	["cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
+  [ [dans, cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, "intermediaire."],
+	["Cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
 	[ "Le", classement, des, sprints, intermediaire, est, calcule, apres, chaque, etape, pour, determiner, le, porteur, du, maillot, "jaune."],
     ["L", '\'', equipe, la, plus, rapide, et, le, meneur, du, classement, par, "points."],
     ["Le", coureur, qui, obtient, le, meilleur, score, total, est, le, coureur, les, plus, rapide, du, classement, intermediaire, et, obtient, le, maillot, "jaune."],
@@ -526,15 +526,15 @@ regle_rep(intermediaire,5,
 
 regle_rep(general,5,
   [ [classement],3,[general] ],
-  [ ["Dans", cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, "general."],
-	["cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
+  [ [dans, cette, version, du, jeu, ',', il, n, '\'', y, a, pas, de, carte, classement, "general."],
+	["Cette", explication, ne, vaut, donc, que, pour, le, jeu, de, plateau, "officiel !"],
 	["A", la, fin, de, la, derniere, etape, ',', il, faut, calcule, le, classement, "general."],
     ["En", plus, des, titres, honoriphique, pour, l, "'", equipe, et, les, coureurs, les, plus, rapides, ',', il, faut, determine, le, vainqueur, du, tour],
     ["Lors", du, classement, general, ',', tout, les, temps, sont, transformes, en, points, afin, de, designer, le, vainqueur],
     [],
-    ["comment", est, calculer, le, classement, general, '?', ':'],
+    ["Comment", est, calculer, le, classement, general, '?', ':'],
     [],
-    ['-',tout, les, points, du, classement, par, points ],
+    ['-',tous, les, points, du, classement, par, points ],
     ['-', 40, points, supplementaire, pour, l, '\'', equipe, ayant, realise, le, meilleur, temps, total],
     ['-', 15, points, supplementaire, pour, l, '\'', equipe, en, 2,eme, place],
     ['-', 5, points, supplementaire, pour, l, '\'', equipe, en, 3,eme, place],
@@ -548,9 +548,9 @@ regle_rep(general,5,
 
 regle_rep(bonification,5, 
   [ [secondes],3,[bonification] ],
-  [ ["Lors", du, jeu, ',', le, joueur, obtient, des, secondes, de, bonification, lors, des, sprints, "intermediaires."],
-    ["ces", secondes, seront, decompter, dans, le, temps, final, des, coureurs, au, classement],
-    ["Exemple", ':', si, un, coureur, a, gagne, 4, secondes, de, bonification, "'" , son, temps, est, calcule, comme, suit, ':' ],
+  [ [lors, du, jeu, ',', le, joueur, obtient, des, secondes, de, bonification, lors, des, sprints, "intermediaires."],
+    ["Ces", secondes, seront, decomptees, dans, le, temps, final, des, coureurs, au, classement],
+    ["Exemple", ':', si, un, coureur, a, gagne, 4, secondes, de, bonification, son, temps, est, calcule, comme, suit, ':' ],
     ["Total", des,secondes, de, l, "'", etape, '-', 4, secondes, de, bonification, '-', nombre, de, case, situees, apres, la, ligne, d, "'", "arrivee." ]
 	]).
 
@@ -561,7 +561,7 @@ regle_rep(bonification,5,
 
 regle_rep(rouge,5, 
   [ [quoi],3,[fleche],2, [rouge] ],
-  [ ["En", montee, ",", les, coureurs, avancent, nettement, moins, vite, que, sur, une, etape, de, plaine, "."],
+  [ [en, montee, ",", les, coureurs, avancent, nettement, moins, vite, que, sur, une, etape, de, plaine, "."],
     ["Les", cases, situees, en, montee, sont, marquees, par, des, fleches, rouge, "."],
     ["Pour", determiner, la, vitesse, d, "'", un, coureur, en, montee, ",", on, divise, par, 2, la, valeur, de, la, carte, jouee, et, on, l, "'", arrondis, au, plus, bas,"."],
     ["On", ne, peut, pas, profiter, de, l, "'", aspiration, en, montee, "."]
@@ -572,11 +572,11 @@ regle_rep(rouge,5,
 
 regle_rep(bleu,5, 
   [ [quoi],3,[fleche],2, [bleu] ],
-  [ ["Les", cases, situees, en, descente, sont, marquees, par, des, fleches, bleues, "." ],
-    ["En", descente, ",", les, regles, sont, les, memes, que, sur, les, cases, classiques, "à", l, "'", exception, du, phenomene, d, "'", aspiration, ":"],
+  [ [les, cases, situees, en, descente, sont, marquees, par, des, fleches, bleues, "." ],
+    ["En", descente, ",", les, regles, sont, les, memes, que, sur, les, cases, classiques, "a", l, "'", exception, du, phenomene, d, "'", aspiration, ":"],
     ["-", "Premierement", ",", la, prise, de, vitesse, equivaut, alors, a, 2, secondes, au, lieu, d, "'", une, "."],
     ["-", "Deuxiemement", ",", en, utilisant, une, prise,de, vitesse, de, 2, secondes, ",", vous, pouvez, doubler, le, coureur, d, "'", une, case, maximum, et, prendre, la, tete, de, la, course, "." ],
-    ["-", "Troisiemement", ",", comme, pour, les, cases, classique, vous, n, "'", etes, pas, obliger, d, "'", utiliser, la, prise, de, vitesse, et, vous, pouvez, donc, avancer, d, "'", 1, seconde, au, lieu, de, 2, "."]
+    ["-", "Troisiemement", ",", comme, pour, les, cases, classique, vous, n, "'", etes, pas, obliger, d, "'", utiliser, la, prise, de, vitesse, et, vous, pouvez, donc, avancer, d, "'", une, seconde, au, lieu, de, deux, "."]
   ]).
 
 /* 	A quoi servent les fleches bleu ? */
@@ -586,16 +586,16 @@ regle_rep(bleu,5,
 
 regle_rep(fleche,5, 
   [ [quoi],3,[fleche] ],
-  [ ["Les", fleches, rouges, et, bleues, servent, a, indiquer, si, la, case, est, une, montte, ou, une, descente, "."],
-    ["Pour", plus, d, "'", information, ",", vous, pouvez, me, poser, la, question, "'", "A", quoi, servent, les, fleches, bleu, "?","'", ou, "'", "A", quoi, servent, les, fleches, rouge, "?", "'", "." ]
+  [ [les, fleches, rouges, et, bleues, servent, a, indiquer, si, la, case, est, une, montee, ou, une, "descente."],
+    ["Pour", plus, d, "'", information, ",", vous, pouvez, me, poser, la, question, '"', "A", quoi, servent, les, fleches, bleu, "?",'"', ou, '"', "A", quoi, servent, les, fleches, rouge, "?", '"', "." ]
   ]).
- /* 	A quoi servenet les fleches ? */
+ /* 	A quoi servent les fleches ? */
 
 %----------------------------------------------------------------%
 
  regle_rep(cartes,5, 
   [ [comment],3,[distribue], 3, [cartes] ],
-  [ ["Au", debut, de, partie, ",", 15, cartes, "Seconde", seront, distribue, par, personne, "."]
+  [ [au, debut, de, partie, ",", 15, cartes, "Seconde", seront, distribue, par, personne, "."]
   ]).
 
  /* Comment on distribue les cartes ? */
@@ -608,7 +608,7 @@ regle_rep(fleche,5,
 
 regle_rep(tombe,5, 
   [ [coureur],3,[tombe], 2, [plus] ],
-  [ ["Si", votre, coureur, ne, tombe, plus, alors, qu, "'", il, aurait, du, ",", c, "'", est, surement, du, au, faite, qu, un, coureur, qui, a, deja, franchi, la, ligne, d, "'", arrivee, ne, peut, plus, avoir, de, chute, en, serie, "." ]
+  [ [si, votre, coureur, ne, tombe, plus, alors, qu, "'", il, aurait, du, ",", c, "'", est, surement, du, au, fait, qu, un, coureur, qui, a, deja, franchi, la, ligne, d, "'", arrivee, ne, peut, plus, avoir, de, chute, en, serie, "." ]
   ]).
 
 /* 	Pourquoi les coureurs ne tombent plus ? */
@@ -620,7 +620,7 @@ regle_rep(tombe,5,
 
 regle_rep(seconde,5, 
   [ [quoi],3,[carte], [seconde] ],
-  [ ["Une", carte, seconde, est, une, carte, que, vous, recevez, en, debut, de, jeu,"."],
+  [ [une, carte, seconde, est, une, carte, que, vous, recevez, en, debut, de, jeu,"."],
     ["Vous", commencez, avec,15,cartes,"."],
     ["Le", numero, indique, sur, la, carte, correspond, au, nombre, de, case, sur, lesquelles, vous, pouvez, avancer, "."]
      ]).
@@ -634,7 +634,7 @@ regle_rep(seconde,5,
 
 regle_rep(jaune,5, 
   [ [maillot],3,[jaune] ],
-  [ [ "Le", maillot, jaune, est, remporter, par, le, premier, joueur, qui, fini, la, course, "."],
+  [ [ le, maillot, jaune, est, remporte, par, le, premier, joueur, qui, fini, la, course, "."],
   ["Le", maillot, jaune, est, purement, symbolique, et, n,"'", apporte, aucun, bonus, dans, cette, version, du, jeux, "."]
   ]).
 
@@ -647,7 +647,7 @@ regle_rep(jaune,5,
 
 regle_rep(carte,5, 
   [ [joueur],5,[plus],3,[carte] ],
-  [ ["Lorsque", vous, n, "'", avez, plus, de, carte, "Seconde", ",", vous, ne, pouvez, plus, jouer, "."],
+  [ [lorsque, vous, n, "'", avez, plus, de, carte, "Seconde", ",", vous, ne, pouvez, plus, jouer, "."],
     ["Le", jeu, se, termine, quand, plus, personne, n,"'",a, de, carte, "."]
   ]).
 
@@ -661,25 +661,25 @@ regle_rep(carte,5,
 
 
 regle_rep(arrive,5, 
-  [ [ligne ],3,[arrive] ],
-  [ ["Lorsque", un, coureur, a, franchi, la, ligne, d, "'", arrive, ",", il, ne, peut, plus, engendrer, de, chute, en, serie, ou, utiliser, l, "'", aspiration, "."],
-    ["lA", parti, se, finit, alors, a, la, fin, de, ce, tour, une, fois, que, tout, les, autres, joueurs, on, fini, de, jouer, "."]
+  [ [ligne ],3,[arrivee] ],
+  [ [lorsque, un, coureur, a, franchi, la, ligne, d, "'", arrivee, ",", il, ne, peut, plus, engendrer, de, chute, en, serie, ou, utiliser, l, "'", aspiration, "."],
+    ["La", partie, se, finit, alors, a, la, fin, de, ce, tour, une, fois, que, tout, les, autres, joueurs, on, fini, de, jouer, "."]
   ]).
 
-/* 	Que se passe t'il apres qu'un joueur franchisse la ligne d'arrivé ? */
+/* 	Que se passe t'il apres qu'un joueur franchisse la ligne d'arrivee ? */
 
 %----------------------------------------------------------------%
 
 
 regle_rep(chute,5, 
   [ [quoi],3,[chute] ],
-  [ ["Une", chute, arrive, quand, un, joueur, atterit, sur, la, case, d, "'", un, autre, joueur, "."],
+  [ [une, chute, arrive, quand, un, joueur, atterit, sur, la, case, d, "'", un, autre, joueur, "."],
     ["Les", 2, coureurs, qui, ont, provoque, la, chute, ",",  les, coureurs, avec, qui, ils, entrent, en, contact, et, les, coureurs, present, sur, une, carte ,de, meme, numero, chutent, "."],
-    ["Il", faut, un, tour, au, coureur, pour, se, remettre, de, leur, chutent, "." ],
-    ["Pendant", ce, temps, ils, sont, sur, le, bord, de, la, route, pour, laisser, les, autres, coureurs, passer]
+    ["Il", faut, un, tour, au, coureur, pour, se, remettre, de, leur, chute, "." ],
+    ["Pendant", ce, temps, ils, sont, sur, le, bord, de, la, route, pour, laisser, les, autres, coureurs, passer, "."]
   
   ]).
-/* C'est quoi une chut ? */
+/* C'est quoi une chute ? */
 
 
 
@@ -687,30 +687,30 @@ regle_rep(chute,5,
 
 regle_rep(plus,5, 
   [ [plus],7,[carte] ],
-  [ ["Quand", un, joueur, n, "'", a, plus, de, carte, ",", il, peut, en, repiocher, 12, "."]
+  [ [quand, un, joueur, n, "'", a, plus, de, carte, ",", il, peut, en, repiocher, 12, "."]
   ]).
 
-/* que se passe t'il quand un joueur n'a plus de carte / quand plus personne n'a de carte, */
+/* que se passe t'il quand un joueur n'a plus de carte / quand plus personne n'a de carte */
 
 %----------------------------------------------------------------%
 
 
 regle_rep(egalite,5, 
   [ [egalite], 5 ],
-  [ ["En", cas, d, "'", egalite, lors, du, choix, de, l, "'", ordre, de, passage, ",", un, tirage, sera, reorganise, pour, les, 2, personnes, concernees, "."]
+  [ [en, cas, d, "'", egalite, lors, du, choix, de, l, "'", ordre, de, passage, ",", un, tirage, sera, reorganise, pour, les, 2, personnes, concernees, "."]
   ]).
 
 
 
 
-/* 	Que faire si on a une egalite lors du choix de qui commence, */
+/* 	Que faire si on a une egalite lors du choix de qui commence */
 
 
 %----------------------------------------------------------------%
 
 regle_rep(deplacer,5, 
   [ [deplacer],3,[coureur], 5, [occupe] ],
-  [ ["Non", ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
+  [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
   ]).
 
 
