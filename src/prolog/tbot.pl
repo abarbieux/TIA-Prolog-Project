@@ -32,7 +32,7 @@ produire_reponse([fin],[L1]) :-
 
 produire_reponse(L,Rep) :-
 %   write(L),
-   mclef(M,_),similar(L,M), % anciennement ...,member(M,L)
+   mclef(M,_),member(M,L), % anciennement ...,similar(L,M)
    clause(regle_rep(M,_,Pattern,Rep),Body),
    match_pattern(Pattern,L),
    call(Body), !.
@@ -47,11 +47,11 @@ match_pattern(Pattern,Lmots) :-
 
 match_pattern(LPatterns,Lmots) :-
    match_pattern_dist([100|LPatterns],Lmots).
-
+/**
 % similarité entre pattern et mot
 match_pattern(Pattern,Lmots):-
     nombre_egalite(Pattern,Lmots,Egalite), Egalite > 1.
-
+*/
 match_pattern_dist([],_).
 match_pattern_dist([N,Pattern|Lpatterns],Lmots) :-
    within_dist(N,Pattern,Lmots,Lmots_rem),
@@ -74,7 +74,7 @@ sublistrem(SL,[_|T],Lr) :- sublistrem(SL,T,Lr).
 
 prefixrem([],L,L).
 prefixrem([H|T],[H|L],Lr) :- prefixrem(T,L,Lr).
-
+/**
 % Donne le nombre d'éléments similaires entre 2 listes
 nombre_egalite([],_,0).
 nombre_egalite(_,[],0).
@@ -84,7 +84,7 @@ nombre_egalite([X|XS],[_|YS],E+1):- nombre_egalite([X|XS],YS,E).
 nombre_egalite([X|XS],[Y|YS],E+1):- similar([X|XS],Y),nombre_egalite([X|XS],YS,E).
 nombre_egalite([X|XS],[Y|YS],E):- not(similar([X|XS],Y)),nombre_egalite([X|XS],YS,E).
 
-
+*/
 % ----------------------------------------------------------------%
 
 nb_coureurs(3).
@@ -151,6 +151,7 @@ mclef(egalite, 5).
 mclef(plus, 5).
 mclef(chute, 5).
 mclef(arrive, 5).
+mclef(tombent, 5).
 
 mclef(carte, 5).
 mclef(jaune, 5).
@@ -440,7 +441,7 @@ regle_rep(echange,5,
     ["Si", vous, avez, moins, de, 3, cartes, en, main, a, cet, instant, ',', vous, devez, echnager, toutes, vos, cartes, "secondes.", '(', 1, ou, 2, ')']
   ]).
 
-/* qu'est ce que les cases echange ? */
+/* qu'est ce que les case echange ? */
 
 %----------------------------------------------------------------%
 
@@ -452,7 +453,7 @@ regle_rep(chance,5,
     ["Il", est, tout, de, fois, possible, que, la, carte, deplace, le, coureur, vers, une, chute, ayant,deja, eu, lieu, ou, que, la,carte, chance, soit, destinee, a, provoquer, une, chute, en, "serie."]
   ]).
 
-/* qu'est ce que les cases chance ? */
+/* qu'est ce que les case chance ? */
 
 %----------------------------------------------------------------%
 
@@ -606,12 +607,12 @@ regle_rep(fleche,5,
 
 
 
-regle_rep(tombe,5, 
-  [ [coureur],3,[tombe], 2, [plus] ],
+regle_rep(tombent,5, 
+  [ [coureur],3,[tombent], 2, [plus] ],
   [ [si, votre, coureur, ne, tombe, plus, alors, qu, "'", il, aurait, du, ",", c, "'", est, surement, du, au, fait, qu, un, coureur, qui, a, deja, franchi, la, ligne, d, "'", arrivee, ne, peut, plus, avoir, de, chute, en, serie, "." ]
   ]).
 
-/* 	Pourquoi les coureurs ne tombent plus ? */
+/* 	Pourquoi les coureur ne tombent plus ? */
 
 %----------------------------------------------------------------%
 
@@ -619,7 +620,7 @@ regle_rep(tombe,5,
 
 
 regle_rep(seconde,5, 
-  [ [quoi],3,[carte], [seconde] ],
+  [ [quoi],3,[carte], 1, [seconde] ],
   [ [une, carte, seconde, est, une, carte, que, vous, recevez, en, debut, de, jeu,"."],
     ["Vous", commencez, avec,15,cartes,"."],
     ["Le", numero, indique, sur, la, carte, correspond, au, nombre, de, case, sur, lesquelles, vous, pouvez, avancer, "."]
@@ -685,18 +686,9 @@ regle_rep(chute,5,
 
 %----------------------------------------------------------------%
 
-regle_rep(plus,5, 
-  [ [plus],7,[carte] ],
-  [ [quand, un, joueur, n, "'", a, plus, de, carte, ",", il, peut, en, repiocher, 12, "."]
-  ]).
-
-/* que se passe t'il quand un joueur n'a plus de carte / quand plus personne n'a de carte */
-
-%----------------------------------------------------------------%
-
 
 regle_rep(egalite,5, 
-  [ [egalite], 5 ],
+  [ [egalite],5, [choix] ],
   [ [en, cas, d, "'", egalite, lors, du, choix, de, l, "'", ordre, de, passage, ",", un, tirage, sera, reorganise, pour, les, 2, personnes, concernees, "."]
   ]).
 
@@ -709,7 +701,7 @@ regle_rep(egalite,5,
 %----------------------------------------------------------------%
 
 regle_rep(deplacer,5, 
-  [ [deplacer],3,[coureur], 5, [occupe] ],
+  [ [deplacer],3,[coureur], 5, [occupee] ],
   [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
   ]).
 
@@ -734,13 +726,13 @@ regle_rep(fonction,5,
 
 
 
-
+/**
 % Vérifie si 2 textes sont similaires
 similar([P|Q],X):- isub(P,X,true,D), D =< 0.95, similar(Q,X).
 similar([P|_],X):- isub(P,X,true,D), D > 0.95.
 %----------------------------------------------------------------%
 
-
+*/
 
 
 
