@@ -32,7 +32,7 @@ produire_reponse([fin],[L1]) :-
 
 produire_reponse(L,Rep) :-
 %   write(L),
-   mclef(M,_),member(M,L), % anciennement ...,similar(L,M)
+   mclef(M,_),similar(L,M), % anciennement ...,member(M,L)
    clause(regle_rep(M,_,Pattern,Rep),Body),
    match_pattern(Pattern,L),
    call(Body), !.
@@ -47,11 +47,11 @@ match_pattern(Pattern,Lmots) :-
 
 match_pattern(LPatterns,Lmots) :-
    match_pattern_dist([100|LPatterns],Lmots).
-/**
+
 % similarité entre pattern et mot
 match_pattern(Pattern,Lmots):-
     nombre_egalite(Pattern,Lmots,Egalite), Egalite > 1.
-*/
+
 match_pattern_dist([],_).
 match_pattern_dist([N,Pattern|Lpatterns],Lmots) :-
    within_dist(N,Pattern,Lmots,Lmots_rem),
@@ -74,7 +74,7 @@ sublistrem(SL,[_|T],Lr) :- sublistrem(SL,T,Lr).
 
 prefixrem([],L,L).
 prefixrem([H|T],[H|L],Lr) :- prefixrem(T,L,Lr).
-/**
+
 % Donne le nombre d'éléments similaires entre 2 listes
 nombre_egalite([],_,0).
 nombre_egalite(_,[],0).
@@ -84,7 +84,7 @@ nombre_egalite([X|XS],[_|YS],E+1):- nombre_egalite([X|XS],YS,E).
 nombre_egalite([X|XS],[Y|YS],E+1):- similar([X|XS],Y),nombre_egalite([X|XS],YS,E).
 nombre_egalite([X|XS],[Y|YS],E):- not(similar([X|XS],Y)),nombre_egalite([X|XS],YS,E).
 
-*/
+
 % ----------------------------------------------------------------%
 
 nb_coureurs(3).
@@ -264,10 +264,10 @@ regle_rep(allemands,5,
 % ----------------------------------------------------------------%
 
 regle_rep(valeurs,5,
-  [ [ quelles ], 3, [ valeurs ], 2, [ cartes ], 2, [ secondes ] ],
+  [ [ quelles ], 3, [ valeurs ], 10, [ secondes ] ],
   [ [ un, nombre, entre, 1, et, "12." ] ]).
 
-/* Quelles sont les valeurs des cartes secondes ? */
+/* Quelles sont les valeurs les valeurs secondes ? */
 
 % ----------------------------------------------------------------%
 
@@ -726,13 +726,13 @@ regle_rep(fonction,5,
 
 
 
-/**
+
 % Vérifie si 2 textes sont similaires
 similar([P|Q],X):- isub(P,X,true,D), D =< 0.95, similar(Q,X).
 similar([P|_],X):- isub(P,X,true,D), D > 0.95.
 %----------------------------------------------------------------%
 
-*/
+
 
 
 
