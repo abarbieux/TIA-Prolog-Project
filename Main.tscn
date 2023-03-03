@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://587c5e0dd382d422c70f126ba4f57033_orig.jpg" type="Texture" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Main.gd" type="Script" id=3]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 145, 112, 0, 0, 0, 0, 141, 217, 0, 0, 0, 0, 139, 315, 0, 0, 0, 0, 141, 406, 0, 0, 0, 0, 141, 501, 0, 0, 0, 0, 141, 598, 0, 0, 0, 0, 140, 701, 0, 0, 0, 0, 239, 704, 0, 0, 0, 0, 340, 702, 0, 0, 0, 0, 337, 600, 0, 0, 0, 0, 337, 506, 0, 0, 0, 0, 340, 409, 0, 0, 0, 0, 333, 315, 0, 0, 0, 0, 334, 223, 0, 0, 0, 0, 339, 115, 0, 0, 0, 0, 431, 121, 0, 0, 0, 0, 526, 114, 0, 0, 0, 0, 524, 215, 0, 0, 0, 0, 526, 320, 0, 0, 0, 0, 523, 413, 0, 0, 0, 0, 541, 511, 0, 0, 0, 0, 525, 597, 0, 0, 0, 0, 519, 691, 0, 0, 0, 0, 600, 688, 0, 0, 0, 0, 736, 698, 0, 0, 0, 0, 712, 588, 0, 0, 0, 0, 709, 509, 0, 0, 0, 0, 723, 408, 0, 0, 0, 0, 723, 408, 0, 0, 0, 0, 720, 337, 0, 0, 0, 0, 700, 208, 0, 0, 0, 0, 707, 144, 0, 0, 0, 0, 807, 134, 0, 0, 0, 0, 897, 134, 0, 0, 0, 0, 911, 210, 0, 0, 0, 0, 910, 312, 0, 0, 0, 0, 916, 408, 0, 0, 0, 0, 909, 509, 0, 0, 0, 0, 906, 622, 0, 0, 0, 0, 906, 685 )
+}
+
+[sub_resource type="Curve2D" id=2]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 162, 112, 0, 0, 0, 0, 160, 217, 0, 0, 0, 0, 157, 312, 0, 0, 0, 0, 162, 393, 0, 0, 0, 0, 168, 495, 0, 0, 0, 0, 171, 590, 0, 0, 0, 0, 171, 670, 0, 0, 0, 0, 234, 673, 0, 0, 0, 0, 321, 671, 0, 0, 0, 0, 315, 585, 0, 0, 0, 0, 314, 520, 0, 0, 0, 0, 312, 399, 0, 0, 0, 0, 308, 327, 0, 0, 0, 0, 308, 220, 0, 0, 0, 0, 314, 146, 0, 0, 0, 0, 422, 89, 0, 0, 0, 0, 524, 102, 0, 0, 0, 0, 541, 201, 0, 0, 0, 0, 549, 295, 0, 0, 0, 0, 549, 410, 0, 0, 0, 0, 553, 493, 0, 0, 0, 0, 549, 602, 0, 0, 0, 0, 541, 686, 0, 0, 0, 0, 626, 686, 0, 0, 0, 0, 721, 673, 0, 0, 0, 0, 743, 603, 0, 0, 0, 0, 740, 520, 0, 0, 0, 0, 734, 413, 0, 0, 0, 0, 746, 283, 0, 0, 0, 0, 739, 213, 0, 0, 0, 0, 729, 121, 0, 0, 0, 0, 804, 118, 0, 0, 0, 0, 930, 122, 0, 0, 0, 0, 942, 203, 0, 0, 0, 0, 933, 293, 0, 0, 0, 0, 935, 394, 0, 0, 0, 0, 933, 480, 0, 0, 0, 0, 921, 622, 0, 0, 0, 0, 934, 671 )
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="587C5E0Dd382D422C70F126Ba4F57033Orig" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Paths" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Path2D" type="Path2D" parent="Paths"]
+curve = SubResource( 1 )
+
+[node name="Path2D2" type="Path2D" parent="Paths"]
+curve = SubResource( 2 )
+
+[node name="Player" type="Sprite" parent="."]
+position = Vector2( -65, 454 )
+texture = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 982.0
+margin_top = 8.0
+margin_right = 1058.0
+margin_bottom = 78.0
+icon = ExtResource( 2 )
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
