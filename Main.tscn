@@ -53,7 +53,7 @@ anchor_bottom = 0.5
 margin_left = -40.0
 margin_top = -20.0
 margin_bottom = 20.0
-grow_horizontal = 2
+grow_horizontal = 0
 grow_vertical = 2
 alignment = 1
 __meta__ = {
@@ -66,7 +66,6 @@ anchor_bottom = 0.5
 margin_top = -20.0
 margin_right = 40.0
 margin_bottom = 20.0
-grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
@@ -77,7 +76,6 @@ margin_left = -20.0
 margin_right = 20.0
 margin_bottom = 40.0
 grow_horizontal = 2
-grow_vertical = 2
 alignment = 1
 
 [node name="Bottom" type="HBoxContainer" parent="."]
@@ -89,17 +87,29 @@ margin_left = -20.0
 margin_top = -40.0
 margin_right = 20.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 alignment = 1
 
-[node name="Allemagne1" type="Sprite" parent="."]
-position = Vector2( -308, 295 )
+[node name="ChoosePlayer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+
+[node name="Allemagne" type="Node2D" parent="."]
+
+[node name="Allemagne1" type="Sprite" parent="Allemagne"]
+position = Vector2( -76.5, 144 )
 texture = ExtResource( 4 )
 
-[node name="Allemagne2" type="Sprite" parent="."]
-position = Vector2( -221, 299 )
+[node name="Allemagne2" type="Sprite" parent="Allemagne"]
+position = Vector2( -73.5, 73 )
 texture = ExtResource( 6 )
 
-[node name="Allemagne3" type="Sprite" parent="."]
-position = Vector2( -155, 297 )
+[node name="Allemagne3" type="Sprite" parent="Allemagne"]
+position = Vector2( -71.5, 239 )
 texture = ExtResource( 5 )
