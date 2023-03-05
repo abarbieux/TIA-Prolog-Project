@@ -1,11 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://587c5e0dd382d422c70f126ba4f57033_orig.jpg" type="Texture" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Picture/587c5e0dd382d422c70f126ba4f57033_orig.jpg" type="Texture" id=1]
+[ext_resource path="res://Current Team.gd" type="Script" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
-[ext_resource path="res://Picture/allemagne_1.png" type="Texture" id=4]
-[ext_resource path="res://Picture/allemagne_3.png" type="Texture" id=5]
-[ext_resource path="res://Picture/allemagne_2.png" type="Texture" id=6]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -40,10 +37,6 @@ curve = SubResource( 1 )
 
 [node name="Path2D2" type="Path2D" parent="Paths"]
 curve = SubResource( 2 )
-
-[node name="Player" type="Sprite" parent="."]
-position = Vector2( -65, 454 )
-texture = ExtResource( 2 )
 
 [node name="Right" type="VBoxContainer" parent="."]
 anchor_left = 1.0
@@ -90,7 +83,18 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="ChoosePlayer" type="VBoxContainer" parent="."]
+[node name="Player_Container" type="Node2D" parent="."]
+
+[node name="Current Team" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_right = 20.0
+margin_bottom = 14.0
+grow_horizontal = 2
+script = ExtResource( 2 )
+
+[node name="ChoosePlayer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -99,17 +103,6 @@ margin_left = -20.0
 margin_top = -20.0
 margin_right = 20.0
 margin_bottom = 20.0
+grow_horizontal = 2
 
-[node name="Allemagne" type="Node2D" parent="."]
-
-[node name="Allemagne1" type="Sprite" parent="Allemagne"]
-position = Vector2( -76.5, 144 )
-texture = ExtResource( 4 )
-
-[node name="Allemagne2" type="Sprite" parent="Allemagne"]
-position = Vector2( -73.5, 73 )
-texture = ExtResource( 6 )
-
-[node name="Allemagne3" type="Sprite" parent="Allemagne"]
-position = Vector2( -71.5, 239 )
-texture = ExtResource( 5 )
+[connection signal="Change_turn" from="." to="Current Team" method="_on_Main_Change_turn"]

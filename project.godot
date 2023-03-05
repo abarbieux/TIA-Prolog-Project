@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Sprite",
+"class": "Cycliste",
+"language": "GDScript",
+"path": "res://Cycliste.gd"
+}, {
+"base": "Object",
+"class": "Deck",
+"language": "GDScript",
+"path": "res://Deck.gd"
+} ]
+_global_script_class_icons={
+"Cycliste": "",
+"Deck": ""
+}
+
 [application]
 
 config/name="TIA-Prolog-Project"
