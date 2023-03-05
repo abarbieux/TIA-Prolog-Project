@@ -1,6 +1,6 @@
 extends Control
 
-onready var _path = $Paths/Path2D
+onready var _path = $Paths/A
 
 const Countries:Array = ["italie", "hollande", "belgique", "allemagne"]
 const NumberOfTeamMember:int = 3
@@ -9,12 +9,36 @@ var _Players:Array = []
 var _country_turn_index:int = 0 # team who begins
 var player_selected:Cycliste
 
+var CheminA = [true,true,true,true,true,true,true,true]
+var CheminB = [true,true,false,false,true,true,true,true]
+var CheminC = [true,true,true,true,true,true,true,true]
+var CheminD = [true,true]
+
+var Chemins = [CheminA,CheminB,CheminC]
+
+
+
 var _Deck : Deck
 signal Change_turn(Team)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
+	
+	var nextindex:Array = []
+	var myChemin = 2
+	var myIndex = 2
+	var NumOfMove = 4
+	for n in range(1, NumOfMove + 1):
+		for i in range(myChemin - 1, myChemin + 2): 
+			if i == -1 || i > 2:
+				continue
+			if myIndex > Chemins[i].size() - 1:
+				continue
+			
+			if Chemins[i][myIndex+n] == true:
+				nextindex.append([i, myIndex+n])
+	print(nextindex)
 	
 	_Deck = Deck.new()
 	_Deck.MakeDeck()	

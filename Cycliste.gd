@@ -6,4 +6,4 @@ var Pays:String = "belgique" # cas par default
 var numero:int = 1
 
 func _ready() -> void:
-	texture = load("res://Picture/" + Pays + "_" + str(numero) + ".png")
+	texture = load("res://Picture/Cyclistes/" + Pays + "_" + str(numero) + ".png")
