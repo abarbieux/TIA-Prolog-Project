@@ -71,18 +71,6 @@ margin_bottom = 40.0
 grow_horizontal = 2
 alignment = 1
 
-[node name="Bottom" type="HBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -40.0
-margin_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-alignment = 1
-
 [node name="Player_Container" type="Node2D" parent="."]
 
 [node name="Current Team" type="Label" parent="."]
@@ -104,5 +92,17 @@ margin_top = -20.0
 margin_right = 20.0
 margin_bottom = 20.0
 grow_horizontal = 2
+
+[node name="Current_Cards" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -40.0
+margin_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
 
 [connection signal="Change_turn" from="." to="Current Team" method="_on_Main_Change_turn"]
