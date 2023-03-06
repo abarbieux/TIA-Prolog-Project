@@ -1,6 +1,6 @@
 extends Control
 
-onready var _path = $Paths/A
+onready var _path = $Paths
 
 const Countries:Array = ["italie", "hollande", "belgique", "allemagne"]
 const NumberOfTeamMember:int = 3
@@ -9,12 +9,9 @@ var _Players:Array = []
 var _country_turn_index:int = 0 # team who begins
 var player_selected:Cycliste
 
-var CheminA = [true,true,true,true,true,true,true,true]
-var CheminB = [true,true,false,false,true,true,true,true]
-var CheminC = [true,true,true,true,true,true,true,true]
-var CheminD = [true,true]
+var _A_Star : A_star = preload("res://AStar.gd").new()
 
-var Chemins = [CheminA,CheminB,CheminC]
+
 
 
 
@@ -24,21 +21,7 @@ signal Change_turn(Team)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	
-	var nextindex:Array = []
-	var myChemin = 2
-	var myIndex = 2
-	var NumOfMove = 4
-	for n in range(1, NumOfMove + 1):
-		for i in range(myChemin - 1, myChemin + 2): 
-			if i == -1 || i > 2:
-				continue
-			if myIndex > Chemins[i].size() - 1:
-				continue
-			
-			if Chemins[i][myIndex+n] == true:
-				nextindex.append([i, myIndex+n])
-	print(nextindex)
+	add_child(_A_Star)
 	
 	_Deck = Deck.new()
 	_Deck.MakeDeck()	
@@ -49,7 +32,7 @@ func _ready() -> void:
 			_Players.append(CreateNewPlayer(country, PlayerNumber))
 	
 	for player in _Players :
-		player.position = _path.curve.get_point_position(0)
+		player.position = _path.get_child(0).curve.get_point_position(0)
 	
 	_Deck.Init_deck()
 	Display_deck_button()
@@ -79,10 +62,11 @@ func Display_deck_button() -> void :
 func _button_pressed(button, value, index) -> void :
 	choose_player(value, index)
 
-func MovePlayer(value, index):
-	player_selected.CurrentCase += value
-	player_selected.CurrentCase = clamp(player_selected.CurrentCase, 0, _path.curve.get_point_count() - 1)
-	player_selected.position = _path.curve.get_point_position(player_selected.CurrentCase)
+func MovePlayer(New_Pos, index, value):
+	player_selected.CurrentCase = New_Pos
+	
+
+	player_selected.position = _path.get_child(player_selected.CurrentCase.y).curve.get_point_position(player_selected.CurrentCase.x)
 
 	for child in $Current_Cards.get_children():
 		child.queue_free()
@@ -116,7 +100,21 @@ func _button_player_pressed(player, value, index) -> void:
 	player_selected = player
 	for kids in $ChoosePlayer.get_children() :
 		kids.queue_free()
-	MovePlayer(value, index)
+	var _clamp = clamp(player_selected.CurrentCase.x + value,0, _A_Star.CheminA.size()-1)
+	for Chemin_Chosen in _A_Star.Chemins.size():
+		print("chemin_chosen",Chemin_Chosen)
+		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0:
+			var Check_player_already_here = false
+			for cycliste in _Players:
+				if Vector2(_clamp, Chemin_Chosen) == cycliste.CurrentCase :
+					Check_player_already_here = true
+			
+			if !Check_player_already_here:
+				var Best_Path:Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
+				if Best_Path != []:
+					var New_Pos : Vector2 = Best_Path[-1]
+					MovePlayer(New_Pos, index,value)
+					return
+	$Movement_Error.show()
 #	emit_signal("Player_Chosen")
-	
 

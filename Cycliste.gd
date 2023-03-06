@@ -1,7 +1,7 @@
 extends Sprite
 class_name Cycliste
 
-var CurrentCase:int = 0
+var CurrentCase:Vector2 = Vector2.ZERO
 var Pays:String = "belgique" # cas par default
 var numero:int = 1
 
