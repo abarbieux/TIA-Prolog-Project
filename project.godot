@@ -12,17 +12,17 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "A_star",
 "language": "GDScript",
-"path": "res://AStar.gd"
+"path": "res://Scripts/AStar.gd"
 }, {
 "base": "Sprite",
 "class": "Cycliste",
 "language": "GDScript",
-"path": "res://Cycliste.gd"
+"path": "res://Scripts/Cycliste.gd"
 }, {
 "base": "Object",
 "class": "Deck",
 "language": "GDScript",
-"path": "res://Deck.gd"
+"path": "res://Scripts/Deck.gd"
 } ]
 _global_script_class_icons={
 "A_star": "",
