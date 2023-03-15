@@ -10,7 +10,7 @@ var _country_turn_index:int = 0 # team who begins
 var player_selected:Cycliste
 
 var _A_Star : A_star = preload("res://Scripts/AStar.gd").new()
-
+var _GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new()
 
 
 
@@ -22,7 +22,8 @@ signal Change_turn(Team)
 func _ready() -> void:
 	randomize()
 	add_child(_A_Star)
-	
+	add_child(_GameWebSocket)
+
 	_Deck = Deck.new()
 	_Deck.MakeDeck()	
 
