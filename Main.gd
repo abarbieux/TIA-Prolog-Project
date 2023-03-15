@@ -2,7 +2,7 @@ extends Control
 
 onready var _path = $Paths
 
-const Countries:Array = ["italie", "hollande", "belgique"]
+const Countries:Array = ["italie", "hollande", "belgique", "allemagne"]
 const NumberOfTeamMember:int = 3
 
 var _Players:Array = []
