@@ -12,9 +12,6 @@ var player_selected:Cycliste
 var _A_Star : A_star = preload("res://Scripts/AStar.gd").new()
 var _GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new()
 
-
-
-
 var _Deck : Deck
 signal Change_turn(Team)
 

@@ -131,6 +131,7 @@ margin_right = 20.0
 margin_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+window_title = "Alerte !"
 dialog_text = "Mouvement Impossible"
 __meta__ = {
 "_editor_description_": ""
@@ -146,6 +147,7 @@ margin_left = -106.5
 margin_top = -37.5
 margin_right = 106.5
 margin_bottom = 37.5
+window_title = "Alerte !"
 dialog_text = "Aucun mouvement disponible.
 Votre tour va être passé"
 
