@@ -181,6 +181,7 @@ margin_left = -188.5
 margin_top = -771.0
 margin_right = 189.5
 margin_bottom = -168.0
+wrap_enabled = true
 
 [node name="Send" type="Button" parent="Panel"]
 margin_left = 128.0

@@ -143,7 +143,6 @@ func select_last_cyclist_movable(Team):
 	Display_deck_button()
 	return []
 	
-	
 
 signal Player_Chosen
 func _button_player_pressed(player, value, index) -> void:
@@ -227,4 +226,9 @@ func Get_All_Path_Available(value):
 
 func _on_Send_pressed() -> void:
 	panel._on_Send_pressed()
+
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		OS.execute("taskkill", ["/im", "swipl.exe", "/F"], false)
 

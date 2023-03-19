@@ -34,3 +34,4 @@ func _on_Text_entered(new_text) -> void:
 func _Modify_Text(new_text) -> void:
 	Text_Edit.set_text(new_text)
 	print("_Modify_Text")
+
