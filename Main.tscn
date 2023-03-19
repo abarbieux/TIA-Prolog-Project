@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Picture/Background/Map_Test.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Current Team.gd" type="Script" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
+[ext_resource path="res://Panel.gd" type="Script" id=4]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -150,4 +151,43 @@ window_title = "Alerte !"
 dialog_text = "Aucun mouvement disponible.
 Votre tour va être passé"
 
+[node name="Panel" type="Panel" parent="."]
+margin_left = 15.0
+margin_top = 127.0
+margin_right = 398.0
+margin_bottom = 904.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="LineEdit" type="LineEdit" parent="Panel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -190.5
+margin_top = 712.0
+margin_right = 190.5
+margin_bottom = 776.0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="TextEdit" type="TextEdit" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -188.5
+margin_top = -771.0
+margin_right = 189.5
+margin_bottom = -168.0
+
+[node name="Send" type="Button" parent="Panel"]
+margin_left = 128.0
+margin_top = 661.0
+margin_right = 253.0
+margin_bottom = 690.0
+text = "SEND"
+
 [connection signal="Change_turn" from="." to="Current Team" method="_on_Main_Change_turn"]
+[connection signal="pressed" from="Panel/Send" to="." method="_on_Send_pressed"]

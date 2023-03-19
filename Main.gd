@@ -2,6 +2,8 @@ extends Control
 
 onready var _path = $Paths
 
+onready var panel = $Panel
+
 const Countries:Array = ["italie", "hollande", "belgique", "allemagne"]
 const NumberOfTeamMember:int = 3
 
@@ -10,7 +12,7 @@ var _country_turn_index:int = 0 # team who begins
 var player_selected:Cycliste
 
 var _A_Star : A_star = preload("res://Scripts/AStar.gd").new()
-var _GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new()
+var _GameWebSocket : GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new()
 
 var _Deck : Deck
 signal Change_turn(Team)
@@ -21,8 +23,10 @@ func _ready() -> void:
 	add_child(_A_Star)
 	add_child(_GameWebSocket)
 
+	panel._GameWebSocket = _GameWebSocket
+	_GameWebSocket.panel = panel
 	_Deck = Deck.new()
-	_Deck.MakeDeck()	
+	_Deck.MakeDeck()
 
 	
 	for country in Countries:
@@ -219,3 +223,8 @@ func Get_All_Path_Available(value):
 			if check_pos_no_occupied :
 				return Best_Path
 	return []
+
+
+func _on_Send_pressed() -> void:
+	panel._on_Send_pressed()
+

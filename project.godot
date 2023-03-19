@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "Deck",
 "language": "GDScript",
 "path": "res://Scripts/Deck.gd"
+}, {
+"base": "Node",
+"class": "GameWebSocket",
+"language": "GDScript",
+"path": "res://Scripts/GameWebSocket.gd"
 } ]
 _global_script_class_icons={
 "A_star": "",
 "Cycliste": "",
-"Deck": ""
+"Deck": "",
+"GameWebSocket": ""
 }
 
 [application]
@@ -35,6 +41,10 @@ _global_script_class_icons={
 config/name="TIA-Prolog-Project"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://Global_Var.gd"
 
 [display]
 

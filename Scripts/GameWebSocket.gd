@@ -1,10 +1,11 @@
 extends Node
+class_name GameWebSocket
 
-# The URL we will connect to
+# The URL we will connect toy
 export var websocket_url = "ws://127.0.0.1:5000/ws"
-
 # Our WebSocketClient instance
 var _client = WebSocketClient.new()
+var panel
 
 func _ready():
 	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
@@ -29,7 +30,11 @@ func _connected(proto = ""):
 	_client.get_peer(1).put_packet("Test packet".to_utf8())
 
 func _on_data():
-	print("Got data from game server: ", _client.get_peer(1).get_packet().get_string_from_utf8())
+	if panel == null:
+		return
+	var message = _client.get_peer(1).get_packet().get_string_from_utf8()
+	print("Got data from game server: ", message)
+	panel._on_Message_received(message)
 
 
 func _process(delta):
