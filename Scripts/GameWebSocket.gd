@@ -26,14 +26,12 @@ func _closed(was_clean = false):
 	set_process(false)
 
 func _connected(proto = ""):
-	print("Connected with protocol: ", proto)
-	_client.get_peer(1).put_packet("Test packet".to_utf8())
+	pass
 
 func _on_data():
 	if panel == null:
 		return
 	var message = _client.get_peer(1).get_packet().get_string_from_utf8()
-	print("Got data from game server: ", message)
 	panel._on_Message_received(message)
 
 
