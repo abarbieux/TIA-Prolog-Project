@@ -5,7 +5,7 @@ class_name A_star
 var CheminA = [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0 ]
 var CheminB = [0,0,0,2,0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0,0,0,0,0,0 ]
 var CheminC = [0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ]
-
+var CheminD = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
 # ligne jaune
 #var CheminA = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 # ligne verte
@@ -17,7 +17,7 @@ var CheminC = [0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ]
 # ligne noire
 #var CheminF = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
-var Chemins = [CheminA, CheminB, CheminC]
+var Chemins = [CheminA, CheminB, CheminC, CheminD]
 var used_cells = []
 
 var pos = [0, 0]
@@ -39,10 +39,6 @@ func _ready() -> void:
 	
 	_add_points()
 	_connect_points()
-	
-	_get_path(Vector2(1,1), Vector2(2,0))
-	
-	print(path)
 
 func _add_points():
 	for cell in used_cells:
@@ -61,6 +57,18 @@ func _connect_points():
 				astar.connect_points(id(cell), id(next_cell), false)
 
 func _get_path(start,end):
+	if Chemins[start.y][start.x] == 1:
+		var not_way_available : bool = true
+		for chemin in Chemins :
+			if chemin[start.x] != 1 and not_way_available == true:
+				start = Vector2(start.x,Chemins.find(chemin))
+				not_way_available = false
+				
+		if not_way_available == true :
+			print("there is a problem with your map, your not suppose to be here")
+			return []
+			
+	
 	path = astar.get_point_path(id(start), id(end))
 	if path.size() != 0:
 		path.remove(0)
