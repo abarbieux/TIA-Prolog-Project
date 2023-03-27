@@ -159,6 +159,13 @@ window_title = "Alerte !"
 dialog_text = "Aucun mouvement disponible.
 Votre tour va être passé"
 
+[node name="end" type="AcceptDialog" parent="."]
+margin_left = 821.0
+margin_top = 497.0
+margin_right = 951.0
+margin_bottom = 555.0
+dialog_text = "Merci d'avoir joué"
+
 [node name="Panel" type="Panel" parent="."]
 visible = false
 margin_left = 15.0

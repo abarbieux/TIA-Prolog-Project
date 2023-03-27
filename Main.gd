@@ -17,26 +17,31 @@ var _GameWebSocket : GameWebSocket = preload("res://Scripts/GameWebSocket.gd").n
 var _Deck : Deck
 signal Change_turn(Team)
 var Turn_already_past : bool = false
+var Clamp_Max
+
+var Score_belgique : int = 0
+var Score_allemagne : int = 0
+var Score_hollande: int = 0
+var Score_italie : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
+	
 	add_child(_A_Star)
 	add_child(_GameWebSocket)
-
 	panel._GameWebSocket = _GameWebSocket
 	_GameWebSocket.panel = panel
 	_Deck = Deck.new()
 	_Deck.MakeDeck()
 
+	Clamp_Max = _A_Star.CheminA.size()-1
 	
 	for country in Countries:
 		for PlayerNumber in range(1, NumberOfTeamMember + 1):
-			_Players.append(CreateNewPlayer(country, PlayerNumber))
-	
+			_Players.append(CreateNewPlayer(country, PlayerNumber))	
 #	for player in _Players :
-#		player.position = _path.get_child(0).curve.get_point_position(0)
-	
+#		player.position = _path.get_child(0).curve.get_point_position(0)	
 	_Deck.Init_deck()
 	Display_deck_button()
 
@@ -65,25 +70,33 @@ func Display_deck_button() -> void :
 func _button_pressed(button, value, index) -> void :
 	choose_player(value, index)
 
-func MovePlayer(New_Pos, index, value):
+func MovePlayer(New_Pos, index, value, Carte_Movment : bool = true):
 	player_selected.CurrentCase = New_Pos
 	
 
 	player_selected.position = _path.get_child(player_selected.CurrentCase.y).curve.get_point_position(player_selected.CurrentCase.x)
+	
+	Add_Score(value,player_selected.Pays)
 	
 	if _A_Star.Chemins[New_Pos[1]][New_Pos[0]] == 2 :
 		Question_Mark_Case(index,value)
 	
 	for child in $Current_Cards.get_children():
 		child.queue_free()
-	_Deck.Deck_Carte_Player[_country_turn_index].erase(value)
-	_Deck._cards.append(value)
-	_Deck.Empty_Deck_check()
+		
+	if Carte_Movment == false :
+		_Deck.Deck_Carte_Player[_country_turn_index].erase(value)
+		_Deck._cards.append(value)
+		_Deck.Empty_Deck_check()
 	
-	if Turn_already_past == false:
-		Turn_already_past = true
-		Pass_Turn()
-	Display_deck_button()
+	if _A_Star.Chemins[New_Pos.y][New_Pos.x] == 3 :
+		End()
+		
+	else :
+		if Turn_already_past == false:
+			Turn_already_past = true
+			Pass_Turn()
+		Display_deck_button()
 
 
 
@@ -148,9 +161,11 @@ func _button_player_pressed(player, value, index) -> void:
 	player_selected = player
 	for kids in $ChoosePlayer.get_children() :
 		kids.queue_free()
-	var _clamp = clamp(player_selected.CurrentCase.x + value,0, _A_Star.CheminA.size()-1)
+		
+	var _clamp = clamp(player_selected.CurrentCase.x + value,0, Clamp_Max)
+	
 	for Chemin_Chosen in _A_Star.Chemins.size():
-		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2:
+		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 3:
 			var Check_player_already_here = false
 			for cycliste in _Players:
 				if Vector2(_clamp, Chemin_Chosen) == cycliste.CurrentCase :
@@ -169,15 +184,16 @@ func _button_player_pressed(player, value, index) -> void:
 		
 func Question_Mark_Case(index,value) :
 	var surprise_movment: int = randi() % 7 - 3
-	surprise_movment = 3
+	print("surprise_movment",surprise_movment)
+#	surprise_movment = 3
 	if surprise_movment == 0 :
 		return
 	var New_pos : Vector2 = player_selected.CurrentCase + Vector2(surprise_movment,0)
 	var Occupied_List : Array = []
-
-	var _clamp = clamp(player_selected.CurrentCase.x + value,0, _A_Star.CheminA.size()-1)
+	
+	var _clamp = clamp(player_selected.CurrentCase.x + surprise_movment,0, Clamp_Max)
 	for Chemin_Chosen in _A_Star.Chemins.size():
-		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2:
+		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 3:
 			var Check_player_already_here = false
 			for cycliste in _Players:
 				if Vector2(_clamp, Chemin_Chosen) == cycliste.CurrentCase :
@@ -188,16 +204,15 @@ func Question_Mark_Case(index,value) :
 				var Best_Path:Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
 				if Best_Path != []:
 					var New_Pos : Vector2 = Best_Path[-1]
-					MovePlayer(New_Pos, index,value)
-					print("succes")
+					MovePlayer(New_Pos, index,surprise_movment, false)
 					return
-			else :
-				print("deja la" , player_selected, player_selected.CurrentCase)
+#			else :
+#				print("deja la" , player_selected, player_selected.CurrentCase)
+		
 	Occupied_List.append(player_selected)
-	print(Occupied_List,"Occupied_List")
 	fall(Occupied_List)
 
-#	var _clamp = clamp(player_selected.CurrentCase.x + value,0, _A_Star.CheminA.size()-1)
+#	var _clamp = clamp(player_selected.CurrentCase.x + value,0, Clamp_Max)
 #	for Chemin_Chosen in _A_Star.Chemins.size():
 #		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2:
 #			var Best_Path:Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
@@ -220,7 +235,6 @@ func fall(To_fall : Array):
 		Cyclist.Counter_Fall = 4
 		Cyclist.CurrentCase = Vector2(fall_case_x,_A_Star.Chemins.size()-1)
 		Cyclist.position = _path.get_child(Cyclist.CurrentCase.y).curve.get_point_position(Cyclist.CurrentCase.x)
-		print(Cyclist)
 	
 #func check_neighbor(New_pos):
 #	for player in _Players :
@@ -240,10 +254,11 @@ func fall(To_fall : Array):
 #				print("player_selected.position ", _path.get_child(player.CurrentCase.y).curve.get_point_position(player.CurrentCase.x))
 #				break
 func Get_All_Path_Available(value):
-	var _clamp = clamp(player_selected.CurrentCase.x + value,0, _A_Star.CheminA.size()-1)
+	var _clamp = clamp(player_selected.CurrentCase.x + value,0, Clamp_Max)
+#	Check_Clamp(_clamp)
 	for Chemin_Chosen in _A_Star.Chemins.size():
 		var check_pos_no_occupied : bool = true
-		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2:
+		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 3:
 			var Best_Path: PoolVector2Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
 			if Best_Path.size() == 0:
 				continue
@@ -278,3 +293,46 @@ func Pass_Turn():
 	if _country_turn_index > Countries.size() - 1:
 		_country_turn_index = 0
 	emit_signal("Change_turn",Countries[_country_turn_index])
+	
+	
+	
+	
+func End():
+	$end.show()
+	print("end")
+	print("Score_belgique += value",Score_belgique)
+	print("Score_allemagne",Score_allemagne)
+	print("Score_hollande",Score_hollande)
+	print("Score_italie",Score_italie)
+#func Check_Clamp(_clamp) :
+#	if _clamp == Clamp_Max :
+#		print("_clamp == Clamp_Max")
+#		var limit_find : int = 0
+#		var index = 0
+#		for chemin in _A_Star.Chemins.slice(0,-1) :
+#			index += 1 
+#			print(index)
+##			print("Vector2(_A_Star.Chemins.find(chemin),chemin[Clamp_Max])",Vector2(_A_Star.Chemins.find(chemin),chemin[Clamp_Max]))
+#			for player in _Players:
+#				if player.CurrentCase == Vector2(_A_Star.Chemins.find(chemin),Clamp_Max):
+#					print("limit_find += 1")
+#					limit_find += 1
+#		if limit_find == _A_Star.Chemins.size() - 2 :
+#			print("final")
+#			Clamp_Max -= 1
+func Add_Score(value : int, Team : String) :
+	if Team == "belgique" :
+		Score_belgique += value
+		print("Score_belgique += value",Score_belgique)
+	elif Team == "allemagne" :
+		Score_allemagne += value
+		print("Score_allemagne += value",Score_allemagne)
+	elif Team == "italie" :
+		Score_italie += value
+		print("Score_italie += value",Score_italie)
+	elif Team == "hollande" :
+		Score_hollande += value
+		print("Score_hollande += value",Score_hollande)
+	else :
+		print("WTF ARE YOU DOING")
+		
