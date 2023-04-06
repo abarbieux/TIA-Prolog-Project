@@ -746,8 +746,7 @@ regle_rep(deplacer,5,
 regle_rep(italie_1,5, 
   [ [je],3,[italie_1], 5, [faire] ],
   [ [conseilCarte, ; , italie_1]
-  ]) 
-  ])  
+  ]).
      
   
   
