@@ -122,6 +122,7 @@ nb_coureurs(3).
 nb_equipes(4).
 nb_cartes(5).
 
+
 % ----------------------------------------------------------------%
 
 mclef(commence,10).
@@ -186,6 +187,8 @@ mclef(tombent, 5).
 
 mclef(carte, 5).
 mclef(jaune, 5).
+
+mclef(italie_1, 5).
 
 
 
@@ -736,7 +739,18 @@ regle_rep(deplacer,5,
   [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
   ]).
 
+/* conseils sur les coups à jouer */
 
+%----------------------------------------------------------------%
+
+regle_rep(italie_1,5, 
+  [ [je],3,[italie_1], 5, [faire] ],
+  [ [conseilCarte, ; , italie_1]
+  ]) 
+  ])  
+     
+  
+  
 
 
 /* Puis-je deplacer un coureur sur une case occupee par un autre coureur ?   */
