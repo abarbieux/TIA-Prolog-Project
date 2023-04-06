@@ -122,6 +122,14 @@ nb_coureurs(3).
 nb_equipes(4).
 nb_cartes(5).
 
+cyclist_num(1).
+cyclist_num(2).
+cyclist_num(3).
+
+pays(belgique).
+pays(italie).
+pays(hollande).
+pays(allemagne).
 
 % ----------------------------------------------------------------%
 
@@ -188,7 +196,7 @@ mclef(tombent, 5).
 mclef(carte, 5).
 mclef(jaune, 5).
 
-mclef(italie_1, 5).
+mclef(conseil, 5).
 
 
 
@@ -743,13 +751,17 @@ regle_rep(deplacer,5,
 
 %----------------------------------------------------------------%
 
-regle_rep(italie_1,5, 
-  [ [je],3,[italie_1], 5, [faire] ],
-  [ [conseilCarte, ; , italie_1]
+regle_rep(conseil,5, 
+  [ [je],3,[conseil],5,[faire]],
+  [ [conseilCarte,;]
   ]).
-     
-  
-  
+
+
+regle_rep(position,1,
+  [ 3, [ position ], 2, Pays, 2, [ cycliste ], Num ] :-
+  pays(Pays), cyclistNum(Num)]
+  [getPosition,;,Pays,;,Num]).
+
 
 
 /* Puis-je deplacer un coureur sur une case occupee par un autre coureur ?   */

@@ -164,10 +164,10 @@ margin_left = 821.0
 margin_top = 497.0
 margin_right = 951.0
 margin_bottom = 555.0
+window_title = "Alerte !"
 dialog_text = "Merci d'avoir joué"
 
 [node name="Panel" type="Panel" parent="."]
-visible = false
 margin_left = 15.0
 margin_top = 127.0
 margin_right = 398.0
@@ -197,6 +197,7 @@ margin_left = -188.5
 margin_top = -771.0
 margin_right = 189.5
 margin_bottom = -168.0
+readonly = true
 wrap_enabled = true
 
 [node name="Send" type="Button" parent="Panel"]

@@ -12,7 +12,7 @@ var _country_turn_index:int = 0 # team who begins
 var player_selected:Cycliste
 
 var _A_Star : A_star = preload("res://Scripts/AStar.gd").new()
-var _GameWebSocket : GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new()
+var _GameWebSocket : GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new(self)
 
 var _Deck : Deck
 signal Change_turn(Team)
@@ -123,7 +123,7 @@ func choose_player(value, index):
 #			$ChoosePlayer.add_child(button)
 #			var c = button.connect("pressed", self, "_button_player_pressed", [player, value, index])
 
-func select_last_cyclist_movable(Team):
+func get_last_cyclist_movable(Team):
 	var Team_list : Array
 	for cycliste in _Players:
 		if cycliste.Pays == Team:
@@ -145,6 +145,10 @@ func select_last_cyclist_movable(Team):
 					if Get_All_Path_Available(carte).size() != 0:
 						chosen_teamates.append(Teamate)
 						break
+	return chosen_teamates
+
+func select_last_cyclist_movable(Team):
+	var chosen_teamates = get_last_cyclist_movable(Team)
 	if chosen_teamates != []:
 		return chosen_teamates
 	$PassTour.show()
