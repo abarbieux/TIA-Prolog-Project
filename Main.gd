@@ -72,7 +72,6 @@ func _button_pressed(button, value, index) -> void :
 
 func MovePlayer(New_Pos, index, value, Carte_Movment : bool = true):
 	player_selected.CurrentCase = New_Pos
-	
 
 	player_selected.position = _path.get_child(player_selected.CurrentCase.y).curve.get_point_position(player_selected.CurrentCase.x)
 	
@@ -84,10 +83,12 @@ func MovePlayer(New_Pos, index, value, Carte_Movment : bool = true):
 	for child in $Current_Cards.get_children():
 		child.queue_free()
 		
-	if Carte_Movment == false :
+	if Carte_Movment == true :
 		_Deck.Deck_Carte_Player[_country_turn_index].erase(value)
 		_Deck._cards.append(value)
 		_Deck.Empty_Deck_check()
+	else:
+		return
 	
 	if _A_Star.Chemins[New_Pos.y][New_Pos.x] == 3 :
 		End()
@@ -173,8 +174,9 @@ func _button_player_pressed(player, value, index) -> void:
 			
 			if !Check_player_already_here:
 				var Best_Path:Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
-				if Best_Path != []:
+				if Best_Path != [] && Best_Path.size() <= value:
 					var New_Pos : Vector2 = Best_Path[-1]
+					print("_country_turn_index : ", _country_turn_index)
 					MovePlayer(New_Pos, index,value)
 					return
 	$Movement_Error.show()
@@ -185,9 +187,10 @@ func _button_player_pressed(player, value, index) -> void:
 func Question_Mark_Case(index,value) :
 	var surprise_movment: int = randi() % 7 - 3
 	print("surprise_movment",surprise_movment)
-#	surprise_movment = 3
+	surprise_movment = 3
 	if surprise_movment == 0 :
 		return
+		
 	var New_pos : Vector2 = player_selected.CurrentCase + Vector2(surprise_movment,0)
 	var Occupied_List : Array = []
 	
@@ -201,11 +204,18 @@ func Question_Mark_Case(index,value) :
 					Occupied_List.append(cycliste)
 
 			if !Check_player_already_here:
+				print("CurrentCase : ", player_selected.CurrentCase)
+				print("NextCase : ", Vector2(_clamp, Chemin_Chosen))
 				var Best_Path:Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
-				if Best_Path != []:
+				if Best_Path != [] && Best_Path.size() <= surprise_movment:
 					var New_Pos : Vector2 = Best_Path[-1]
+					print("New Pos : ", New_Pos)
 					MovePlayer(New_Pos, index,surprise_movment, false)
 					return
+#				else :
+#					var New_Pos := Vector2(_clamp, Chemin_Chosen)
+#					MovePlayer(New_Pos, index,surprise_movment, false)
+#					return
 #			else :
 #				print("deja la" , player_selected, player_selected.CurrentCase)
 		
@@ -260,13 +270,14 @@ func Get_All_Path_Available(value):
 		var check_pos_no_occupied : bool = true
 		if _A_Star.Chemins[Chemin_Chosen][_clamp] == 0 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 2 || _A_Star.Chemins[Chemin_Chosen][_clamp] == 3:
 			var Best_Path: PoolVector2Array = _A_Star._get_path(player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
-			if Best_Path.size() == 0:
+			if Best_Path.size() == 0 || Best_Path.size() > value:
 				continue
 			for player in _Players:
 				if player.CurrentCase == Best_Path[-1] : 
 					check_pos_no_occupied = false
 					break
 			if check_pos_no_occupied :
+				print("Best_Path",Best_Path)
 				return Best_Path
 	return []
 

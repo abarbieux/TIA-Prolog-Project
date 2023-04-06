@@ -49,12 +49,15 @@ func _connect_points():
 		# Right, Left, Down, Up, TopLeft, TopRight, BottomLeft, BottomRight
 #		var neighbors = [Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1), Vector2(-1, -1), Vector2(1, -1), Vector2(-1,1), Vector2(1,1)]
 		
+		# Right, Left, TopLeft, TopRight, BottomLeft, BottomRight
+		var neighbors = [Vector2(1,0), Vector2(-1,0), Vector2(-1, -1), Vector2(1, -1), Vector2(-1,1), Vector2(1,1)]
+		
 		# Right, TopRight, BottomRight
-		var neighbors = [Vector2(1,0), Vector2(1, -1), Vector2(1,1)]
+#		var neighbors = [Vector2(1,0), Vector2(1, -1), Vector2(1,1)]
 		for neighbor in neighbors:
 			var next_cell = cell + neighbor
 			if used_cells.has(next_cell):
-				astar.connect_points(id(cell), id(next_cell), true)
+				astar.connect_points(id(cell), id(next_cell))
 
 func _get_path(start,end):
 	if Chemins[start.y][start.x] == 1:
