@@ -13,6 +13,7 @@ var player_selected:Cycliste
 
 var _A_Star : A_star = preload("res://Scripts/AStar.gd").new()
 var _GameWebSocket : GameWebSocket = preload("res://Scripts/GameWebSocket.gd").new(self)
+var _ChatBotAI : ChatBotAI = preload("res://Scripts/ChatBotAI.gd").new(self)
 
 var _Deck : Deck
 signal Change_turn(Team)
@@ -30,10 +31,13 @@ func _ready() -> void:
 	
 	add_child(_A_Star)
 	add_child(_GameWebSocket)
+	add_child(_ChatBotAI)
 	panel._GameWebSocket = _GameWebSocket
 	_GameWebSocket.panel = panel
 	_Deck = Deck.new()
 	_Deck.MakeDeck()
+	
+	
 
 	Clamp_Max = _A_Star.CheminA.size()-1
 	

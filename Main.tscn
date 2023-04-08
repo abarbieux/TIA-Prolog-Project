@@ -207,5 +207,4 @@ margin_right = 253.0
 margin_bottom = 690.0
 text = "SEND"
 
-[connection signal="Change_turn" from="." to="Current Team" method="_on_Main_Change_turn"]
 [connection signal="pressed" from="Panel/Send" to="." method="_on_Send_pressed"]

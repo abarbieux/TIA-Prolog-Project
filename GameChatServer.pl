@@ -197,6 +197,7 @@ mclef(carte, 5).
 mclef(jaune, 5).
 
 mclef(conseil, 5).
+mclef(position, 5).
 
 
 
@@ -275,7 +276,7 @@ regle_rep(maillots, 6,
 
 regle_rep(hollandais,5,
   [ [ liste ], 3, [coureurs], 2, [hollandais] ],
-  [ [ "hollande-1", "Hollande-2", "Hollande-3" ] ]).
+  [ [ "hollande_1", "hollande_2", "hollande_3" ] ]).
 
 /* Donne moi la liste des coureurs hollandais .*/
 
@@ -283,7 +284,7 @@ regle_rep(hollandais,5,
 
 regle_rep(belges,5,
   [ [ liste ], 3, [coureurs], 2, [belges] ],
-  [ [ "belgique-1", "Belgique-2", "Belgique-3" ] ]).
+  [ [ "belgique_1", "belgique_2", "belgique_3" ] ]).
 
 /* Donne moi la liste des coureurs belges .*/
 
@@ -291,7 +292,7 @@ regle_rep(belges,5,
 
 regle_rep(italiens,5,
   [ [ liste ], 3, [coureurs], 2, [ italiens ] ],
-  [ [ "italie-1", "Italie-2", "Italie-3" ] ]).
+  [ [ "italie_1", "italie_2", "italie_3" ] ]).
 
 /* Donne moi la liste des coureurs italiens . */
 
@@ -299,7 +300,7 @@ regle_rep(italiens,5,
 
 regle_rep(allemands,5,
   [ [ liste ], 3, [coureurs], 2, [ allemands ] ],
-  [ [ "allemagne-1", "Allemagne-2", "Allemagne-3" ] ]).
+  [ [ "allemagne_1", "allemagne_2", "allemagne_3" ] ]).
 
 /* Donne moi la liste des coureurs allemands . */
 
@@ -758,13 +759,12 @@ regle_rep(conseil,5,
 
 
 regle_rep(position,1,
-  [ 3, [ position ], 2, Pays, 2, [ cycliste ], Num ] :-
-  pays(Pays), cyclistNum(Num)]
-  [getPosition,;,Pays,;,Num]).
+  [ 3, [ position ], 2, Pays, 2, [ cycliste ], Num ],
+  [ [getPosition,;,Pays,;,Num]
+  ]).
 
-
-
-/* Puis-je deplacer un coureur sur une case occupee par un autre coureur ?   */
+/* Non fonctionnel, ne renvoie pas la bonne réponse */
+/* Quelle est la position de (pays) sur son cycliste (num) ? */
 
 /*
 regle_rep(fonction,5,

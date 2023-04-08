@@ -42,17 +42,26 @@ func _on_data():
 	if panel == null:
 		return
 	var message = _client.get_peer(1).get_packet().get_string_from_utf8()
+	print(message)
 	if _check_liability(message):
 		var args = message.split(";")
+		var result_message = "Cette fonction n'est pas encore implémentée..."
 		match args[0].replace(" ", "").replace("\"", ""):
 			"getPosition":
-				print("Get Position of %s at %s", args[1], args[2])
+				var args_1 = args[1].replace(" ", "").replace("\"", "")
+				var args_2 = args[2].replace(" ", "").replace("\"", "")
+				var result = instance._ChatBotAI.get_cyclist_position(args_1, args_2)
+				if result != Vector2(-1.0, -1.0):
+					result_message = "La position du joueur %s de l'équipe %s est %s" % [args_2, args_1, result]
+				else:
+					result_message = "Le joueur %s de l'équipe %s n'est pas sur le plateau ou n'existe pas..." % [args_2, args_1]
 			"conseilCarte":
 				if len(instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])) > 0:
-					# conseilCarte($Main.Countries[$Main._country_turn_index], $Main.get_last_cyclist_movable($Main.Countries[$Main._country_turn_index])[0])
-					print("Demande de conseil pour la carte à jouer de l'équipe %s du joueur %s" % [instance.Countries[instance._country_turn_index], instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])[0].numero])
+					var result = instance._ChatBotAI.get_best_card(instance.Countries[instance._country_turn_index], instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])[0])
+					result_message = "La meilleure carte à jouer de l'équipe %s du joueur %s est la carte avec une valeur de %s" % [instance.Countries[instance._country_turn_index], instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])[0].numero, result]
 				else:
-					print("La demande de conseil pour la team %s ne peut aboutir..." % instance.Countries[instance._country_turn_index])
+					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.Countries[instance._country_turn_index]
+		panel._on_Message_received(result_message)
 	else:
 		panel._on_Message_received(message)
 
