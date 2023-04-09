@@ -1,5 +1,6 @@
-extends Node
 class_name A_star
+extends Node
+
 
 # 0 = OK, 1 = Hole/Don't exit, 2 = Occuped
 var CheminA = [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,3,3,3,3,3 ]
@@ -16,15 +17,15 @@ var CheminD = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ]
 #var CheminE = [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]
 # ligne noire
 #var CheminF = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-
 var Chemins = [CheminA, CheminB, CheminC, CheminD]
 var used_cells = []
-
 var pos = [0, 0]
 var NumOfMove = 3
+var path : PoolVector2Array
+
 
 onready var astar = AStar2D.new()
-var path : PoolVector2Array
+
 
 func _ready() -> void:
 	var x = 0
@@ -40,9 +41,11 @@ func _ready() -> void:
 	_add_points()
 	_connect_points()
 
+
 func _add_points():
 	for cell in used_cells:
 		astar.add_point(id(cell), cell, 1.0)
+
 
 func _connect_points():
 	for cell in used_cells:
@@ -58,6 +61,7 @@ func _connect_points():
 			var next_cell = cell + neighbor
 			if used_cells.has(next_cell):
 				astar.connect_points(id(cell), id(next_cell))
+
 
 func _get_path(start,end):
 	if Chemins[start.y][start.x] == 1:
@@ -76,6 +80,7 @@ func _get_path(start,end):
 		path.remove(0)
 	print("Path = ", path)
 	return path
+
 
 func id(point):
 	var a = point.x

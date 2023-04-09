@@ -1,7 +1,7 @@
 extends Node
 class_name ChatBotAI
 
-var instance: Main
+var instance
 var heuristic_mode: int
 
 
@@ -23,7 +23,7 @@ var heuristic_mode: int
 ##	3: Same as the heuristic 2, but takes into account the possibility to block other players path
 ##		by looking at which cards they have and if it's possible to make them pass their turn with
 ##		one of our movements cards.
-func _init(_instance: Main):
+func _init(_instance):
 	instance = _instance
 	heuristic_mode = 0
 	

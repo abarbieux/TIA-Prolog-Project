@@ -1,10 +1,12 @@
-extends Object
 class_name Deck
+extends Object
 
-var _cards:Array = []
-var Deck_Carte_Player: Array
+
 const NumberOfValue:int = 12
 const MaxNumberOfValue:int = 8
+var _cards:Array = []
+var Deck_Carte_Player: Array
+
 
 func MakeDeck() -> void:
 	randomize()
@@ -29,7 +31,8 @@ func Init_deck() -> void :
 			Carte_list.append(_cards[rng])
 			_cards.remove(rng)
 		Deck_Carte_Player.append(Carte_list)
-		
+
+
 func refile_deck(Index:int):
 	var Carte:int
 	var Carte_list:Array
@@ -39,11 +42,12 @@ func refile_deck(Index:int):
 		Carte_list.append(_cards[rng])
 		_cards.remove(rng)
 	Deck_Carte_Player[Index] = Carte_list
-	
+
+
 func Empty_Deck_check() -> void:
 	var i : int = 0
 	while i < Deck_Carte_Player.size():
 		if Deck_Carte_Player[i] == []:
 			refile_deck(i)
-			
+		
 		i += 1

@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/ChatBotAI.gd"
 }, {
+"base": "Object",
+"class": "Country",
+"language": "GDScript",
+"path": "res://Scripts/Country.gd"
+}, {
 "base": "Sprite",
 "class": "Cycliste",
 "language": "GDScript",
@@ -38,14 +43,21 @@ _global_script_classes=[ {
 "class": "Main",
 "language": "GDScript",
 "path": "res://Main.gd"
+}, {
+"base": "Object",
+"class": "MovementManager",
+"language": "GDScript",
+"path": "res://Scripts/MovementManager.gd"
 } ]
 _global_script_class_icons={
 "A_star": "",
 "ChatBotAI": "",
+"Country": "",
 "Cycliste": "",
 "Deck": "",
 "GameWebSocket": "",
-"Main": ""
+"Main": "",
+"MovementManager": ""
 }
 
 [application]
