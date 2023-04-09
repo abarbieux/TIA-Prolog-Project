@@ -68,13 +68,13 @@ func _get_path(start,end):
 				not_way_available = false
 				
 		if not_way_available == true :
-			print("there is a problem with your map, your not suppose to be here")
+			print("There is a problem with your map, you're not supposed to be here.")
 			return []
 			
 	path = astar.get_point_path(id(start), id(end))
 	if path.size() != 0:
 		path.remove(0)
-	print("path = ",path)
+	print("Path = ", path)
 	return path
 
 func id(point):

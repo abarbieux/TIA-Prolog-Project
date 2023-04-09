@@ -33,13 +33,19 @@ _global_script_classes=[ {
 "class": "GameWebSocket",
 "language": "GDScript",
 "path": "res://Scripts/GameWebSocket.gd"
+}, {
+"base": "Control",
+"class": "Main",
+"language": "GDScript",
+"path": "res://Main.gd"
 } ]
 _global_script_class_icons={
 "A_star": "",
 "ChatBotAI": "",
 "Cycliste": "",
 "Deck": "",
-"GameWebSocket": ""
+"GameWebSocket": "",
+"Main": ""
 }
 
 [application]

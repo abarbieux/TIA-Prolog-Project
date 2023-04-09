@@ -1,4 +1,5 @@
 extends Control
+class_name Main
 
 onready var _path = $Paths
 
@@ -28,7 +29,6 @@ var Score_italie : int = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	
 	add_child(_A_Star)
 	add_child(_GameWebSocket)
 	add_child(_ChatBotAI)
