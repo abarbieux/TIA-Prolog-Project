@@ -28,7 +28,7 @@ func _init(_instance):
 	heuristic_mode = 0
 	
 	
-func get_best_card(team: String):
+func get_best_card(team: String) -> int:
 	match heuristic_mode:
 		0: return get_best_card_h0(team)
 		1: return get_best_card_h1(team)
@@ -51,6 +51,8 @@ func get_best_card_h1(team: String) -> int:
 	
 
 ## Get the given cyclist position in a @Vector2 format.
+## @parameter team: The team to get the cyclist from.
+## @parameter cyclist_number: The number of the cyslist to get the position from.
 ## @return the position of the cyclist or a @Vector2 filled with -1.0 if cyclist doesn't exists.
 func get_cyclist_position(team: String, cyclist_number: int) -> Vector2:
 	var team_list : Array
@@ -66,6 +68,8 @@ func get_cyclist_position(team: String, cyclist_number: int) -> Vector2:
 		
 		
 ## Find the array of cards from the given team deck that makes the sum of a number.
+## @parameter team: The team to calculate the cards sum from.
+## @parameter number: The number that the sum has to match.
 ## @return an array with the cards to make the given sum or an empty one if not found.
 func find_sum_of(team: String, number: int) -> Array:
 	var country_index = instance.Countries.find(team, 0)
@@ -88,15 +92,36 @@ func find_sum_of(team: String, number: int) -> Array:
 	return []
 
 
-## Find the first chance case.
+## Find the first chance case distance from the given cyclist.
 ## @parameter case_skipping: Amount of cases to skip before looking for the first chance case.
-##							 This parameter should always be set to the minimum card number a player has in his deck.
+##							 This parameter should always be set to the minimum card value a player has in his deck.
 ## @return the distance between the player and the first chance case found.
 func find_first_chance_case_distance(team: String, cyclist_number: int, case_skipping: int = 0) -> int:
 	var cyclist_position: Vector2 = get_cyclist_position(team, cyclist_number)
-	var path: Array = instance._A_Star.Chemins
-	## TODO: With the path, get the first position with a "2" in it, meaning it's a chance case.
-	##		 Don't forget to offset the player's position by the case skipping value first.
-	var chance_case_position = Vector2.ZERO ## <===== MUST BE CHANGED TO THE REAL CHANCE CASE POSITION GETTER
-	if chance_case_position != Vector2(-1.0, -1.0): return int(round(pow((pow(chance_case_position[0] - cyclist_position[0], 2.0) + pow(chance_case_position[1] - cyclist_position[1], 2.0)), 0.5)))
+	var chances_cases = get_all_chances_cases()
+	var chance_case_position = Vector2(-1.0, -1.0)
+	for chance_case in chances_cases:
+		if cyclist_position.x + case_skipping <= chance_case.x:
+			chance_case_position = chance_case
+	if chance_case_position != Vector2(-1.0, -1.0): return distance(cyclist_position, chance_case_position)
 	return -1
+
+
+## Find all the chances cases in the map.
+## @return the chances cases in the map inside an @Array.
+func get_all_chances_cases() -> Array:
+	var result_dict: Array = []
+	var paths: Array = instance._A_Star.Chemins
+	for i in range(len(paths)):
+		for j in range(len(paths[i])):
+			if paths[i][j] == 2:
+				result_dict.append(Vector2(float(i), float(j)))
+	return result_dict
+	
+
+## Calculate the distance between two @Vector2.
+## @parameter position1: First position.
+## @parameter position2: Second position.
+## @return the distance between the two positions.
+func distance(position1: Vector2, position2: Vector2) -> int:
+	return int(round(pow((pow(position2[0] - position1[0], 2.0) + pow(position2[1] - position1[1], 2.0)), 0.5)))
