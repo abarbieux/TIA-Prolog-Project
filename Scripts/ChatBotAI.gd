@@ -112,10 +112,10 @@ func find_first_chance_case_distance(team: String, cyclist_number: int, case_ski
 func get_all_chances_cases() -> Array:
 	var result_dict: Array = []
 	var paths: Array = instance._A_Star.Chemins
-	for i in range(len(paths)):
-		for j in range(len(paths[i])):
-			if paths[i][j] == 2:
-				result_dict.append(Vector2(float(i), float(j)))
+	for row in range(len(paths)):
+		for column in range(len(paths[row])):
+			if paths[row][column] == 2:
+				result_dict.append(Vector2(float(column), float(row)))
 	return result_dict
 	
 
