@@ -13,7 +13,7 @@ func MakeDeck() -> void:
 	 
 	for i in range(1, NumberOfValue + 1):
 		for j in range(1, MaxNumberOfValue + 1):
-			_cards.append(3)
+			_cards.append(i)
 	
 	print(_cards)
 

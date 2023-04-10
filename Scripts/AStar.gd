@@ -78,7 +78,7 @@ func _get_path(start,end):
 	path = astar.get_point_path(id(start), id(end))
 	if path.size() != 0:
 		path.remove(0)
-	print("Path = ", path)
+#	print("Path = ", path)
 	return path
 
 
