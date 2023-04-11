@@ -70,6 +70,7 @@ curve = SubResource( 4 )
 [node name="Player_Container" type="Node2D" parent="."]
 
 [node name="Panel" type="Panel" parent="."]
+visible = false
 margin_left = 15.0
 margin_top = 127.0
 margin_right = 398.0
