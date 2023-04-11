@@ -20,7 +20,7 @@ var cheminD = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 var chemins = [cheminA, cheminB, cheminC, cheminD]
 var used_cells = []
 var pos = [0, 0]
-var NumOfMove = 3
+var num_of_move = 3
 var path: PoolVector2Array
 
 
