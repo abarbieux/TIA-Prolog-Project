@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Panel.gd" type="Script" id=1]
+
+[node name="Panel" type="Panel"]
+margin_right = 384.0
+margin_bottom = 864.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="LineEdit" type="LineEdit" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -190.5
+margin_top = -72.0
+margin_right = 190.5
+margin_bottom = -8.0
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="TextEdit" type="TextEdit" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -189.0
+margin_right = 189.0
+margin_bottom = 730.0
+readonly = true
+wrap_enabled = true
+
+[node name="Send" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -62.5
+margin_top = -117.0
+margin_right = 62.5
+margin_bottom = -88.0
+text = "SEND"

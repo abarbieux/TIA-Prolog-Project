@@ -13,7 +13,7 @@ func display_deck_button(_team_deck: Array) -> void:
 	for carte in _team_deck:
 		var button = Button.new()
 		button.text = str(carte)
-		button.rect_min_size.x = 96
+		button.rect_min_size.x = 85
 		button.icon = preload("res://icon.png")
 		current_cards_buttons.add_child(button)
 		var c = button.connect("pressed", get_parent(), "_button_pressed", [button, carte, i])

@@ -42,9 +42,10 @@ func get_available_cell(value, index) -> Vector2:
 
 func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	main.player_selected.current_case = new_pos
-	main.player_selected.position = main._path.get_child(
+	var offset = main.get_child(2).rect_pivot_offset * (Vector2(1, 1) - main.get_child(2).rect_scale)
+	main.player_selected.position = (main._path.get_child(
 			main.player_selected.current_case.y).curve.get_point_position(
-					main.player_selected.current_case.x)
+					main.player_selected.current_case.x) * main.get_child(2).rect_scale) + offset
 	
 	main.add_score(value, main.player_selected.pays)
 	

@@ -12,7 +12,6 @@ func make_deck() -> void:
 	for i in range(1, number_of_value + 1):
 		for j in range(max_number_of_value):
 			_cards.append(i)
-	print(_cards)
 
 
 # Creat the deck of each participant

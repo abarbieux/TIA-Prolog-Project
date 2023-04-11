@@ -30,7 +30,7 @@ var is_end := false
 var is_definitely_the_end := false
 var is_selecting_case := false
 
-onready var _path = $Paths
+onready var _path = $Map/Paths
 onready var panel = $Panel
 onready var UIComponent := $UIComponent
 onready var ErrorComponent := $ErrorComponent
