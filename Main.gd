@@ -8,10 +8,6 @@ const number_of_team_member: int = 3
 # Change to true to visualize a random party.
 const is_unit_test_mode := true
 
-const number_of_team_member: int = 3
-# Change to true to visualize a random party.
-const is_unit_test_mode := true
-
 var countries: Array = [Country.new("italie"),
 		Country.new("hollande"),
 		Country.new("belgique"),
@@ -114,7 +110,7 @@ func hide_all_cell_button():
 	is_selecting_case = false
 
 
-func create_new_player(Pays:String, Numero:int):
+func create_new_player(pays: String, numero: int):
 	var _player = Cycliste.new()
 	_player.pays = pays
 	_player.numero = numero
@@ -208,14 +204,13 @@ func _button_player_pressed(player, value, index) -> void:
 
 
 func get_all_cell_available(value, cyclist) -> PoolVector2Array:
-	var _clamp = clamp(cyclist.CurrentCase.x + value,0, Clamp_Max)
+	var _clamp = clamp(cyclist.current_case.x + value,0, clamp_max)
 	var count : int = 0
 	var cells:PoolVector2Array = []
-	for Chemin_Chosen in _A_Star.Chemins.size():
-		if _MovementManager.is_valid_cell(Chemin_Chosen, _clamp):
-			if !_MovementManager.is_player_on_cell(Chemin_Chosen, _clamp):
-				cells.append(Vector2(_clamp, Chemin_Chosen))
-	
+	for chemin_chosen in _A_Star.chemins.size():
+		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
+			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
+				cells.append(Vector2(_clamp, chemin_chosen))
 	return cells
 
 

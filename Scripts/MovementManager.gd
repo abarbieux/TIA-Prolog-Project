@@ -26,7 +26,7 @@ func init_movement(value: int, index: int, _carte_movement: bool = true, testpos
 
 
 func get_available_cell(value, index) -> Vector2:
-	var _clamp = clamp(main.player_selected.CurrentCase.x + value, 0, main.Clamp_Max)
+	var _clamp = clamp(main.player_selected.current_case.x + value, 0, main.clamp_max)
 	
 	for chemin_chosen in main._A_Star.chemins.size():
 		if is_valid_cell(chemin_chosen, _clamp):
@@ -75,13 +75,13 @@ func get_last_cyclist_movable() -> Array:
 	for teamate in main.countries[main._country_turn_index].members:
 		main.player_selected = teamate
 		var place : Vector2 = main.player_selected.current_case
-		if main.player_selected.Fall == false:
+		if main.player_selected.fall == false:
 			for carte in main._Deck.deck_carte_player[main._country_turn_index]:
 				if get_all_path_available(carte, main.player_selected).size() != 0:
-					if place.x < Last:
-						Last = place.x
+					if place.x < last:
+						last = place.x
 						chosen_teamates = [teamate]
-					elif place.x == Last:
+					elif place.x == last:
 						chosen_teamates.append(teamate)
 					break
 	return chosen_teamates
@@ -104,7 +104,7 @@ func question_mark_case(index, value):
 	var new_pos: Vector2 = main.player_selected.current_case + Vector2(surprise_movement, 0)
 	var occupied_list: Array = []
 	
-	var _clamp = clamp(main.player_selected.CurrentCase.x + surprise_movement, 0, main.clamp_max)
+	var _clamp = clamp(main.player_selected.current_case.x + surprise_movement, 0, main.clamp_max)
 	for chemin_chosen in main._A_Star.chemins.size():
 		if is_valid_cell(chemin_chosen, _clamp):
 			if is_player_on_cell(chemin_chosen, _clamp):
@@ -118,14 +118,14 @@ func question_mark_case(index, value):
 	fall(occupied_list)
 
 
-func fall(To_fall: Array) -> void:
+func fall(to_fall: Array) -> void:
 	var fall_case_x =  to_fall[0].current_case.x
 	for cyclist in to_fall :
 		cyclist.fall = true
 		cyclist.counter_fall = 4
 		cyclist.current_case = Vector2(fall_case_x, main._A_Star.chemins.size() - 1)
 		cyclist.position = main._path.get_child(
-				cyclist.current_case.y).curve.get_point_position(Cyclist.current_case.x)
+				cyclist.current_case.y).curve.get_point_position(cyclist.current_case.x)
 
 
 func get_all_path_available(value, cyclist) -> PoolVector2Array:
@@ -134,7 +134,7 @@ func get_all_path_available(value, cyclist) -> PoolVector2Array:
 	for chemin_chosen in main._A_Star.chemins.size():
 		var check_pos_no_occupied : bool = true
 		if is_valid_cell(chemin_chosen, _clamp):
-			var Best_Path: PoolVector2Array = main._A_Star._get_path(
+			var best_path: PoolVector2Array = main._A_Star._get_path(
 					cyclist.current_case, Vector2(_clamp, chemin_chosen))
 			
 			if best_path.size() == 0 || best_path.size() > value:
@@ -164,21 +164,21 @@ func is_valid_cell(chemin_chosen, _clamp) -> bool:
 
 
 func is_player_on_cell(chemin_chosen, _clamp) -> bool:
-	for cycliste in main._Players:
-		if Vector2(_clamp, chemin_chosen) == cycliste.CurrentCase:
+	for cycliste in main._players:
+		if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
 			return true
 	return false
 
 
 func get_player_on_cell(chemin_chosen, _clamp):
-	for cycliste in main._Players:
-		if Vector2(_clamp, chemin_chosen) == cycliste.CurrentCase:
+	for cycliste in main._players:
+		if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
 			return cycliste
 
 
 func get_best_path(chemin_chosen, _clamp):
 	var best_path: Array = main._A_Star._get_path(
-	main.player_selected.CurrentCase, Vector2(_clamp, chemin_chosen))
+	main.player_selected.current_case, Vector2(_clamp, chemin_chosen))
 	
 	return best_path
 
@@ -194,7 +194,7 @@ func get_new_pos(cell, value, index):
 	return Vector2.INF
 
 
-#func player_shiftable(Best_Path) :
-#	for player in main._Player:
-#		if player.CurrentCase == best_path[-1]:
+#func player_shiftable(best_path) :
+#	for player in main._player:
+#		if player.current_case == best_path[-1]:
 #			pass

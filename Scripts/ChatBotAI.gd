@@ -42,7 +42,7 @@ func get_best_card_h0(team: String) -> int:
 	
 	
 func get_best_card_h1(team: String) -> int:
-	var cyclist_number: int = instance._MovementManager.get_last_cyclist_movable(team)[0].numero
+	var cyclist_number: int = instance._MovementManager.get_last_cyclist_movable()[0].numero
 	var first_chance_case_distance: int = find_first_chance_case_distance(team, cyclist_number)
 	print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
 	if first_chance_case_distance == -1:
