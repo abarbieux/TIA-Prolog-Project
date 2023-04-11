@@ -16,170 +16,170 @@ func init_movement(value: int, index: int) -> bool:
 
 
 func is_select_move_possible(value, index) -> bool:
-	var _clamp = clamp(main.player_selected.CurrentCase.x + value,0, main.Clamp_Max)
+	var _clamp = clamp(main.player_selected.current_case.x + value, 0, main.clamp_max)
 	
-	for Chemin_Chosen in main._A_Star.Chemins.size():
+	for chemin_chosen in main._A_Star.chemins.size():
 		if (
-				main._A_Star.Chemins[Chemin_Chosen][_clamp] == 0
-				or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 2
-				or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 3
+				main._A_Star.chemins[chemin_chosen][_clamp] == 0
+				or main._A_Star.chemins[chemin_chosen][_clamp] == 2
+				or main._A_Star.chemins[chemin_chosen][_clamp] == 3
 		):
-			var Check_player_already_here = false
-			for cycliste in main._Players:
-				if Vector2(_clamp, Chemin_Chosen) == cycliste.CurrentCase :
-					Check_player_already_here = true
+			var check_player_already_here = false
+			for cycliste in main._players:
+				if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
+					check_player_already_here = true
 			
-			if !Check_player_already_here:
-				var Best_Path:Array = main._A_Star._get_path(
-						main.player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
-				if Best_Path != [] && Best_Path.size() <= value:
-					var New_Pos : Vector2 = Best_Path[-1]
-					print("_country_turn_index : ", main._country_turn_index)
-					MovePlayer(New_Pos, index,value)
+			if !check_player_already_here:
+				var best_path: Array = main._A_Star._get_path(
+						main.player_selected.current_case, Vector2(_clamp, chemin_chosen))
+				if best_path != [] && best_path.size() <= value:
+					var new_pos: Vector2 = best_path[-1]
+					print("_country_turn_index: ", main._country_turn_index)
+					move_player(new_pos, index, value)
 					return true
 	
 	return false
 
 
-func MovePlayer(New_Pos, index, value, Carte_Movment : bool = true):
-	main.player_selected.CurrentCase = New_Pos
+func move_player(new_pos, index, value, carte_movement: bool = true):
+	main.player_selected.current_case = new_pos
 	main.player_selected.position = main._path.get_child(
-			main.player_selected.CurrentCase.y).curve.get_point_position(
-					main.player_selected.CurrentCase.x)
+			main.player_selected.current_case.y).curve.get_point_position(
+					main.player_selected.current_case.x)
 	
-	main.Add_Score(value, main.player_selected.Pays)
+	main.add_score(value, main.player_selected.pays)
 	
-	if main._A_Star.Chemins[New_Pos[1]][New_Pos[0]] == 2 :
-		Question_Mark_Case(index,value)
+	if main._A_Star.chemins[new_pos[1]][new_pos[0]] == 2:
+		question_mark_case(index,value)
 	
 	for child in main.UIComponent.current_cards_buttons.get_children():
 		child.queue_free()
 		
-	if Carte_Movment == true :
-		main._Deck.Deck_Carte_Player[main._country_turn_index].erase(value)
+	if carte_movement == true:
+		main._Deck.deck_carte_player[main._country_turn_index].erase(value)
 		main._Deck._cards.append(value)
-		main._Deck.Empty_Deck_check()
+		main._Deck.empty_deck_check()
 	else:
 		return
 	
-	if main._A_Star.Chemins[New_Pos.y][New_Pos.x] == 3 :
+	if main._A_Star.chemins[new_pos.y][new_pos.x] == 3:
 		main.is_end = true
 		
-	else :
-		if main.Turn_already_past == false:
-			main.Turn_already_past = true
-			main.Pass_Turn()
+	else:
+		if main.turn_already_past == false:
+			main.turn_already_past = true
+			main.pass_turn()
 
 
-func get_last_cyclist_movable(Team):
-	var Team_list : Array
-	for cycliste in main._Players:
-		if cycliste.Pays == Team:
-			Team_list.append(cycliste)
-	var Last  = INF
+func get_last_cyclist_movable(team: String):
+	var team_list: Array
+	for cycliste in main._players:
+		if cycliste.pays == team:
+			team_list.append(cycliste)
+	var last = INF
 	var chosen_teamates: Array = []
-	for Teamate in Team_list:
-		main.player_selected = Teamate
-		var Place : Vector2 = main.player_selected.CurrentCase
-		if main.player_selected.Fall == false :
-			if Place.x < Last :
-				for carte in main._Deck.Deck_Carte_Player[main._country_turn_index]:
-					if Get_All_Path_Available(carte, main.player_selected).size() != 0:
-						Last = Place.x
-						chosen_teamates = [Teamate]
+	for teamate in team_list:
+		main.player_selected = teamate
+		var place: Vector2 = main.player_selected.current_case
+		if main.player_selected.fall == false:
+			if place.x < last:
+				for carte in main._Deck.deck_carte_player[main._country_turn_index]:
+					if get_all_path_available(carte, main.player_selected).size() != 0:
+						last = place.x
+						chosen_teamates = [teamate]
 						break
-			elif Place.x == Last :
-				for carte in main._Deck.Deck_Carte_Player[main._country_turn_index]:
-					if Get_All_Path_Available(carte, main.player_selected).size() != 0:
-						chosen_teamates.append(Teamate)
+			elif place.x == last:
+				for carte in main._Deck.deck_carte_player[main._country_turn_index]:
+					if get_all_path_available(carte, main.player_selected).size() != 0:
+						chosen_teamates.append(teamate)
 						break
 	return chosen_teamates
 
 
-func select_last_cyclist_movable(Team):
-	var chosen_teamates = get_last_cyclist_movable(Team.name)
+func select_last_cyclist_movable(team):
+	var chosen_teamates = get_last_cyclist_movable(team.name)
 	if chosen_teamates != []:
 		return chosen_teamates
 	return []
 
 
-func Question_Mark_Case(index,value) :
-	var surprise_movment: int = randi() % 7 - 3
-	print("surprise_movment",surprise_movment)
-	surprise_movment = 0
-	if surprise_movment == 0 :
+func question_mark_case(index, value):
+	var surprise_movement: int = randi() % 7 - 3
+	print("surprise_movement ", surprise_movement)
+	surprise_movement = 0
+	if surprise_movement == 0:
 		return
 		
-	var New_pos : Vector2 = main.player_selected.CurrentCase + Vector2(surprise_movment,0)
-	var Occupied_List : Array = []
+	var new_pos: Vector2 = main.player_selected.current_case + Vector2(surprise_movement, 0)
+	var occupied_list: Array = []
 	
-	var _clamp = clamp(main.player_selected.CurrentCase.x + surprise_movment,0, main.Clamp_Max)
-	for Chemin_Chosen in main._A_Star.Chemins.size():
+	var _clamp = clamp(main.player_selected.current_case.x + surprise_movement, 0, main.clamp_max)
+	for chemin_chosen in main._A_Star.chemins.size():
 		if (
-				main._A_Star.Chemins[Chemin_Chosen][_clamp] == 0
-				or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 2
-				or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 3
+				main._A_Star.chemins[chemin_chosen][_clamp] == 0
+				or main._A_Star.chemins[chemin_chosen][_clamp] == 2
+				or main._A_Star.chemins[chemin_chosen][_clamp] == 3
 		):
-			var Check_player_already_here = false
-			for cycliste in main._Players:
-				if Vector2(_clamp, Chemin_Chosen) == cycliste.CurrentCase :
-					Check_player_already_here = true
-					Occupied_List.append(cycliste)
+			var check_player_already_here = false
+			for cycliste in main._players:
+				if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
+					check_player_already_here = true
+					occupied_list.append(cycliste)
 
-			if !Check_player_already_here:
-				print("CurrentCase : ", main.player_selected.CurrentCase)
-				print("NextCase : ", Vector2(_clamp, Chemin_Chosen))
-				var Best_Path:Array = main._A_Star._get_path(main.player_selected.CurrentCase, Vector2(_clamp, Chemin_Chosen))
-				if Best_Path != [] && Best_Path.size() <= surprise_movment:
-					var New_Pos : Vector2 = Best_Path[-1]
-					print("New Pos : ", New_Pos)
-					MovePlayer(New_Pos, index,surprise_movment, false)
+			if !check_player_already_here:
+				print("Current Case: ", main.player_selected.current_case)
+				print("Next Case: ", Vector2(_clamp, chemin_chosen))
+				var best_path: Array = main._A_Star._get_path(main.player_selected.current_case,
+															Vector2(_clamp, chemin_chosen))
+				if best_path != [] && best_path.size() <= surprise_movement:
+					new_pos = best_path[-1]
+					print("New Pos: ", new_pos)
+					move_player(new_pos, index,surprise_movement, false)
 					return
 		
-	Occupied_List.append(main.player_selected)
-	fall(Occupied_List)
+	occupied_list.append(main.player_selected)
+	fall(occupied_list)
 
 
-func fall(To_fall : Array):
+func fall(to_fall: Array):
 	print("fall")
-	var fall_case_x =  To_fall[0].CurrentCase.x
-	for Cyclist in To_fall :
-		Cyclist.Fall = true
-		Cyclist.Counter_Fall = 4
-		Cyclist.CurrentCase = Vector2(fall_case_x, main._A_Star.Chemins.size()-1)
-		Cyclist.position = main._path.get_child(
-				Cyclist.CurrentCase.y).curve.get_point_position(Cyclist.CurrentCase.x)
+	var fall_case_x: float =  to_fall[0].current_case.x
+	for cyclist in to_fall:
+		cyclist.Fall = true
+		cyclist.Counter_Fall = 4
+		cyclist.current_case = Vector2(fall_case_x, main._A_Star.chemins.size() - 1)
+		cyclist.position = main._path.get_child(cyclist.current_case.y) \
+									.curve.get_point_position(cyclist.current_case.x)
 
 
-func Get_All_Path_Available(value, cyclist):
-	var _clamp = clamp(cyclist.CurrentCase.x + value,0, main.Clamp_Max)
-	var count : int = 0
-	for Chemin_Chosen in main._A_Star.Chemins.size():
-		var check_pos_no_occupied : bool = true
+func get_all_path_available(value, cyclist):
+	var _clamp: float = clamp(cyclist.current_case.x + value, 0, main.clamp_max)
+	var count: int = 0
+	for chemin_chosen in main._A_Star.chemins.size():
+		var check_pos_no_occupied: bool = true
 		if (
-					main._A_Star.Chemins[Chemin_Chosen][_clamp] == 0
-					or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 2
-					or main._A_Star.Chemins[Chemin_Chosen][_clamp] == 3
+					main._A_Star.chemins[chemin_chosen][_clamp] == 0
+					or main._A_Star.chemins[chemin_chosen][_clamp] == 2
+					or main._A_Star.chemins[chemin_chosen][_clamp] == 3
 			):
-			var Best_Path: PoolVector2Array = main._A_Star._get_path(
-					cyclist.CurrentCase, Vector2(_clamp, Chemin_Chosen))
+			var best_path: PoolVector2Array = main._A_Star._get_path(cyclist.current_case, Vector2(_clamp, chemin_chosen))
 			
-			if Best_Path.size() == 0 || Best_Path.size() > value:
+			if best_path.size() == 0 || best_path.size() > value:
 				continue
 			
-			for player in main._Players:
-				if player.CurrentCase == Best_Path[-1] : 
+			for player in main._players:
+				if player.current_case == best_path[-1]: 
 					check_pos_no_occupied = false
 					break
 			if check_pos_no_occupied:
-				print("Best_Path",Best_Path)
-				return Best_Path
+				#print("best_path", best_path)
+				return best_path
 		else:
 			count += 1
 	return []
 
 
-#func player_shiftable(Best_Path) :
+#func player_shiftable(best_path):
 #	for player in main._Player:
-#		if player.CurrentCase == Best_Path[-1] :
+#		if player.CurrentCase == best_path[-1]:
 #			pass

@@ -56,11 +56,11 @@ func _on_data():
 				else:
 					result_message = "Le joueur %s de l'équipe %s n'est pas sur le plateau ou n'existe pas..." % [args_2, args_1]
 			"conseilCarte":
-				if len(instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])) > 0:
-					var result = instance._ChatBotAI.get_best_card(instance.Countries[instance._country_turn_index], instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])[0])
-					result_message = "La meilleure carte à jouer de l'équipe %s du joueur %s est la carte avec une valeur de %s" % [instance.Countries[instance._country_turn_index], instance.get_last_cyclist_movable(instance.Countries[instance._country_turn_index])[0].numero, result]
+				if len(instance._MovementManager.get_last_cyclist_movable(instance.countries[instance._country_turn_index].name)) > 0:
+					var result = instance._ChatBotAI.get_best_card(instance.countries[instance._country_turn_index].name)
+					result_message = "La meilleure carte à jouer de l'équipe %s du joueur %s est la carte avec une valeur de %s" % [instance.countries[instance._country_turn_index].name, instance._MovementManager.get_last_cyclist_movable(instance.countries[instance._country_turn_index].name)[0].numero, result]
 				else:
-					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.Countries[instance._country_turn_index]
+					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.countries[instance._country_turn_index]
 		panel._on_Message_received(result_message)
 	else:
 		panel._on_Message_received(message)

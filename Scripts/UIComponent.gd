@@ -7,7 +7,7 @@ onready var choose_player_panel := $ChoosePlayer
 onready var current_cards_buttons := $Current_Cards
 
 
-func Display_deck_button(_team_deck: Array) -> void:
+func display_deck_button(_team_deck: Array) -> void:
 	var i = 0
 	
 	for carte in _team_deck:
@@ -21,7 +21,7 @@ func Display_deck_button(_team_deck: Array) -> void:
 
 
 func choose_player(value: int, index: int, cyclistes_movable: Array):
-	get_parent().Turn_already_past = false
+	get_parent().turn_already_past = false
 	
 	for kids in choose_player_panel.get_children():
 		kids.queue_free()

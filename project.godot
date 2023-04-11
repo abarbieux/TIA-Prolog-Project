@@ -66,10 +66,6 @@ config/name="TIA-Prolog-Project"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-Global="*res://Global_Var.gd"
-
 [display]
 
 window/size/width=1920

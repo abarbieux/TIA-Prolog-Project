@@ -25,7 +25,7 @@ var heuristic_mode: int
 ##		one of our movements cards.
 func _init(_instance):
 	instance = _instance
-	heuristic_mode = 0
+	heuristic_mode = 1
 	
 	
 func get_best_card(team: String) -> int:
@@ -36,17 +36,21 @@ func get_best_card(team: String) -> int:
 	
 
 func get_best_card_h0(team: String) -> int:
-	var country_index = instance.Countries.find(team, 0)
-	var team_deck = instance._Deck.Deck_Carte_Player[country_index]
+	var country_index = get_country_index_from_team(team)
+	var team_deck = instance._Deck.deck_carte_player[country_index]
 	return team_deck.max()
 	
 	
 func get_best_card_h1(team: String) -> int:
-	var cyclist_number: int = instance.get_last_cyclist_movable(team)[0]
+	var cyclist_number: int = instance._MovementManager.get_last_cyclist_movable(team)[0].numero
 	var first_chance_case_distance: int = find_first_chance_case_distance(team, cyclist_number)
-	if first_chance_case_distance == -1: return get_best_card_h0(team)
+	print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
+	if first_chance_case_distance == -1:
+		return get_best_card_h0(team)
 	var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
-	if len(sum_to_chance_case) == 0: return get_best_card_h0(team)
+	if len(sum_to_chance_case) == 0:
+		print("No sum found for %s" % first_chance_case_distance)
+		return get_best_card_h0(team)
 	return sum_to_chance_case[0]
 	
 
@@ -55,16 +59,16 @@ func get_best_card_h1(team: String) -> int:
 ## @parameter cyclist_number: The number of the cyslist to get the position from.
 ## @return the position of the cyclist or a @Vector2 filled with -1.0 if cyclist doesn't exists.
 func get_cyclist_position(team: String, cyclist_number: int) -> Vector2:
-	var team_list : Array
-	var found_cyclist : Cycliste
-	for cyclist in instance._Players:
-		if cyclist.Pays == team and cyclist.numero == int(cyclist_number):
+	var team_list: Array
+	var found_cyclist: Cycliste
+	for cyclist in instance._players:
+		if cyclist.pays == team and cyclist.numero == int(cyclist_number):
 			found_cyclist = cyclist
 			break
 	if found_cyclist == null:
 		return Vector2(-1.0, -1.0)
 	else:
-		return found_cyclist.CurrentCase
+		return found_cyclist.current_case
 		
 		
 ## Find the array of cards from the given team deck that makes the sum of a number.
@@ -72,23 +76,33 @@ func get_cyclist_position(team: String, cyclist_number: int) -> Vector2:
 ## @parameter number: The number that the sum has to match.
 ## @return an array with the cards to make the given sum or an empty one if not found.
 func find_sum_of(team: String, number: int) -> Array:
-	var country_index = instance.Countries.find(team, 0)
-	var team_deck = instance._Deck.Deck_Carte_Player[country_index]
+	var country_index = get_country_index_from_team(team)
+	var team_deck: Array = instance._Deck.deck_carte_player[country_index]
+	print("Team Deck:", team_deck)
 	for card_1 in team_deck:
-		if card_1 > number: continue
-		elif card_1 == number: return [card_1]
+		if card_1 > number:
+			continue
+		elif card_1 == number:
+			return [card_1]
 		
-		var removed_card_deck = (team_deck + []).remove(card_1)
-		if number - card_1 in removed_card_deck: return [card_1, number - card_1]
+		var removed_card_deck = team_deck.duplicate(true)
+		removed_card_deck.remove(card_1)
+		print("Removed Deck:", removed_card_deck)
+		if number - card_1 in removed_card_deck:
+			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
+			return [card_1, number - card_1]
 		
 		var accumulator = card_1;
 		var cards = [card_1]
 		for i in range(len(removed_card_deck)):
-			if accumulator >= number: break
+			if accumulator >= number:
+				break
 			if accumulator + removed_card_deck[i] <= number:
 				accumulator += removed_card_deck[i]
 				cards.append(removed_card_deck[i])
-		if accumulator == number: return cards
+		if accumulator == number:
+			print("#101 Sum for %s %s" % [number, cards])
+			return cards
 	return []
 
 
@@ -101,22 +115,26 @@ func find_first_chance_case_distance(team: String, cyclist_number: int, case_ski
 	var chances_cases = get_all_chances_cases()
 	var chance_case_position = Vector2(-1.0, -1.0)
 	for chance_case in chances_cases:
-		if cyclist_position.x + case_skipping <= chance_case.x:
+		if (
+			cyclist_position.x + case_skipping <= chance_case.x
+			and (chance_case.x <= chance_case_position.x or chance_case_position.x == -1.0)
+		):
 			chance_case_position = chance_case
-	if chance_case_position != Vector2(-1.0, -1.0): return distance(cyclist_position, chance_case_position)
+	if chance_case_position != Vector2(-1.0, -1.0):
+		return distance(cyclist_position, chance_case_position)
 	return -1
 
 
 ## Find all the chances cases in the map.
 ## @return the chances cases in the map inside an @Array.
 func get_all_chances_cases() -> Array:
-	var result_dict: Array = []
-	var paths: Array = instance._A_Star.Chemins
+	var result: Array = []
+	var paths: Array = instance._A_Star.chemins
 	for row in range(len(paths)):
 		for column in range(len(paths[row])):
 			if paths[row][column] == 2:
-				result_dict.append(Vector2(float(column), float(row)))
-	return result_dict
+				result.append(Vector2(float(column), float(row)))
+	return result
 	
 
 ## Calculate the distance between two @Vector2.
@@ -125,3 +143,11 @@ func get_all_chances_cases() -> Array:
 ## @return the distance between the two positions.
 func distance(position1: Vector2, position2: Vector2) -> int:
 	return int(round(pow((pow(position2[0] - position1[0], 2.0) + pow(position2[1] - position1[1], 2.0)), 0.5)))
+	
+	
+func get_country_index_from_team(team: String) -> int:
+	var country_index: int = 0
+	for country in instance.countries:
+		if country.name == team: break
+		country_index += 1
+	return country_index
