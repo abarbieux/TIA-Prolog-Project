@@ -175,7 +175,6 @@ margin_right = 1221.0
 margin_bottom = 697.0
 rect_pivot_offset = Vector2( 200, 100 )
 window_title = "Alerte !"
-dialog_text = "Merci d'avoir joué"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ErrorComponent/end"]
 anims/popup = SubResource( 6 )
