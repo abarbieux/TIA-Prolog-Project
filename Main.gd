@@ -245,12 +245,16 @@ func init_check_if_end_phase():
 
 
 func end():
-	ErrorComponent.end.show()
-	print("end")
-	print("score_belgique += value", score_belgique)
-	print("score_allemagne", score_allemagne)
-	print("score_hollande", score_hollande)
-	print("score_italie", score_italie)
+	#ErrorComponent.end.show()
+	var scores = str("PARTIE FINIE \n\nScore Belgique : ", score_belgique, "\nScore Allemagne : ", score_allemagne, "\nScore Hollande : ", score_hollande, "\nScore Italie : ", score_italie)
+	$ErrorComponent/end/AnimationPlayer.play("popup")
+	$ErrorComponent/end.text = scores
+	#print("end")
+	#print("score_belgique += value", score_belgique)
+	#print("score_allemagne", score_allemagne)
+	#print("score_hollande", score_hollande)
+	#print("score_italie", score_italie)
+	
 	is_definitely_the_end = true
 
 

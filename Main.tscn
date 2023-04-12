@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/flag_sin.shader" type="Shader" id=1]
 [ext_resource path="res://Scripts/CurrentTeam.gd" type="Script" id=2]
@@ -12,6 +12,22 @@
 [ext_resource path="res://Picture/Flag/Belgique_Flag.png" type="Texture" id=10]
 [ext_resource path="res://Picture/Flag/Hollande_Flag.png" type="Texture" id=11]
 [ext_resource path="res://Picture/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=12]
+
+[sub_resource type="Animation" id=6]
+resource_name = "popup"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
+}
 
 [sub_resource type="DynamicFont" id=5]
 size = 24
@@ -152,12 +168,17 @@ dialog_text = "Aucun mouvement disponible.
 Votre tour va être passé"
 
 [node name="end" type="AcceptDialog" parent="ErrorComponent"]
+visible = true
 margin_left = 821.0
 margin_top = 497.0
-margin_right = 951.0
-margin_bottom = 555.0
+margin_right = 1221.0
+margin_bottom = 697.0
+rect_pivot_offset = Vector2( 200, 100 )
 window_title = "Alerte !"
 dialog_text = "Merci d'avoir joué"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ErrorComponent/end"]
+anims/popup = SubResource( 6 )
 
 [node name="UXComponent" type="Control" parent="."]
 anchor_right = 1.0
