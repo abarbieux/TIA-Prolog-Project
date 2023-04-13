@@ -173,6 +173,7 @@ margin_left = 821.0
 margin_top = 497.0
 margin_right = 1221.0
 margin_bottom = 697.0
+rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 200, 100 )
 window_title = "Alerte !"
 
