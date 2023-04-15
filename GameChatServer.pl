@@ -196,13 +196,25 @@ mclef(tombent, 5).
 mclef(carte, 5).
 mclef(jaune, 5).
 
-mclef(conseil, 5).
-mclef(position, 5).
+mclef(conseilles, 5).
+
+mclef(belgique_1, 1).
+mclef(belgique_2, 1).
+mclef(belgique_3, 1).
 
 
+mclef(italie_1, 1).
+mclef(italie_2, 1).
+mclef(italie_3, 1).
 
 
+mclef(hollande_1, 1).
+mclef(hollande_2, 1).
+mclef(hollande_3, 1).
 
+mclef(allemagne_1, 1).
+mclef(allemagne_2, 1).
+mclef(allemagne_3, 1).
 
 
 
@@ -748,23 +760,81 @@ regle_rep(deplacer,5,
   [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
   ]).
 
-/* conseils sur les coups à jouer */
+
 
 %----------------------------------------------------------------%
 
-regle_rep(conseil,5, 
-  [ [je],3,[conseil],5,[faire]],
+regle_rep(conseilles,5, 
+  [ [conseilles],2,[faire] ],
   [ [conseilCarte,;]
   ]).
 
+/* Que me conseilles tu de faire  */
 
-regle_rep(position,1,
-  [ 3, [ position ], 2, Pays, 2, [ cycliste ], Num ],
-  [ [getPosition,;,Pays,;,Num]
+%----------------------------------------------------------------%
+
+regle_rep(belgique_1,1,
+  [ [ position ], 2, [belgique_1] ],
+  [ [getPosition,;,belgique,;,1]
   ]).
 
-/* Non fonctionnel, ne renvoie pas la bonne réponse */
-/* Quelle est la position de (pays) sur son cycliste (num) ? */
+regle_rep(belgique_2,1,
+  [ [ position ], 2, [belgique_2] ],
+  [ [getPosition,;,belgique,;,2]
+  ]).
+
+regle_rep(belgique_3,1,
+  [ [ position ], 2, [belgique_3] ],
+  [ [getPosition,;,belgique,;,3]
+  ]).
+
+regle_rep(italie_1,1,           
+  [ [ position ], 2, [italie_1] ],
+  [ [getPosition,;,italie,;,1]
+  ]).
+
+regle_rep(italie_2,1,
+  [ [ position ], 2, [italie_2] ],
+  [ [getPosition,;,italie,;,2]
+  ]).
+
+regle_rep(italie_3,1,
+  [ [ position ], 2, [italie_3] ],
+  [ [getPosition,;,italie,;,3]
+  ]).
+
+regle_rep(hollande_1,1,
+  [ [ position ], 2, [hollande_1] ],
+  [ [getPosition,;,hollande,;,1]
+  ]).
+  
+regle_rep(hollande_2,1,
+  [ [ position ], 2, [hollande_2] ],
+  [ [getPosition,;,hollande,;,2]
+  ]).
+
+regle_rep(hollande_3,1,
+  [ [ position ], 2, [hollande_3] ],
+  [ [getPosition,;,hollande,;,3]
+  ]).
+
+regle_rep(allemagne_1,1,
+  [ [ position ], 2, [allemagne_1] ],
+  [ [getPosition,;,allemagne,;,1]
+  ]).
+
+regle_rep(allemagne_2,1,
+  [ [ position ], 2, [allemagne_2] ],
+  [ [getPosition,;,allemagne,;,2]
+  ]).
+
+regle_rep(allemagne_3,1,
+  [ [ position ], 2, [allemagne_3] ],
+  [ [getPosition,;,allemagne,;,3]
+  ]).
+
+
+  /* Quelle est la position de CYCLISTE ? */
 
 /*
 regle_rep(fonction,5,
@@ -784,8 +854,8 @@ regle_rep(fonction,5,
 
 
 % Vérifie si 2 textes sont similaires
-similar([P|Q],X):- isub(P,X,true,D), D =< 0.95, similar(Q,X).
-similar([P|_],X):- isub(P,X,true,D), D > 0.95.
+similar([P|Q],X):- isub(P,X,true,D), D =< 0.99, similar(Q,X).
+similar([P|_],X):- isub(P,X,true,D), D > 0.99.
 %----------------------------------------------------------------%
 
 
