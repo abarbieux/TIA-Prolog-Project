@@ -48,9 +48,13 @@ func _on_data():
 		var result_message = "Cette fonction n'est pas encore implémentée..."
 		match args[0].replace(" ", "").replace("\"", ""):
 			"getPosition":
+				
 				var args_1 = args[1].replace(" ", "").replace("\"", "")
-				var args_2 = args[2].replace(" ", "").replace("\"", "")
+				print(args_1)
+				var args_2 = int(args[2].replace(" ", "").replace("\"", ""))
+				print(args_2)
 				var result = instance._ChatBotAI.get_cyclist_position(args_1, args_2)
+				print(result)
 				if result != Vector2(-1.0, -1.0):
 					result_message = "La position du joueur %s de l'équipe %s est %s" % [args_2, args_1, result]
 				else:
