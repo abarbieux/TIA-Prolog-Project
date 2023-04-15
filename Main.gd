@@ -61,6 +61,7 @@ func _ready() -> void:
 	
 	_Deck.init_deck()
 	UIComponent.display_deck_button(_Deck.deck_carte_player[_country_turn_index])
+	update_team_carte_display()
 	
 	
 	init_pre_select_move_phase()
@@ -236,6 +237,7 @@ func pass_turn():
 		init_check_if_end_phase()
 	
 	UIComponent.display_deck_button(_Deck.deck_carte_player[_country_turn_index])
+	update_team_carte_display()
 	init_pre_select_move_phase()
 
 
@@ -266,3 +268,6 @@ func add_score(value: int, team: String):
 	else:
 		print("WTF ARE YOU DOING")
 		
+func update_team_carte_display():
+	for team in 4:
+		UIComponent.display_team_deck(_Deck.deck_carte_player[team],team)
