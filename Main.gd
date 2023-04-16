@@ -6,7 +6,7 @@ signal change_turn(team)
 
 const number_of_team_member: int = 3
 # Change to true to visualize a random party.
-const is_unit_test_mode := false
+const is_unit_test_mode := true
 
 var countries: Array = [Country.new("italie"),
 		Country.new("hollande"),

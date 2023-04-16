@@ -97,8 +97,6 @@ func select_last_cyclist_movable() -> Array:
 
 func question_mark_case(index, value):
 	var surprise_movement: int = randi() % 7 - 3
-	print("surprise_movement", surprise_movement)
-	surprise_movement = 0
 	if surprise_movement == 0:
 		return
 		
