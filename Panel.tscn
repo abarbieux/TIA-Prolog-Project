@@ -44,3 +44,5 @@ margin_top = 3.09595
 margin_right = -0.0920105
 margin_bottom = 0.12793
 text = "SEND"
+
+[connection signal="pressed" from="Send" to="." method="_on_Send_pressed"]
