@@ -32,7 +32,7 @@ func get_available_cell(value, index) -> Vector2:
 		if is_valid_cell(chemin_chosen, _clamp):
 			
 			var path = get_best_path(chemin_chosen, _clamp)
-			if path != [] && path.size() <= value:
+			if path != [] && path.size() <= abs(value):
 			
 				if !is_player_on_cell(chemin_chosen, _clamp):
 					return Vector2(chemin_chosen, _clamp)
@@ -198,7 +198,7 @@ func get_best_path(chemin_chosen, _clamp):
 func get_new_pos(cell, value, index):
 	var path = get_best_path(cell.x, cell.y)
 	
-	if path != [] && path.size() <= value:
+	if path != [] && path.size() <= abs(value):
 		var new_pos : Vector2 = path[-1]
 	
 		return new_pos
