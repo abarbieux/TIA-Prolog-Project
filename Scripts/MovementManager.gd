@@ -97,24 +97,18 @@ func select_last_cyclist_movable() -> Array:
 
 
 func question_mark_case(index, value):
-	var surprise_movement: int = randi() % 4 # 7 - 3
+	var surprise_movement: int = randi() % 7 - 3
 	print("bonus : ",surprise_movement)
 	if surprise_movement == 0:
 		return
 		
 	var new_pos: Vector2 = main.player_selected.current_case + Vector2(surprise_movement, 0)
-	print("actual case :",main.player_selected.current_case)
-	#print("new pos :", new_pos)
 	var occupied_list: Array = []
 	
 	var _clamp = clamp(main.player_selected.current_case.x + surprise_movement, 0, main.clamp_max)
-	#print("clamp:",main.player_selected.current_case.x + surprise_movement)
 	for chemin_chosen in main._A_Star.chemins.size():
-		#print("chemin : ",chemin_chosen)
 		if is_valid_cell(chemin_chosen, _clamp):
-			#print("(",chemin_chosen,",",_clamp,")"," is valid cell")
 			if is_player_on_cell(chemin_chosen, _clamp):
-				#print("(",chemin_chosen,",",_clamp,")"," : player on cell")
 				var cycliste = get_player_on_cell(chemin_chosen, _clamp)
 				occupied_list.append(cycliste)
 			else:
@@ -124,7 +118,6 @@ func question_mark_case(index, value):
 					return
 	
 	occupied_list.append(main.player_selected)
-	#if occupied_list.size() != 0:
 	fall(occupied_list)
 
 
