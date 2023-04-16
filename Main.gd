@@ -6,7 +6,7 @@ signal change_turn(team)
 
 const number_of_team_member: int = 3
 # Change to true to visualize a random party.
-const is_unit_test_mode := true
+const is_unit_test_mode := false
 
 var countries: Array = [Country.new("italie"),
 		Country.new("hollande"),
@@ -227,7 +227,7 @@ func pass_turn():
 		if player.counter_fall != 0:
 			player.counter_fall -= 1
 			if player.counter_fall == 0:
-				player.Fall = false
+				player.fall = false
 
 			print("player.counter_fall", player.counter_fall, player)
 	

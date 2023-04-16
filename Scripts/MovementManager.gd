@@ -46,6 +46,7 @@ func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	main.player_selected.position = (main._path.get_child(
 			main.player_selected.current_case.y).curve.get_point_position(
 					main.player_selected.current_case.x) * main.get_child(2).rect_scale) + offset
+					
 	
 	main.add_score(value, main.player_selected.pays)
 	
@@ -123,9 +124,11 @@ func fall(to_fall: Array) -> void:
 		cyclist.fall = true
 		cyclist.counter_fall = 4
 		cyclist.current_case = Vector2(fall_case_x, main._A_Star.chemins.size() - 1)
-		cyclist.position = main._path.get_child(
-				cyclist.current_case.y).curve.get_point_position(cyclist.current_case.x)
-
+		
+		var offset = main.get_child(2).rect_pivot_offset * (Vector2(1, 1) - main.get_child(2).rect_scale)
+		cyclist.position = (main._path.get_child(
+			cyclist.current_case.y).curve.get_point_position(
+				cyclist.current_case.x) * main.get_child(2).rect_scale) + offset
 
 func get_all_path_available(value, cyclist) -> PoolVector2Array:
 	var _clamp = clamp(cyclist.current_case.x + value,0, main.clamp_max)
