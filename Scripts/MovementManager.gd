@@ -112,9 +112,7 @@ func question_mark_case(index, value):
 				var cycliste = get_player_on_cell(chemin_chosen, _clamp)
 				occupied_list.append(cycliste)
 			else:
-				print("Before Init_mov")
 				if !init_movement(surprise_movement, index, false):
-					print("In init_movement")
 					return
 	
 	occupied_list.append(main.player_selected)

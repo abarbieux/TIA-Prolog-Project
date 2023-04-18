@@ -130,12 +130,11 @@ anchor_top = 0.039
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -33.0
-margin_top = 821.88
+margin_top = 809.88
 margin_right = 418.0
-margin_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
-custom_constants/separation = -50
+custom_constants/separation = -70
 alignment = 1
 
 [node name="Italie" type="Control" parent="UIComponent"]
@@ -163,14 +162,17 @@ text = "Italie"
 align = 1
 valign = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIComponent/Italie"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIComponent/Italie"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1536.0
+margin_left = -1563.0
 margin_top = -160.0
-margin_right = -1264.0
+margin_right = -1291.0
+grow_vertical = 2
+custom_constants/separation = -100
+alignment = 1
 
 [node name="Belgique" type="Control" parent="UIComponent"]
 anchor_left = 1.0
@@ -209,15 +211,18 @@ size_flags_vertical = 3
 texture = ExtResource( 10 )
 expand = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIComponent/Belgique"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIComponent/Belgique"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1228.0
-margin_top = 770.0
-margin_right = 1495.0
-margin_bottom = 930.0
+margin_left = 1178.0
+margin_top = 768.0
+margin_right = 1450.0
+margin_bottom = 927.0
+grow_vertical = 2
+custom_constants/separation = -100
+alignment = 1
 
 [node name="Allemagne" type="Control" parent="UIComponent"]
 anchor_top = 1.0
@@ -255,15 +260,17 @@ text = "Allemagne"
 align = 1
 valign = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIComponent/Allemagne"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIComponent/Allemagne"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1498.0
-margin_top = 770.0
-margin_right = 1770.0
-margin_bottom = 930.0
+margin_left = 1459.0
+margin_top = 768.0
+margin_right = 1733.0
+margin_bottom = 928.0
+grow_vertical = 2
+custom_constants/separation = -100
 
 [node name="Hollande" type="Control" parent="UIComponent"]
 anchor_left = 1.0
@@ -304,15 +311,17 @@ text = "Hollande"
 align = 1
 valign = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIComponent/Hollande"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIComponent/Hollande"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 514.0
+margin_left = 487.0
 margin_top = 770.0
-margin_right = 781.0
-margin_bottom = 930.0
+margin_right = 754.0
+margin_bottom = 934.0
+grow_vertical = 2
+custom_constants/separation = -100
 
 [node name="ErrorComponent" type="Control" parent="."]
 anchor_right = 1.0
