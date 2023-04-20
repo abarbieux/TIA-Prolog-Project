@@ -210,27 +210,42 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var cells:PoolVector2Array = []
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
-			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
+#			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
 				
 				cells.append(Vector2(_clamp, chemin_chosen))
-			else:
-				var shift_to_do = shift_position(chemin_chosen,_clamp)
-				if shift_to_do != []:
-					pass
 	return cells
 
-func shift_position(pos_y, pos_x):
+
+func shift_position_externe(pos_y:int, pos_x:int):
 	if pos_y+1 <= _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(pos_y+1,pos_x):
 			if !_MovementManager.is_player_on_cell(pos_y+1, pos_x):
-				return
-	return []
+				return pos_y+1
+			else:
+				return shift_position_externe(pos_y+1, pos_x)
+	return 0
 	
-					
-					
-			
-		
+
+func shift_position_interne(pos_y:int, pos_x:int):
+	if pos_y-1 >= 0:
+		if _MovementManager.is_valid_cell(pos_y-1,pos_x):
+			if !_MovementManager.is_player_on_cell(pos_y-1, pos_x):
+				return pos_y-1
+			else:
+				return shift_position_interne(pos_y-1, pos_x)
+	return 0
 	
+
+func shift_position(pos_y:int, pos_x:int):
+	var externe : int = shift_position_externe(pos_y, pos_x)
+	var interne:int = shift_position_interne(pos_y, pos_x)
+	if externe != 0:		
+		return externe
+	elif interne != 0:
+		return interne
+	return 0
+
+
 func _on_Send_pressed() -> void:
 	panel._on_Send_pressed()
 
