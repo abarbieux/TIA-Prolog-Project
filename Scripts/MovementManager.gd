@@ -34,8 +34,8 @@ func get_available_cell(value, index) -> Vector2:
 			var path = get_best_path(chemin_chosen, _clamp)
 			if path != [] && path.size() <= abs(value):
 			
-				if !is_player_on_cell(chemin_chosen, _clamp):
-					return Vector2(chemin_chosen, _clamp)
+#				if !is_player_on_cell(chemin_chosen, _clamp):
+				return Vector2(chemin_chosen, _clamp)
 	
 	return Vector2.INF
 
