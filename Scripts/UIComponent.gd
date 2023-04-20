@@ -13,15 +13,22 @@ func display_deck_button(_team_deck: Array) -> void:
 	
 	for carte in _team_deck:
 		var button = TextureButton.new()
-		button.rect_min_size.x = 150
+		button.rect_min_size.x = 60
+
+
+		
 		var image_path : String = ("res://Picture/Cards/" + str(carte) + ".png")
 		var image_selected_path : String = ("res://Picture/Cards/" + str(carte) + "_selected.png")
+		
 		var texture : Texture = load(image_path)
 		var texture_selected : Texture = load(image_selected_path)
+		
 		button.expand = true
+		button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT
 		button.set_normal_texture(texture)
 		button.set_pressed_texture(texture_selected)
 		current_cards_buttons.add_child(button)
+		
 		var c = button.connect("pressed", get_parent(), "_button_pressed", [button, carte, i])
 		i += 1
 
@@ -37,8 +44,8 @@ func display_team_deck(_team_deck: Array,team: int):
 				
 	for carte in _team_deck:
 			var card = TextureRect.new()
-			card.rect_min_size.x = 150
-			card.rect_min_size.y = 200
+			card.rect_min_size.x = 50
+			card.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			card.texture = load("res://Picture/Cards/" + str(carte) + ".png")
 			card.expand = true
 			#card.rect_size = Vector2(102,136)

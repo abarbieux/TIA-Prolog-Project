@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/flag_sin.shader" type="Shader" id=1]
 [ext_resource path="res://Scripts/CurrentTeam.gd" type="Script" id=2]
@@ -17,6 +17,10 @@
 [sub_resource type="DynamicFont" id=7]
 size = 32
 font_data = ExtResource( 13 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 32
+font_data = ExtResource( 12 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 24
@@ -129,18 +133,31 @@ anchor_left = 0.5
 anchor_top = 0.039
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -33.0
-margin_top = 809.88
-margin_right = 418.0
+margin_left = 168.0
+margin_top = 876.88
+margin_right = 228.0
+margin_bottom = -69.0
 grow_horizontal = 2
-grow_vertical = 0
-custom_constants/separation = -70
 alignment = 1
+
+[node name="Button" type="Label" parent="UIComponent"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 1016.0
+margin_top = 872.0
+margin_right = 1292.0
+margin_bottom = 917.0
+custom_fonts/font = SubResource( 8 )
+text = "Vos Déplacements"
+align = 1
+valign = 1
 
 [node name="Italie" type="Control" parent="UIComponent"]
 margin_right = 1920.0
 margin_bottom = 1080.0
 mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="TextureRect" type="TextureRect" parent="UIComponent/Italie"]
 margin_left = 384.0
@@ -167,11 +184,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1563.0
-margin_top = -160.0
-margin_right = -1291.0
+margin_left = -1536.0
+margin_top = -161.0
+margin_right = -1264.0
+margin_bottom = -1.0
 grow_vertical = 2
-custom_constants/separation = -100
+custom_constants/separation = 0
 alignment = 1
 
 [node name="Belgique" type="Control" parent="UIComponent"]
@@ -181,6 +199,9 @@ margin_left = -1920.0
 margin_right = -1770.0
 margin_bottom = 150.0
 mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Polygon2D" type="Polygon2D" parent="UIComponent/Belgique"]
 visible = false
@@ -216,12 +237,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1178.0
-margin_top = 768.0
-margin_right = 1450.0
-margin_bottom = 927.0
+margin_left = 1213.0
+margin_top = 769.0
+margin_right = 1485.0
+margin_bottom = 928.0
 grow_vertical = 2
-custom_constants/separation = -100
+custom_constants/separation = 0
 alignment = 1
 
 [node name="Allemagne" type="Control" parent="UIComponent"]
@@ -231,6 +252,9 @@ margin_top = -1080.0
 margin_right = 150.0
 margin_bottom = -930.0
 mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Polygon2D" type="Polygon2D" parent="UIComponent/Allemagne"]
 visible = false
@@ -265,12 +289,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1459.0
-margin_top = 768.0
-margin_right = 1733.0
-margin_bottom = 928.0
+margin_left = 1494.0
+margin_top = 769.0
+margin_right = 1768.0
+margin_bottom = 929.0
 grow_vertical = 2
-custom_constants/separation = -100
+custom_constants/separation = 0
 
 [node name="Hollande" type="Control" parent="UIComponent"]
 anchor_left = 1.0
@@ -282,6 +306,9 @@ margin_top = -1080.0
 margin_right = -1770.0
 margin_bottom = -930.0
 mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Polygon2D" type="Polygon2D" parent="UIComponent/Hollande"]
 visible = false
@@ -306,6 +333,7 @@ margin_left = 789.0
 margin_top = 864.0
 margin_right = 931.0
 margin_bottom = 919.0
+rect_pivot_offset = Vector2( 139, 40 )
 custom_fonts/font = SubResource( 5 )
 text = "Hollande"
 align = 1
@@ -316,12 +344,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 487.0
-margin_top = 770.0
-margin_right = 754.0
-margin_bottom = 934.0
+margin_left = 522.0
+margin_top = 771.0
+margin_right = 789.0
+margin_bottom = 935.0
 grow_vertical = 2
-custom_constants/separation = -100
+custom_constants/separation = 0
 
 [node name="ErrorComponent" type="Control" parent="."]
 anchor_right = 1.0
