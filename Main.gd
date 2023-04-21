@@ -81,12 +81,16 @@ func create_button():
 		path = _path.get_child(path) as Path2D
 		for point in path.curve.get_point_count():
 			if x != 0:
-				var button = Button.new()
+				var button = TextureButton.new()
 				button.rect_position = path.curve.get_point_position(point)
 				button.visible = false
+				button.set_normal_texture(load("res://Picture/Cards/select_case.png") ) 
 	#			button.add_stylebox_override("normal", StyleBoxEmpty.new())
 	#			button.add_stylebox_override("hover", stylebox)
-				button.rect_min_size = Vector2(100,100)
+				button.expand = true
+				button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT
+				
+				button.rect_min_size = Vector2(50,50)
 				button.rect_position -= button.rect_min_size / 2
 				button.disabled
 				button.editor_description = str(x) + "," + str(y)
@@ -99,6 +103,7 @@ func create_button():
 
 signal cell_pos_changed
 var selected_cell_pos:Vector2
+
 func set_selected_cell_pos(posX, posY):
 	selected_cell_pos = Vector2(posX, posY)
 	emit_signal("cell_pos_changed")

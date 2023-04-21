@@ -12,7 +12,7 @@
 [ext_resource path="res://Picture/Flag/Belgique_Flag.png" type="Texture" id=10]
 [ext_resource path="res://Picture/Flag/Hollande_Flag.png" type="Texture" id=11]
 [ext_resource path="res://Picture/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=12]
-[ext_resource path="res://Roboto-Black.ttf" type="DynamicFontData" id=13]
+[ext_resource path="res://Picture/Font/Roboto-Black.ttf" type="DynamicFontData" id=13]
 
 [sub_resource type="DynamicFont" id=7]
 size = 32
