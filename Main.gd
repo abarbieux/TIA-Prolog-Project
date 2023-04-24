@@ -84,7 +84,8 @@ func create_button():
 				var button = TextureButton.new()
 				button.rect_position = path.curve.get_point_position(point)
 				button.visible = false
-				button.set_normal_texture(load("res://Picture/Cards/select_case.png") ) 
+				button.set_normal_texture(load("res://Picture/Cards/select_case.png") )
+				button.set_pressed_texture(load("res://Picture/Cards/select_case_mouse.png"))
 	#			button.add_stylebox_override("normal", StyleBoxEmpty.new())
 	#			button.add_stylebox_override("hover", stylebox)
 				button.expand = true
