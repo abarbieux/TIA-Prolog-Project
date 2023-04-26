@@ -210,9 +210,11 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var cells:PoolVector2Array = []
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
-#			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
-				
+			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):				
 				cells.append(Vector2(_clamp, chemin_chosen))
+			elif shift_position(chemin_chosen, _clamp) != -1 :
+				cells.append(Vector2(_clamp, chemin_chosen))
+				
 	return cells
 
 
@@ -223,7 +225,7 @@ func shift_position_externe(pos_y:int, pos_x:int):
 				return pos_y+1
 			else:
 				return shift_position_externe(pos_y+1, pos_x)
-	return 0
+	return -1
 	
 
 func shift_position_interne(pos_y:int, pos_x:int):
@@ -233,7 +235,7 @@ func shift_position_interne(pos_y:int, pos_x:int):
 				return pos_y-1
 			else:
 				return shift_position_interne(pos_y-1, pos_x)
-	return 0
+	return -1
 	
 
 func shift_position(pos_y:int, pos_x:int):
@@ -243,7 +245,7 @@ func shift_position(pos_y:int, pos_x:int):
 		return externe
 	elif interne != 0:
 		return interne
-	return 0
+	return -1
 
 
 func _on_Send_pressed() -> void:
