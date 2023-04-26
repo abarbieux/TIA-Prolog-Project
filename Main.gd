@@ -241,9 +241,9 @@ func shift_position_interne(pos_y:int, pos_x:int):
 func shift_position(pos_y:int, pos_x:int):
 	var externe : int = shift_position_externe(pos_y, pos_x)
 	var interne:int = shift_position_interne(pos_y, pos_x)
-	if externe != 0:		
+	if externe != -1:
 		return externe
-	elif interne != 0:
+	elif interne != -1:
 		return interne
 	return -1
 
