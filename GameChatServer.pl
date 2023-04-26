@@ -30,6 +30,7 @@ choose_server(Data, ResponseString) :-
     ecrire_reponse(L_ligne_reponse),
     flatten(L_ligne_reponse, FlattenList),
     atomics_to_string(FlattenList, ' ', ResponseString)
+    
    ).
 
 /* --------------------------------------------------------------------- */
@@ -62,7 +63,6 @@ produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
 produire_reponse(L,Rep) :-
-%   write(L),
    mclef(M,_),similar(L,M), % anciennement ...,member(M,L)
    clause(regle_rep(M,_,Pattern,Rep),Body),
    match_pattern(Pattern,L),
@@ -215,6 +215,8 @@ mclef(hollande_3, 1).
 mclef(allemagne_1, 1).
 mclef(allemagne_2, 1).
 mclef(allemagne_3, 1).
+
+mclef(test, 1).
 
 
 
@@ -757,8 +759,8 @@ regle_rep(egalite,5,
 
 regle_rep(deplacer,5, 
   [ [deplacer],3,[coureur], 5, [occupee] ],
-  [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."]
-  ]).
+  [ [non, ",", c, "'", est, interdit, sauf, si, vous, n, "'", avez, pas, d, "'", autre, choix, mais, cela, provoquera, une, chute, "."] ]
+).
 
 
 
@@ -773,6 +775,11 @@ regle_rep(conseilles,5,
 
 %----------------------------------------------------------------%
 
+/*regle_rep(test, 1, [ [equipe] ], parseRep()).*/
+
+
+
+/**/
 regle_rep(belgique_1,1,
   [ [ position ], 2, [belgique_1] ],
   [ [getPosition,;,belgique,;,1]
@@ -832,7 +839,7 @@ regle_rep(allemagne_3,1,
   [ [ position ], 2, [allemagne_3] ],
   [ [getPosition,;,allemagne,;,3]
   ]).
-
+/**/
 
   /* Quelle est la position de CYCLISTE ? */
 

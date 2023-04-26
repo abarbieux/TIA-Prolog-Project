@@ -29,8 +29,11 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 0.845
 margin_left = 3.0
+margin_top = 3.0
 margin_right = -3.0
-margin_bottom = -0.0800171
+margin_bottom = 3.0
+text = "Chatbot: Bonjour, je suis TBot, le bot explicateur du Tour de France.
+Chatbot: En quoi puis-je vous aider ?"
 readonly = true
 wrap_enabled = true
 

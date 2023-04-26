@@ -15,14 +15,14 @@ func _on_Message_received(received_text) -> void:
 
 
 func _on_Send_pressed() -> void:
-	_GameWebSocket._client.get_peer(1).put_packet(_LineEdit.get_text().to_utf8())
+	_GameWebSocket._client.get_peer(1).put_packet(("Chatbot " + _LineEdit).get_text().to_utf8())
 	_Text = _Text + "Moi: " + _LineEdit.get_text() + "\n"
 	_LineEdit.set_text("")
 	_Modify_Text(_Text)
 
 
 func _on_Text_entered(new_text) -> void:
-	_GameWebSocket._client.get_peer(1).put_packet(new_text.to_utf8())
+	_GameWebSocket._client.get_peer(1).put_packet(("Chatbot " + new_text).to_utf8())
 	_Text = _Text + "Moi: " + _LineEdit.get_text() + "\n"
 	_LineEdit.set_text("")
 	_Modify_Text(_Text)
