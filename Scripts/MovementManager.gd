@@ -34,8 +34,8 @@ func get_available_cell(value, index) -> Vector2:
 			var path = get_best_path(chemin_chosen, _clamp)
 			if path != [] && path.size() <= abs(value):
 			
-				if !is_player_on_cell(chemin_chosen, _clamp):
-					return Vector2(chemin_chosen, _clamp)
+#				if !is_player_on_cell(chemin_chosen, _clamp):
+				return Vector2(chemin_chosen, _clamp)
 	
 	return Vector2.INF
 
@@ -50,17 +50,33 @@ func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	
 	main.add_score(value, main.player_selected.pays)
 	
+	if carte_movement == true:
+		var cyclist_on_cell : Array = get_players_on_cell(new_pos[1],new_pos[0])
+		print(cyclist_on_cell)
+		if cyclist_on_cell.size() > 1:
+			print("here1")
+			for cyclist in cyclist_on_cell:
+				if cyclist != main.player_selected :
+					print("here2")
+					
+					cyclist.current_case = Vector2(new_pos[0],main.shift_position(new_pos[1],new_pos[0]))
+					cyclist.position = (main._path.get_child(
+						cyclist.current_case.y).curve.get_point_position(
+							cyclist.current_case.x) * main.get_child(2).rect_scale) + offset
+			
+		
+		main._Deck.deck_carte_player[main._country_turn_index].erase(value)
+		main._Deck._cards.append(value)
+		main._Deck.empty_deck_check()
+	
 	if main._A_Star.chemins[new_pos[1]][new_pos[0]] == 2:
 		question_mark_case(index,value)
 	
 	for child in main.UIComponent.current_cards_buttons.get_children():
 		child.queue_free()
 		
-	if carte_movement == true:
-		main._Deck.deck_carte_player[main._country_turn_index].erase(value)
-		main._Deck._cards.append(value)
-		main._Deck.empty_deck_check()
-	else:
+	
+	if carte_movement == false:
 		return
 	
 	if main._A_Star.chemins[new_pos.y][new_pos.x] == 3:
@@ -69,6 +85,7 @@ func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	if main.turn_already_past == false:
 		main.turn_already_past = true
 		main.pass_turn()
+
 
 
 func get_last_cyclist_movable() -> Array:
@@ -177,6 +194,13 @@ func get_player_on_cell(chemin_chosen, _clamp):
 	for cycliste in main._players:
 		if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
 			return cycliste
+
+func get_players_on_cell(chemin_chosen, _clamp):
+	var cyclist_on_cell : Array = []
+	for cycliste in main._players:
+		if Vector2(_clamp, chemin_chosen) == cycliste.current_case:
+			cyclist_on_cell.append(cycliste)
+	return cyclist_on_cell
 
 
 func get_best_path(chemin_chosen, _clamp):
