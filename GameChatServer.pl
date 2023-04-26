@@ -22,15 +22,15 @@ tbot(WebSocket) :-
 
 choose_server(Data, ResponseString) :-
    read_atomics(Data, [Protocol|Message]),
-   ( Protocol == "Chatbot"
+   ( Protocol == 'Chatbot'
     ->
-    true
-    ;
     produire_reponse(Message, L_ligne_reponse),
+    write(L_ligne_reponse),
     ecrire_reponse(L_ligne_reponse),
     flatten(L_ligne_reponse, FlattenList),
     atomics_to_string(FlattenList, ' ', ResponseString)
-    
+    ;
+    true
    ).
 
 /* --------------------------------------------------------------------- */
@@ -62,16 +62,30 @@ choose_server(Data, ResponseString) :-
 produire_reponse([fin],[L1]) :-
    L1 = [merci, de, m, '\'', avoir, consulte], !.
 
-produire_reponse(L,Rep) :-
-   mclef(M,_),similar(L,M), % anciennement ...,member(M,L)
-   clause(regle_rep(M,_,Pattern,Rep),Body),
-   match_pattern(Pattern,L),
-   call(Body), !.
+produire_reponse(L, Rep) :-
+   (checkMClef(L, Bool), Bool ->
+    clause(regle_rep(_, _, _, L, Rep), Body),
+    call(Body), !
+   ;
+   mclef(M, _), similar(L, M), % anciennement ...,member(M,L)
+   clause(regle_rep(M, _, Pattern, Rep), Body),
+   match_pattern(Pattern, L),
+   call(Body), !).
 
-produire_reponse(_,[L1, L2, L3]) :-
+produire_reponse(_, [L1, L2, L3]) :-
    L1 = [je, ne, sais, pas, '.'],
    L2 = [les, etudiants, vont, m, '\'', aider, '.' ],
    L3 = ['vous le verrez !'].
+
+checkMClef([], Bool) :- Bool = false.
+checkMClef([Mot|ListeMots], Bool) :-
+  (
+    Mot == 'position'
+    ->
+    Bool = true
+    ;
+    checkMClef(ListeMots, Bool)
+  ).
 
 match_pattern(Pattern,Lmots) :-
    sublist(Pattern,Lmots).
@@ -216,7 +230,7 @@ mclef(allemagne_1, 1).
 mclef(allemagne_2, 1).
 mclef(allemagne_3, 1).
 
-mclef(test, 1).
+mclef(position, 1).
 
 
 
@@ -775,11 +789,21 @@ regle_rep(conseilles,5,
 
 %----------------------------------------------------------------%
 
-/*regle_rep(test, 1, [ [equipe] ], parseRep()).*/
+regle_rep(position, 1, [ [position], 2, [equipe] ], L, Args) :-
+  Args = [],
+  parseRep(L, Args),
+  write(Args), nl.
 
+/* Quel est la position du cycliste 1 de l''équipe X */
+/* Attention, si on met un apostrophe devant l''équipe, ça ne trouvera pas le pays car ça va append la lettre devant l''aprostrophe rendant le pays non reconnaissable ! */
 
+parseRep([], Args) :- write(Args), nl.
+parseRep([Mot|ListeMots], Args) :-
+  (cyclist_num(Mot) -> string_concat("number:", Mot, NewMot), parseRep(ListeMots, [NewMot|Args]))
+  ; (pays(Mot) -> string_concat("country:", Mot, NewMot), parseRep(ListeMots, [NewMot|Args]))
+  ; parseRep(ListeMots, Args).
 
-/**/
+/*
 regle_rep(belgique_1,1,
   [ [ position ], 2, [belgique_1] ],
   [ [getPosition,;,belgique,;,1]
@@ -839,7 +863,7 @@ regle_rep(allemagne_3,1,
   [ [ position ], 2, [allemagne_3] ],
   [ [getPosition,;,allemagne,;,3]
   ]).
-/**/
+*/
 
   /* Quelle est la position de CYCLISTE ? */
 
