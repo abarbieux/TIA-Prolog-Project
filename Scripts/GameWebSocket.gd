@@ -15,7 +15,7 @@ func _init(_instance):
 
 
 func _ready():
-	#OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
+	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
 	
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
