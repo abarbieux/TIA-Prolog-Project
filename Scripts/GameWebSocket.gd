@@ -15,7 +15,7 @@ func _init(_instance):
 
 
 func _ready():
-	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
+	#OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
 	
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
@@ -44,21 +44,24 @@ func _on_data():
 	var message = _client.get_peer(1).get_packet().get_string_from_utf8()
 	print(message)
 	if _check_liability(message):
-		var args = message.split(";")
+		var args = message.split(" ")
 		var result_message = "Cette fonction n'est pas encore implémentée..."
 		match args[0].replace(" ", "").replace("\"", ""):
 			"getPosition":
-				
-				var args_1 = args[1].replace(" ", "").replace("\"", "")
-				print(args_1)
-				var args_2 = int(args[2].replace(" ", "").replace("\"", ""))
-				print(args_2)
-				var result = instance._ChatBotAI.get_cyclist_position(args_1, args_2)
+				var country
+				var cyclist_number
+				print(args)
+				for arg in args:
+					if "country:" in arg:
+						country = arg.replace("country:", "")
+					elif "number:" in arg:
+						cyclist_number = int(arg.replace("number:", ""))
+				var result = instance._ChatBotAI.get_cyclist_position(country, cyclist_number)
 				print(result)
 				if result != Vector2(-1.0, -1.0):
-					result_message = "La position du joueur %s de l'équipe %s est %s" % [args_2, args_1, result]
+					result_message = "La position du joueur %s de l'équipe %s est %s" % [cyclist_number, country, result]
 				else:
-					result_message = "Le joueur %s de l'équipe %s n'est pas sur le plateau ou n'existe pas..." % [args_2, args_1]
+					result_message = "Le joueur %s de l'équipe %s n'est pas sur le plateau ou n'existe pas..." % [cyclist_number, country]
 			"conseilCarte":
 				if len(instance._MovementManager.get_last_cyclist_movable()) > 0:
 					var result = instance._ChatBotAI.get_best_card(instance.countries[instance._country_turn_index].name)
@@ -79,5 +82,5 @@ func _exit_tree():
 	
 
 func _check_liability(message):
-	var args = message.replace(" ", "").replace("\"", "").split(";")
+	var args = message.replace("\"", "").split(" ")
 	return args[0] in functions

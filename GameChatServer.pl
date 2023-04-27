@@ -790,82 +790,16 @@ regle_rep(conseilles,5,
 %----------------------------------------------------------------%
 
 regle_rep(position, 1, [ [position], 2, [equipe] ], L, Args) :-
-  Args = [],
-  parseRep(L, Args),
-  write(Args), nl.
+  parseRep(L, [], Args).
 
 /* Quel est la position du cycliste 1 de l''équipe X */
 /* Attention, si on met un apostrophe devant l''équipe, ça ne trouvera pas le pays car ça va append la lettre devant l''aprostrophe rendant le pays non reconnaissable ! */
 
-parseRep([], Args) :- write(Args), nl.
-parseRep([Mot|ListeMots], Args) :-
-  (cyclist_num(Mot) -> string_concat("number:", Mot, NewMot), parseRep(ListeMots, [NewMot|Args]))
-  ; (pays(Mot) -> string_concat("country:", Mot, NewMot), parseRep(ListeMots, [NewMot|Args]))
-  ; parseRep(ListeMots, Args).
-
-/*
-regle_rep(belgique_1,1,
-  [ [ position ], 2, [belgique_1] ],
-  [ [getPosition,;,belgique,;,1]
-  ]).
-
-regle_rep(belgique_2,1,
-  [ [ position ], 2, [belgique_2] ],
-  [ [getPosition,;,belgique,;,2]
-  ]).
-
-regle_rep(belgique_3,1,
-  [ [ position ], 2, [belgique_3] ],
-  [ [getPosition,;,belgique,;,3]
-  ]).
-
-regle_rep(italie_1,1,           
-  [ [ position ], 2, [italie_1] ],
-  [ [getPosition,;,italie,;,1]
-  ]).
-
-regle_rep(italie_2,1,
-  [ [ position ], 2, [italie_2] ],
-  [ [getPosition,;,italie,;,2]
-  ]).
-
-regle_rep(italie_3,1,
-  [ [ position ], 2, [italie_3] ],
-  [ [getPosition,;,italie,;,3]
-  ]).
-
-regle_rep(hollande_1,1,
-  [ [ position ], 2, [hollande_1] ],
-  [ [getPosition,;,hollande,;,1]
-  ]).
-  
-regle_rep(hollande_2,1,
-  [ [ position ], 2, [hollande_2] ],
-  [ [getPosition,;,hollande,;,2]
-  ]).
-
-regle_rep(hollande_3,1,
-  [ [ position ], 2, [hollande_3] ],
-  [ [getPosition,;,hollande,;,3]
-  ]).
-
-regle_rep(allemagne_1,1,
-  [ [ position ], 2, [allemagne_1] ],
-  [ [getPosition,;,allemagne,;,1]
-  ]).
-
-regle_rep(allemagne_2,1,
-  [ [ position ], 2, [allemagne_2] ],
-  [ [getPosition,;,allemagne,;,2]
-  ]).
-
-regle_rep(allemagne_3,1,
-  [ [ position ], 2, [allemagne_3] ],
-  [ [getPosition,;,allemagne,;,3]
-  ]).
-*/
-
-  /* Quelle est la position de CYCLISTE ? */
+parseRep([], Acc, [[getPosition|Acc]]).
+parseRep([Mot|ListeMots], Acc, Args) :-
+  (cyclist_num(Mot) -> string_concat("number:", Mot, NewMot), parseRep(ListeMots, [NewMot|Acc], Args))
+  ; (pays(Mot) -> string_concat("country:", Mot, NewMot), parseRep(ListeMots, [NewMot|Acc], Args))
+  ; parseRep(ListeMots, Acc, Args).
 
 /*
 regle_rep(fonction,5,

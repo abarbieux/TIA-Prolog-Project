@@ -58,7 +58,8 @@ func get_best_card_h1(team: String) -> int:
 ## @parameter team: The team to get the cyclist from.
 ## @parameter cyclist_number: The number of the cyslist to get the position from.
 ## @return the position of the cyclist or a @Vector2 filled with -1.0 if cyclist doesn't exists.
-func get_cyclist_position(team: String, cyclist_number: int) -> Vector2:
+func get_cyclist_position(team, cyclist_number) -> Vector2:
+	if team == null or cyclist_number == null: return Vector2(-1.0, -1.0)
 	var team_list: Array
 	var found_cyclist: Cycliste
 	for cyclist in instance._players:
