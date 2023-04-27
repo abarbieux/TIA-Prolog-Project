@@ -34,8 +34,8 @@ func get_available_cell(value, index) -> Vector2:
 			var path = get_best_path(chemin_chosen, _clamp)
 			if path != [] && path.size() <= abs(value):
 			
-#				if !is_player_on_cell(chemin_chosen, _clamp):
-				return Vector2(chemin_chosen, _clamp)
+				if !is_player_on_cell(chemin_chosen, _clamp):
+					return Vector2(chemin_chosen, _clamp)
 	
 	return Vector2.INF
 
@@ -54,17 +54,12 @@ func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 		var cyclist_on_cell : Array = get_players_on_cell(new_pos[1],new_pos[0])
 		print(cyclist_on_cell)
 		if cyclist_on_cell.size() > 1:
-			print("here1")
 			for cyclist in cyclist_on_cell:
 				if cyclist != main.player_selected :
-					print("here2")
+					main.player_selected = cyclist
+					move_player(Vector2(new_pos[0],main.shift_position(new_pos[1],new_pos[0])),index,0,false)
+					break
 					
-					cyclist.current_case = Vector2(new_pos[0],main.shift_position(new_pos[1],new_pos[0]))
-					cyclist.position = (main._path.get_child(
-						cyclist.current_case.y).curve.get_point_position(
-							cyclist.current_case.x) * main.get_child(2).rect_scale) + offset
-			
-		
 		main._Deck.deck_carte_player[main._country_turn_index].erase(value)
 		main._Deck._cards.append(value)
 		main._Deck.empty_deck_check()
@@ -115,6 +110,7 @@ func select_last_cyclist_movable() -> Array:
 
 func question_mark_case(index, value):
 	var surprise_movement: int = randi() % 7 - 3
+#	surprise_movement = 1
 	print("bonus : ",surprise_movement)
 	if surprise_movement == 0:
 		return
