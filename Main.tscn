@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scripts/flag_sin.shader" type="Shader" id=1]
 [ext_resource path="res://Scripts/CurrentTeam.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Picture/Flag/Hollande_Flag.png" type="Texture" id=11]
 [ext_resource path="res://Picture/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=12]
 [ext_resource path="res://Picture/Font/Roboto-Black.ttf" type="DynamicFontData" id=13]
+[ext_resource path="res://Picture/Cards/bonus_1.png" type="Texture" id=14]
 
 [sub_resource type="DynamicFont" id=7]
 size = 32
@@ -21,6 +22,8 @@ font_data = ExtResource( 13 )
 [sub_resource type="DynamicFont" id=8]
 size = 32
 font_data = ExtResource( 12 )
+
+[sub_resource type="Theme" id=9]
 
 [sub_resource type="DynamicFont" id=5]
 size = 24
@@ -150,6 +153,25 @@ custom_fonts/font = SubResource( 8 )
 text = "Vos Déplacements"
 align = 1
 valign = 1
+
+[node name="Bonus_History" type="VBoxContainer" parent="UIComponent"]
+margin_left = 1759.0
+margin_top = 623.0
+margin_right = 1918.0
+margin_bottom = 858.0
+alignment = 2
+
+[node name="Button2" type="Button" parent="UIComponent"]
+visible = false
+margin_left = 1746.0
+margin_top = 661.0
+margin_right = 1918.0
+margin_bottom = 729.0
+mouse_filter = 2
+theme = SubResource( 9 )
+text = "Hollande 1"
+icon = ExtResource( 14 )
+expand_icon = true
 
 [node name="Italie" type="Control" parent="UIComponent"]
 margin_right = 1920.0

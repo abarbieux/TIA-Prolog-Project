@@ -110,7 +110,7 @@ func select_last_cyclist_movable() -> Array:
 
 func question_mark_case(index, value):
 	var surprise_movement: int = randi() % 7 - 3
-#	surprise_movement = 1
+	print_bonus(surprise_movement)
 	print("bonus : ",surprise_movement)
 	if surprise_movement == 0:
 		return
@@ -216,6 +216,28 @@ func get_new_pos(cell, value, index):
 	
 	return Vector2.INF
 
+func print_bonus(bonus):
+	var bonus_log = Button.new()
+	var icon_img = Image.new()
+	var icon_texture = ImageTexture.new()
+	if bonus < 0 :
+		icon_img.load("res://Picture/Cards/bonus_neg_" + str(abs(bonus)) + ".png") 
+	else:
+		icon_img.load("res://Picture/Cards/bonus_" + str(bonus) + ".png")
+	icon_texture.create_from_image(icon_img)
+	bonus_log.set_button_icon(icon_texture)
+	bonus_log.set("expand_icon", true)
+	bonus_log.rect_min_size.y = 45
+	bonus_log.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var numero_cycliste = str(main.player_selected.numero)
+	var pays_cycliste = str(main.player_selected.pays)
+	bonus_log.set_text(pays_cycliste + " " + numero_cycliste)
+	var bonus_logs = main.UIComponent.bonus_logs
+	var child_count = bonus_logs.get_child_count()
+	if child_count == 5:
+		var child = bonus_logs.get_child(0)
+		bonus_logs.remove_child(child)
+	bonus_logs.add_child(bonus_log)
 
 #func player_shiftable(best_path) :
 #	for player in main._player:

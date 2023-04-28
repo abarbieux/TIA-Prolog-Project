@@ -5,7 +5,7 @@ onready var current_team := $Current_Team
 onready var Infos := [$Italie/HBoxContainer, $Hollande/HBoxContainer, $Belgique/HBoxContainer, $Allemagne/HBoxContainer]
 onready var choose_player_panel := $ChoosePlayer
 onready var current_cards_buttons := $Current_Cards
-
+onready var bonus_logs := $Bonus_History
 
 
 func display_deck_button(_team_deck: Array) -> void:
