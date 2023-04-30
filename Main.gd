@@ -54,6 +54,15 @@ func _ready() -> void:
 		for player_number in range(1, number_of_team_member + 1):
 			var _player = create_new_player(country.name, player_number)
 			_players.append(_player)
+			if _player.pays == "italie" : 
+				_player.position = Vector2(896,438)
+			elif _player.pays == "hollande" : 
+				_player.position = Vector2(876,438)
+			elif _player.pays == "belgique" : 
+				_player.position = Vector2(916,438)
+			else:
+				_player.position = Vector2(936,438)
+			
 			country.members.append(_player)
 	
 	
