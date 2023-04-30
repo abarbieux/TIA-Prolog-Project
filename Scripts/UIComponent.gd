@@ -29,33 +29,32 @@ func display_deck_button(_team_deck: Array) -> void:
 		button.set_pressed_texture(texture_selected)
 		current_cards_buttons.add_child(button)
 		
-		var c = button.connect("pressed", get_parent(), "_button_pressed", [button, carte, i])
+		var _c = button.connect("pressed", get_parent(), "_button_pressed", [button, carte, i])
 		i += 1
 
 func display_team_deck(_team_deck: Array,team: int):
 	
 	
-	var i = 0
+	
 	var place
 	
 	place = Infos[team]
 	for child in place.get_children():
 				child.queue_free()
-				
+	var _i : int = 0
 	for carte in _team_deck:
-			var card = TextureRect.new()
-			card.rect_min_size.x = 50
-			card.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-			card.texture = load("res://Picture/Cards/" + str(carte) + ".png")
-			card.expand = true
-			#card.rect_size = Vector2(102,136)
-			place.add_child(card)
-			#card.size = Vector2(50,75)
-			#cards.text = str(carte)
-			#cards.rect_size = Vector2(10,10)
-			#place.add_child(cards)
-			
-			i += 1
+		var card = TextureRect.new()
+		card.rect_min_size.x = 50
+		card.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		card.texture = load("res://Picture/Cards/" + str(carte) + ".png")
+		card.expand = true
+		#card.rect_size = Vector2(102,136)
+		place.add_child(card)
+		#card.size = Vector2(50,75)
+		#cards.text = str(carte)
+		#cards.rect_size = Vector2(10,10)
+		#place.add_child(cards)
+		_i += 1
 
 func choose_player(value: int, index: int, cyclistes_movable: Array):
 	get_parent().turn_already_past = false
@@ -69,6 +68,6 @@ func choose_player(value: int, index: int, cyclistes_movable: Array):
 		button.rect_min_size.x = 96
 		button.icon = preload("res://icon.png")
 		choose_player_panel.add_child(button)
-		var c = button.connect("pressed", get_parent(), "_button_player_pressed", [cycliste, value, index])
+		var _c = button.connect("pressed", get_parent(), "_button_player_pressed", [cycliste, value, index])
 
 
