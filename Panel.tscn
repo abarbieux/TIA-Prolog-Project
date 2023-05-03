@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Panel.gd" type="Script" id=1]
+[ext_resource path="res://Picture/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+extra_spacing_bottom = 7
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 21
+font_data = ExtResource( 2 )
 
 [node name="Panel" type="Panel"]
 margin_left = 32.0
@@ -21,6 +31,7 @@ margin_left = -1.572
 margin_top = -8.06403
 margin_right = 0.0359802
 margin_bottom = -8.0
+custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -32,6 +43,8 @@ margin_left = 3.0
 margin_top = 3.0
 margin_right = -3.0
 margin_bottom = 3.0
+custom_colors/font_color_readonly = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
 text = "Chatbot: Bonjour, je suis TBot, le bot explicateur du Tour de France.
 Chatbot: En quoi puis-je vous aider ?"
 readonly = true
@@ -46,6 +59,6 @@ margin_left = 0.0919952
 margin_top = 3.09595
 margin_right = -0.0920105
 margin_bottom = 0.12793
-text = "SEND"
+text = "ENVOYER"
 
 [connection signal="pressed" from="Send" to="." method="_on_Send_pressed"]

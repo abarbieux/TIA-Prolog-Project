@@ -2,7 +2,7 @@ class_name Main
 extends Control
 
 
-signal change_turn(team)
+#signal change_turn(team)
 
 const number_of_team_member: int = 3
 # Change to true to visualize a random party.
@@ -56,6 +56,15 @@ func _ready() -> void:
 		for player_number in range(1, number_of_team_member + 1):
 			var _player = create_new_player(country.name, player_number)
 			_players.append(_player)
+			if _player.pays == "italie" : 
+				_player.position = Vector2(896,438)
+			elif _player.pays == "hollande" : 
+				_player.position = Vector2(876,438)
+			elif _player.pays == "belgique" : 
+				_player.position = Vector2(916,438)
+			else:
+				_player.position = Vector2(936,438)
+			
 			country.members.append(_player)
 	
 	
@@ -95,7 +104,7 @@ func create_button():
 				
 				button.rect_min_size = Vector2(50,50)
 				button.rect_position -= button.rect_min_size / 2
-				button.disabled
+#				button.disabled
 				button.editor_description = str(x) + "," + str(y)
 				button.connect("pressed", self, "set_selected_cell_pos", [x, y])
 				path.add_child(button)
@@ -171,7 +180,7 @@ func check_all_possibles_path() -> bool:
 	return false
 
 
-func _button_pressed(button, value, index) -> void :
+func _button_pressed(_button, value, index) -> void :
 	hide_all_cell_button()
 	UIComponent.choose_player(value, index, _MovementManager.select_last_cyclist_movable())
 
@@ -214,7 +223,6 @@ func _button_player_pressed(player, value, index) -> void:
 
 func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var _clamp = clamp(cyclist.current_case.x + value,0, clamp_max)
-	var count : int = 0
 	var cells:PoolVector2Array = []
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
