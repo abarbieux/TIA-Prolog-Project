@@ -9,4 +9,4 @@ func _ready() -> void:
 
 
 func change_text(_new_team: String) -> void:
-	set_text(("Turn of ") + _new_team)
+	set_text(("Tour de ") + _new_team)
