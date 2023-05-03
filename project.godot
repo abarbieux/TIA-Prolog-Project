@@ -35,6 +35,11 @@ _global_script_classes=[ {
 "path": "res://Scripts/Deck.gd"
 }, {
 "base": "Node",
+"class": "GameAI",
+"language": "GDScript",
+"path": "res://GameAI.gd"
+}, {
+"base": "Node",
 "class": "GameWebSocket",
 "language": "GDScript",
 "path": "res://Scripts/GameWebSocket.gd"
@@ -55,6 +60,7 @@ _global_script_class_icons={
 "Country": "",
 "Cycliste": "",
 "Deck": "",
+"GameAI": "",
 "GameWebSocket": "",
 "Main": "",
 "MovementManager": ""

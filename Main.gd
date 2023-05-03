@@ -18,6 +18,7 @@ var player_selected: Cycliste
 var _A_Star := A_star.new()
 var _GameWebSocket := GameWebSocket.new(self)
 var _ChatBotAI := ChatBotAI.new(self)
+var _GameAI := GameAI.new(self)
 var _MovementManager := MovementManager.new(self)
 var _Deck: Deck
 var turn_already_past: bool = false
@@ -42,6 +43,7 @@ func _ready() -> void:
 	add_child(_A_Star)
 	add_child(_GameWebSocket)
 	add_child(_ChatBotAI)
+	add_child(_GameAI)
 	panel._GameWebSocket = _GameWebSocket
 	_GameWebSocket.panel = panel
 	

@@ -15,7 +15,7 @@ func _init(_instance):
 
 
 func _ready():
-	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
+	#OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
 	
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
@@ -53,9 +53,9 @@ func _on_data():
 				print(args)
 				for arg in args:
 					if "country:" in arg:
-						country = arg.replace("country:", "")
+						country = arg.replace("country:", "").replace("\"", "")
 					elif "number:" in arg:
-						cyclist_number = int(arg.replace("number:", ""))
+						cyclist_number = int(arg.replace("number:", "").replace("\"", ""))
 				var result = instance._ChatBotAI.get_cyclist_position(country, cyclist_number)
 				print(result)
 				if result != Vector2(-1.0, -1.0):

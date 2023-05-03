@@ -103,7 +103,7 @@ func find_sum_of(team: String, number: int) -> Array:
 				cards.append(removed_card_deck[i])
 		if accumulator == number:
 			print("#101 Sum for %s %s" % [number, cards])
-			return cards
+			return cards.sort()
 	return []
 
 
