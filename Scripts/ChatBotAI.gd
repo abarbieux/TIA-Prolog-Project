@@ -40,12 +40,16 @@ func get_best_card_h0(team: String) -> int:
 	var team_deck = instance._Deck.deck_carte_player[country_index]
 	var value = team_deck.max()
 	var duplicated_deck = team_deck.duplicate(true)
+	var player_selected = instance._MovementManager.select_last_cyclist_movable()
+	print(player_selected, "player_selected")
 	while true:
-		if len(instance.get_all_cell_available(value, instance.player_selected)) > 0:
+		if len(instance.get_all_cell_available(value, player_selected[0])) > 0:
 			return value
 		if len(duplicated_deck) == 0:
 			break
-		value = duplicated_deck.remove(value).max()
+		duplicated_deck.erase(value)
+		value = duplicated_deck.max()
+		
 	return -1
 	
 	
@@ -59,9 +63,13 @@ func get_best_card_h1(team: String) -> int:
 	var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
 	if len(sum_to_chance_case) == 0:
 		print("No sum found for %s" % first_chance_case_distance)
-	return get_best_card_h0(team)
+		var test = get_best_card_h0(team)
+		print(test,"test")
+		return test
+	var player_selected = instance._MovementManager.select_last_cyclist_movable()
 	for card in sum_to_chance_case:
-		if len(instance.get_all_cell_available(card, instance.player_selected)) > 0:
+		if len(instance.get_all_cell_available(card, player_selected[0])) > 0:
+			print("card",card)
 			return card
 	return -1
 		
@@ -98,7 +106,7 @@ func find_sum_of(team: String, number: int) -> Array:
 			return [card_1]
 		
 		var removed_card_deck = team_deck.duplicate(true)
-		removed_card_deck.remove(card_1)
+		removed_card_deck.erase(card_1)
 		print("Removed Deck:", removed_card_deck)
 		if number - card_1 in removed_card_deck:
 			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
@@ -114,7 +122,7 @@ func find_sum_of(team: String, number: int) -> Array:
 				cards.append(removed_card_deck[i])
 		if accumulator == number:
 			print("#101 Sum for %s %s" % [number, cards])
-			return cards.sort()
+			return cards #.sort()
 	return []
 
 

@@ -75,7 +75,7 @@ func _ready() -> void:
 	update_team_carte_display()
 	
 	
-	init_pre_select_move_phase()
+	
 
 
 func _notification(what):
@@ -141,20 +141,28 @@ func init_pre_select_move_phase():
 	if is_definitely_the_end:
 		return
 	
-	if is_unit_test_mode:
+	if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
 		yield(get_tree().create_timer(0.1), "timeout")
+	
 	
 	UIComponent.current_team.change_text(countries[_country_turn_index].name)
 	var possible = check_all_possibles_path()
 	
 	if !possible:
-		if !is_unit_test_mode:
+		if !is_unit_test_mode && countries[_country_turn_index].Tactic == 10:
 			ErrorComponent.pass_tour.show()
 			yield(ErrorComponent.pass_tour, "confirmed")
 		pass_turn()
 	else:
 		if is_unit_test_mode:
 			play_virtual_game()
+		elif countries[_country_turn_index].Tactic != 10:
+			var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
+			_ChatBotAI.heuristic_mode = countries[_country_turn_index].Tactic
+			var chosen_card = _ChatBotAI.get_best_card(countries[_country_turn_index].name)
+			turn_already_past = false
+			_button_player_pressed(possible_cyclist[0],chosen_card, 0)
+			
 
 
 func play_virtual_game():
@@ -203,10 +211,10 @@ func _button_player_pressed(player, value, index) -> void:
 #		card.queue_free()
 	
 	is_selecting_case = true
-	if !is_unit_test_mode:
+	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 10:
 		yield(self, "cell_pos_changed")
 	if is_selecting_case:
-		if is_unit_test_mode:
+		if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
 			var error = _MovementManager.init_movement(value, index, true)
 			is_selecting_case = false
 			if error:

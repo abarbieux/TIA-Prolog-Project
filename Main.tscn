@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Scripts/flag_sin.shader" type="Shader" id=1]
 [ext_resource path="res://Scripts/CurrentTeam.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Picture/Flag/Hollande_Flag.png" type="Texture" id=11]
 [ext_resource path="res://Picture/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=12]
 [ext_resource path="res://Picture/Font/Roboto-Black.ttf" type="DynamicFontData" id=13]
+[ext_resource path="res://IAChoiceMenu.gd" type="Script" id=14]
 [ext_resource path="res://Picture/Cyclistes/allemagne.png" type="Texture" id=15]
 [ext_resource path="res://Picture/Cyclistes/belgique.png" type="Texture" id=16]
 [ext_resource path="res://Picture/Cyclistes/hollande.png" type="Texture" id=17]
@@ -75,6 +76,39 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
 }
+
+[sub_resource type="DynamicFont" id=9]
+size = 32
+font_data = ExtResource( 12 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 32
+font_data = ExtResource( 12 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 32
+font_data = ExtResource( 12 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.545098, 0.403922, 0.403922, 0.552941 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="DynamicFont" id=13]
+size = 32
+font_data = ExtResource( 12 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.545098, 0.403922, 0.403922, 0.552941 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -431,3 +465,189 @@ texture = ExtResource( 16 )
 [node name="Allemagne" type="Sprite" parent="Italie/Hollande/Belgique"]
 position = Vector2( 1385.71, 0 )
 texture = ExtResource( 15 )
+
+[node name="IAChoiceMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 14 )
+
+[node name="Panel" type="ColorRect" parent="IAChoiceMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.772549 )
+
+[node name="Menu" type="ColorRect" parent="IAChoiceMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -600.0
+margin_top = -400.0
+margin_right = 600.0
+margin_bottom = 400.0
+color = Color( 0.564706, 0.792157, 0.235294, 1 )
+
+[node name="OkButton" type="Button" parent="IAChoiceMenu/Menu"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -116.0
+margin_top = -72.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 9 )
+text = "Valider"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="IAChoiceMenu/Menu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -250.0
+margin_right = 400.0
+margin_bottom = 254.0
+custom_constants/separation = 100
+
+[node name="MenuButtonBelgique" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
+margin_right = 500.0
+margin_bottom = 51.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 10 )
+text = "Joueur"
+clip_text = true
+align = 1
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+selected = 0
+
+[node name="MenuButtonAllemagne" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
+margin_top = 151.0
+margin_right = 500.0
+margin_bottom = 202.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 10 )
+text = "Joueur"
+clip_text = true
+align = 1
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+selected = 0
+
+[node name="MenuButtonHollande" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
+margin_top = 302.0
+margin_right = 500.0
+margin_bottom = 353.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 10 )
+text = "Joueur"
+clip_text = true
+align = 1
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+selected = 0
+
+[node name="MenuButtonItalie" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
+margin_top = 453.0
+margin_right = 500.0
+margin_bottom = 504.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 10 )
+text = "Joueur"
+clip_text = true
+align = 1
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+selected = 0
+
+[node name="Belgique" type="Label" parent="IAChoiceMenu/Menu"]
+margin_left = 296.0
+margin_top = 150.0
+margin_right = 496.0
+margin_bottom = 201.0
+custom_fonts/font = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
+text = "Belgique"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Allemagne" type="Label" parent="IAChoiceMenu/Menu"]
+margin_left = 296.0
+margin_top = 301.0
+margin_right = 496.0
+margin_bottom = 351.0
+custom_fonts/font = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
+text = "Allemagne"
+align = 1
+autowrap = true
+
+[node name="Hollande" type="Label" parent="IAChoiceMenu/Menu"]
+margin_left = 296.0
+margin_top = 452.0
+margin_right = 496.0
+margin_bottom = 503.0
+custom_fonts/font = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
+text = "Hollande"
+align = 1
+autowrap = true
+
+[node name="Italie" type="Label" parent="IAChoiceMenu/Menu"]
+margin_left = 296.0
+margin_top = 603.0
+margin_right = 496.0
+margin_bottom = 654.0
+custom_fonts/font = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
+text = "Italie"
+align = 1
+autowrap = true
+
+[node name="BelgiqueFlag" type="TextureRect" parent="IAChoiceMenu/Menu"]
+margin_left = 112.0
+margin_top = 124.0
+margin_right = 240.0
+margin_bottom = 226.0
+texture = ExtResource( 10 )
+expand = true
+
+[node name="ItalieFlag" type="TextureRect" parent="IAChoiceMenu/Menu"]
+margin_left = 112.0
+margin_top = 574.0
+margin_right = 240.0
+margin_bottom = 676.0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="HollandeFlag" type="TextureRect" parent="IAChoiceMenu/Menu"]
+margin_left = 111.0
+margin_top = 428.0
+margin_right = 239.0
+margin_bottom = 530.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="AllemagneFlag" type="TextureRect" parent="IAChoiceMenu/Menu"]
+margin_left = 111.0
+margin_top = 284.0
+margin_right = 239.0
+margin_bottom = 386.0
+texture = ExtResource( 9 )
+expand = true
+
+[node name="Titre" type="Label" parent="IAChoiceMenu/Menu"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -360.0
+margin_top = 5.0
+margin_right = 360.0
+margin_bottom = 65.0
+custom_fonts/font = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+text = "Choissez Qui et Comment jouera chaque Pays"
+align = 1
+valign = 1
+
+[connection signal="pressed" from="IAChoiceMenu/Menu/OkButton" to="IAChoiceMenu" method="_on_OkButton_pressed"]
+[connection signal="item_selected" from="IAChoiceMenu/Menu/VBoxContainer/MenuButtonBelgique" to="IAChoiceMenu" method="_on_MenuButtonBelgique_item_selected"]
+[connection signal="item_selected" from="IAChoiceMenu/Menu/VBoxContainer/MenuButtonAllemagne" to="IAChoiceMenu" method="_on_MenuButtonAllemagne_item_selected"]
+[connection signal="item_selected" from="IAChoiceMenu/Menu/VBoxContainer/MenuButtonHollande" to="IAChoiceMenu" method="_on_MenuButtonHollande_item_selected"]
+[connection signal="item_selected" from="IAChoiceMenu/Menu/VBoxContainer/MenuButtonItalie" to="IAChoiceMenu" method="_on_MenuButtonItalie_item_selected"]
