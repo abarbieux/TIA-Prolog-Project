@@ -38,7 +38,16 @@ func get_best_card(team: String) -> int:
 func get_best_card_h0(team: String) -> int:
 	var country_index = get_country_index_from_team(team)
 	var team_deck = instance._Deck.deck_carte_player[country_index]
-	return team_deck.max()
+	var value = team_deck.max()
+	var duplicated_deck = team_deck.duplicate(true)
+	while true:
+		if len(instance.get_all_cell_available(value, instance.player_selected)) > 0:
+			return value
+		if len(duplicated_deck) == 0:
+			break
+		value = duplicated_deck.remove(value).max()
+	return -1
+	
 	
 	
 func get_best_card_h1(team: String) -> int:
@@ -50,9 +59,12 @@ func get_best_card_h1(team: String) -> int:
 	var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
 	if len(sum_to_chance_case) == 0:
 		print("No sum found for %s" % first_chance_case_distance)
-		return get_best_card_h0(team)
-	return sum_to_chance_case[0]
-	
+	return get_best_card_h0(team)
+	for card in sum_to_chance_case:
+		if len(instance.get_all_cell_available(card, instance.player_selected)) > 0:
+			return card
+	return -1
+		
 
 ## Get the given cyclist position in a @Vector2 format.
 ## @parameter team: The team to get the cyclist from.
