@@ -51,7 +51,6 @@ func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	
 	if carte_movement:
 		var cyclist_on_cell : Array = get_players_on_cell(new_pos[1],new_pos[0])
-		print(cyclist_on_cell)
 		if cyclist_on_cell.size() > 1:
 			for cyclist in cyclist_on_cell:
 				if cyclist != main.player_selected :
@@ -165,6 +164,7 @@ func get_all_path_available(value, cyclist) -> PoolVector2Array:
 		else:
 			_count += 1
 	return PoolVector2Array()
+
 
 
 func is_valid_cell(chemin_chosen, _clamp) -> bool:

@@ -39,11 +39,10 @@ func get_best_card_h0(team: String) -> int:
 	var country_index = get_country_index_from_team(team)
 	var team_deck = instance._Deck.deck_carte_player[country_index]
 	var value = team_deck.max()
-	var duplicated_deck = team_deck.duplicate(true)
+	var duplicated_deck : Array = team_deck.duplicate(true)
 	var player_selected = instance._MovementManager.select_last_cyclist_movable()
-	print(player_selected, "player_selected")
 	while true:
-		if len(instance.get_all_cell_available(value, player_selected[0])) > 0:
+		if instance._MovementManager.get_all_path_available(value, player_selected[0]).size() > 0:
 			return value
 		if len(duplicated_deck) == 0:
 			break
@@ -67,8 +66,9 @@ func get_best_card_h1(team: String) -> int:
 		print(test,"test")
 		return test
 	var player_selected = instance._MovementManager.select_last_cyclist_movable()
+	print("sum_to_chance_case : ", sum_to_chance_case)
 	for card in sum_to_chance_case:
-		if len(instance.get_all_cell_available(card, player_selected[0])) > 0:
+		if instance._MovementManager.get_all_path_available(card, player_selected[0]).size() > 0:
 			print("card",card)
 			return card
 	return -1

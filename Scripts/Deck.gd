@@ -11,6 +11,8 @@ var deck_carte_player: Array
 func make_deck() -> void:
 	for i in range(1, number_of_value + 1):
 		for _j in range(max_number_of_value):
+#			var nums = [5,6] #list to choose from
+#			_cards.append( nums[randi() % nums.size()])
 			_cards.append(i)
 
 

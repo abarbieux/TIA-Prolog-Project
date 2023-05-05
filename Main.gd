@@ -158,8 +158,12 @@ func init_pre_select_move_phase():
 			play_virtual_game()
 		elif countries[_country_turn_index].Tactic != 10:
 			var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
+			
 			_ChatBotAI.heuristic_mode = countries[_country_turn_index].Tactic
+			
 			var chosen_card = _ChatBotAI.get_best_card(countries[_country_turn_index].name)
+			
+			
 			turn_already_past = false
 			_button_player_pressed(possible_cyclist[0],chosen_card, 0)
 			
@@ -234,7 +238,7 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var cells:PoolVector2Array = []
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
-			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):				
+			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
 				cells.append(Vector2(_clamp, chemin_chosen))
 			elif shift_position(chemin_chosen, _clamp) != -1 :
 				cells.append(Vector2(_clamp, chemin_chosen))
