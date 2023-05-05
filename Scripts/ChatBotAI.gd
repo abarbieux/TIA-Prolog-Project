@@ -54,23 +54,31 @@ func get_best_card_h0(team: String) -> int:
 	
 	
 func get_best_card_h1(team: String) -> int:
+	var country_index = get_country_index_from_team(team)
+	var team_deck = instance._Deck.deck_carte_player[country_index]
 	var cyclist_number: int = instance._MovementManager.get_last_cyclist_movable()[0].numero
-	var first_chance_case_distance: int = find_first_chance_case_distance(team, cyclist_number)
-	print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
-	if first_chance_case_distance == -1:
-		return get_best_card_h0(team)
-	var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
-	if len(sum_to_chance_case) == 0:
+	var player_selected: Cycliste = instance._MovementManager.select_last_cyclist_movable()[0]
+	var first_chance_case_distance: int = team_deck.min()
+	while true:
+		var test_old = first_chance_case_distance
+		first_chance_case_distance = find_first_chance_case_distance(team, cyclist_number, first_chance_case_distance + 1)
+		print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
+		if test_old == first_chance_case_distance:
+			print("Error... %s" % test_old)
+			break
+			
+		if first_chance_case_distance == -1:
+			return get_best_card_h0(team)
+			
+		var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
+		sum_to_chance_case.sort()
+		if len(sum_to_chance_case) != 0:
+			print("sum_to_chance_case : ", sum_to_chance_case)
+			for card in sum_to_chance_case:
+				if instance._MovementManager.get_all_path_available(card, player_selected).size() > 0:
+					print("Playing sum card: ", card)
+					return card
 		print("No sum found for %s" % first_chance_case_distance)
-		var test = get_best_card_h0(team)
-		print(test,"test")
-		return test
-	var player_selected = instance._MovementManager.select_last_cyclist_movable()
-	print("sum_to_chance_case : ", sum_to_chance_case)
-	for card in sum_to_chance_case:
-		if instance._MovementManager.get_all_path_available(card, player_selected[0]).size() > 0:
-			print("card",card)
-			return card
 	return -1
 		
 
@@ -131,9 +139,12 @@ func find_sum_of(team: String, number: int) -> Array:
 ##							 This parameter should always be set to the minimum card value a player has in his deck.
 ## @return the distance between the player and the first chance case found.
 func find_first_chance_case_distance(team: String, cyclist_number: int, case_skipping: int = 0) -> int:
+	var country_index = get_country_index_from_team(team)
+	var team_deck: Array = instance._Deck.deck_carte_player[country_index]
 	var cyclist_position: Vector2 = get_cyclist_position(team, cyclist_number)
 	var chances_cases = get_all_chances_cases()
 	var chance_case_position = Vector2(-1.0, -1.0)
+	
 	for chance_case in chances_cases:
 		if (
 			cyclist_position.x + case_skipping <= chance_case.x
@@ -141,7 +152,8 @@ func find_first_chance_case_distance(team: String, cyclist_number: int, case_ski
 		):
 			chance_case_position = chance_case
 	if chance_case_position != Vector2(-1.0, -1.0):
-		return distance(cyclist_position, chance_case_position)
+		var distance = distance(cyclist_position, chance_case_position)
+		return distance if distance <= sum_array(team_deck) else -1
 	return -1
 
 
@@ -162,7 +174,9 @@ func get_all_chances_cases() -> Array:
 ## @parameter position2: Second position.
 ## @return the distance between the two positions.
 func distance(position1: Vector2, position2: Vector2) -> int:
-	return int(round(pow((pow(position2[0] - position1[0], 2.0) + pow(position2[1] - position1[1], 2.0)), 0.5)))
+	#return int(round(pow((pow(position2[0] - position1[0], 2.0) + pow(position2[1] - position1[1], 2.0)), 0.5)))
+	print("Position 1: %s, Position 2: %s" % [String(position1), String(position2)])
+	return int(position2.x - position1.x)
 	
 	
 func get_country_index_from_team(team: String) -> int:
@@ -171,3 +185,10 @@ func get_country_index_from_team(team: String) -> int:
 		if country.name == team: break
 		country_index += 1
 	return country_index
+	
+	
+func sum_array(array: Array):
+	var result = 0
+	for i in array:
+		result += i
+	return result
