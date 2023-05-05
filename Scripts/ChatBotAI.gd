@@ -56,8 +56,8 @@ func get_best_card_h0(team: String) -> int:
 func get_best_card_h1(team: String) -> int:
 	var country_index = get_country_index_from_team(team)
 	var team_deck = instance._Deck.deck_carte_player[country_index]
-	var cyclist_number: int = instance._MovementManager.get_last_cyclist_movable()[0].numero
 	var player_selected: Cycliste = instance._MovementManager.select_last_cyclist_movable()[0]
+	var cyclist_number: int = player_selected.numero
 	var first_chance_case_distance: int = team_deck.min()
 	while true:
 		var test_old = first_chance_case_distance
@@ -147,8 +147,7 @@ func find_first_chance_case_distance(team: String, cyclist_number: int, case_ski
 	
 	for chance_case in chances_cases:
 		if (
-			cyclist_position.x + case_skipping <= chance_case.x
-			and (chance_case.x <= chance_case_position.x or chance_case_position.x == -1.0)
+			cyclist_position.x + case_skipping <= chance_case.x and (chance_case.x <= chance_case_position.x or chance_case_position.x == -1.0)
 		):
 			chance_case_position = chance_case
 	if chance_case_position != Vector2(-1.0, -1.0):
