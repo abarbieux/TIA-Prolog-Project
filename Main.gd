@@ -75,7 +75,6 @@ func _ready() -> void:
 	update_team_carte_display()
 	
 	
-	
 
 
 func _notification(what):

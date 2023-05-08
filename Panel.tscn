@@ -48,6 +48,7 @@ custom_fonts/font = SubResource( 1 )
 text = "Chatbot: Bonjour, je suis TBot, le bot explicateur du Tour de France.
 Chatbot: En quoi puis-je vous aider ?"
 readonly = true
+smooth_scrolling = true
 wrap_enabled = true
 
 [node name="Send" type="Button" parent="."]

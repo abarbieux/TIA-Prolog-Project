@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _on_Message_received(received_text) -> void:
-	_Text = _Text + "ChatBot: " + received_text + "\n"
+	_Text = _Text + "Chatbot: " + received_text + "\n"
 	_Modify_Text(_Text)
 
 

@@ -7,30 +7,35 @@
 
 % websocket
 :- http_handler(root(ws),
-    http_upgrade_to_websocket(tbot,[]),
+  	http_upgrade_to_websocket(tbot,[]),
     [spawn([])]).
     
 
 tbot(WebSocket) :-
-   ws_receive(WebSocket, Message),
-   (Message.opcode == close -> true
-   ;
-   choose_server(Message.data, ResponseString),
-   ws_send(WebSocket, json(ResponseString)),
-   tbot(WebSocket)
-   ).
+  	ws_receive(WebSocket, Message),
+  	(Message.opcode == close -> 
+		true
+  	;
+  	choose_server(Message.data, ResponseString),
+  	ws_send(WebSocket, json(ResponseString)),
+  	tbot(WebSocket)
+  	).
 
 choose_server(Data, ResponseString) :-
    read_atomics(Data, [Protocol|Message]),
-   ( Protocol == 'Chatbot'
-    ->
+   (Protocol == 'Chatbot' ->
     produire_reponse(Message, L_ligne_reponse),
     write(L_ligne_reponse),
     ecrire_reponse(L_ligne_reponse),
     flatten(L_ligne_reponse, FlattenList),
     atomics_to_string(FlattenList, ' ', ResponseString)
     ;
-    true
+    ( Protocol == 'AI' ->
+      write("AI MODE"), nl,
+			ResponseString = "AI MODE"
+      ;
+      true
+    )
    ).
 
 /* --------------------------------------------------------------------- */
