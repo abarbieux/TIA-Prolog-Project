@@ -74,8 +74,6 @@ func _ready() -> void:
 	UIComponent.display_deck_button(_Deck.deck_carte_player[_country_turn_index])
 	update_team_carte_display()
 	
-	
-
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
