@@ -31,63 +31,62 @@ choose_server(Data, ResponseString) :-
     flatten(L_ligne_reponse, FlattenList),
     atomics_to_string(FlattenList, ' ', ResponseString)
     ;
-    ( Protocol == 'AI' ->
-      write(Data), nl,
-			ResponseString = "AI MODE"
-      ;
-      true
+    (Protocol == 'AI' ->
+     write(Data), nl,
+		 ResponseString = "AI MODE"
+     ;
+     true
     )
    ).
 
 
 parse_json_data(Data, Game_board, Player_info, Team_decks) :-
-  atom_json_dict(Data, Dict, []),
-  Game_board = Dict.get('game_board'),
-  Player_info = Dict.get('player_information'),
-  Team_decks = Dict.get('teams_deck').
+  atom_json_dict(Data, Data_dict, []),
+  Game_board_string = Data_dict.get('game_board'),
+  read_term_from_atom(Game_board_string, Game_board, []),
+  Player_info = Data_dict.get('player_information'),
+  Team_decks = Data_dict.get('teams_deck').
 
 
-get_position_status(Game_board, [Position], Status) :-
-  X = tail(Position),
-  Y = head(Position),
+get_position_status(Game_board, [X, Y], Status) :-
   nth0(Y, Game_board, Row),
   nth0(X, Row, Status).
 
 
+get_deck_card(Team_deck, Card_index, Card_value) :-
+  nth0(Card_index, Team_deck, Card_value).
+
+
 parse_player_info(Player_info, Team_decks, Player_name, Counter_fall, Player_position, Fall, Number, Country, Player_deck) :-
-  atom_json_dict(Player_info, JSON_P_Infos, []),
-  atom_json_dict(JSON_P_Infos.get(Player_name), JSON_P_Infos, []),
-  atom_json_dict(Team_decks, JSON_T_Decks, []),
-  Counter_fall = Player_info.get('counter_fall'),
-  write(Counter_fall), nl,
-  Player_position = JSON_P_Infos.get('current_case'),
-  write(Player_position), nl,
-  Fall = JSON_P_Infos.get('fall'),
-  write(Fall), nl,
-  Number = JSON_P_Infos.get('numero'),
-  write(Number), nl,
-  Country = JSON_P_Infos.get('pays'),
-  write(Country), nl,
-  Player_deck = JSON_T_Decks.get(Country),
-  write(Player_deck), nl.
+  Player_dict = Player_info.get(Player_name),
+  Counter_fall = Player_dict.get('counter_fall'),
+  Player_position = Player_dict.get('current_case'),
+  Fall = Player_dict.get('fall'),
+  Number = Player_dict.get('numero'),
+  Country_temp = Player_dict.get('pays'),
+  atom_codes(Country_temp, Codes), atom_chars(Country, Codes),
+  Player_deck = Team_decks.get(Country).
+
 
 test(Data) :-
   parse_json_data(Data, Game_board, Player_info, Team_decks),
-  write(Game_board), nl,
-  get_position_status(Game_board, [1, 1], Status),
-  write(Status), nl,
   parse_player_info(Player_info, Team_decks, Player_name, Counter_fall, Player_position, Fall, Number, Country, Player_deck),
-  write(Player_name), nl,
-  write(Counter_fall), nl,
-  write(Player_position), nl,
-  write(Fall), nl,
-  write(Number), nl,
-  write(Country), nl,
-  write(Player_deck), nl.
+  write('Player Name: '), write(Player_name), nl,
+  write('Counter fall: '), write(Counter_fall), nl,
+  write('Player position: '), write(Player_position), nl,
+  read_term_from_atom(Player_position, Position, []),
+  get_position_status(Game_board, Position, Status),
+  write('Status of '), write(Player_position), write(': '), write(Status), nl,
+  write('Fall: '), write(Fall), nl,
+  write('Number: '), write(Number), nl,
+  write('Country: '), write(Country), nl,
+  write('Player Deck: '), write(Player_deck), nl,
+  get_deck_card(Player_deck, 0, Card_value),
+  write('First card: '), write(Card_value), nl.
 
 
 testit() :-
-  test('{"game_board":"[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]","player_information":{"italie_1":{"current_case":"(0, 0)","pays":"italie","numero":1,"fall":false,"counter_fall":0},"italie_2":{"current_case":"(0, 0)","pays":"italie","numero":2,"fall":false,"counter_fall":0},"italie_3":{"current_case":"(0, 0)","pays":"italie","numero":3,"fall":false,"counter_fall":0},"hollande_1":{"current_case":"(0, 0)","pays":"hollande","numero":1,"fall":false,"counter_fall":0},"hollande_2":{"current_case":"(0, 0)","pays":"hollande","numero":2,"fall":false,"counter_fall":0},"hollande_3":{"current_case":"(0, 0)","pays":"hollande","numero":3,"fall":false,"counter_fall":0},"belgique_1":{"current_case":"(0, 0)","pays":"belgique","numero":1,"fall":false,"counter_fall":0},"belgique_2":{"current_case":"(0, 0)","pays":"belgique","numero":2,"fall":false,"counter_fall":0},"belgique_3":{"current_case":"(0, 0)","pays":"belgique","numero":3,"fall":false,"counter_fall":0},"allemagne_1":{"current_case":"(0, 0)","pays":"allemagne","numero":1,"fall":false,"counter_fall":0},"allemagne_2":{"current_case":"(0, 0)","pays":"allemagne","numero":2,"fall":false,"counter_fall":0},"allemagne_3":{"current_case":"(0, 0)","pays":"allemagne","numero":3,"fall":false,"counter_fall":0}},"teams_deck":{"italie":[7,8,8,1,8],"hollande":[7,2,5,11,1],"belgique":[1,8,12,6,12],"allemagne":[9,10,2,12,11]}}').
+  test('{"game_board":"[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]","player_information":{"italie_1":{"current_case":"[0, 0]","pays":"italie","numero":1,"fall":false,"counter_fall":0},"italie_2":{"current_case":"[0, 0]","pays":"italie","numero":2,"fall":false,"counter_fall":0},"italie_3":{"current_case":"[0, 0]","pays":"italie","numero":3,"fall":false,"counter_fall":0},"hollande_1":{"current_case":"[0, 0]","pays":"hollande","numero":1,"fall":false,"counter_fall":0},"hollande_2":{"current_case":"[0, 0]","pays":"hollande","numero":2,"fall":false,"counter_fall":0},"hollande_3":{"current_case":"[0, 0]","pays":"hollande","numero":3,"fall":false,"counter_fall":0},"belgique_1":{"current_case":"[0, 0]","pays":"belgique","numero":1,"fall":false,"counter_fall":0},"belgique_2":{"current_case":"[0, 0]","pays":"belgique","numero":2,"fall":false,"counter_fall":0},"belgique_3":{"current_case":"[0, 0]","pays":"belgique","numero":3,"fall":false,"counter_fall":0},"allemagne_1":{"current_case":"[0, 0]","pays":"allemagne","numero":1,"fall":false,"counter_fall":0},"allemagne_2":{"current_case":"[0, 0]","pays":"allemagne","numero":2,"fall":false,"counter_fall":0},"allemagne_3":{"current_case":"[0, 0]","pays":"allemagne","numero":3,"fall":false,"counter_fall":0}},"teams_deck":{"italie":[5,7,11,1,2],"hollande":[1,11,6,10,1],"belgique":[7,4,10,3,2],"allemagne":[1,9,12,12,9]}}').
 
 
 /* --------------------------------------------------------------------- */

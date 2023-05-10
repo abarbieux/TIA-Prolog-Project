@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _to_dict():
-	return {"current_case": current_case, "pays": pays, "numero": numero, "fall": fall, "counter_fall": counter_fall}
+	return {"current_case": "[%s, %s]" % [current_case.x, current_case.y], "pays": pays, "numero": numero, "fall": fall, "counter_fall": counter_fall}
 
 
 func _to_string():
