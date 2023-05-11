@@ -40,12 +40,13 @@ choose_server(Data, ResponseString) :-
    ).
 
 
-parse_json_data(Data, Game_board, Player_info, Team_decks) :-
+parse_json_data(Data, Game_board, Player_info, Team_decks, Selected_player) :-
   atom_json_dict(Data, Data_dict, []),
   Game_board_string = Data_dict.get('game_board'),
   read_term_from_atom(Game_board_string, Game_board, []),
   Player_info = Data_dict.get('player_information'),
-  Team_decks = Data_dict.get('teams_deck').
+  Team_decks = Data_dict.get('teams_deck'),
+  atom_codes(Data_dict.get('selected_player'), Codes), atom_chars(Selected_player, Codes).
 
 
 get_position_status(Game_board, [X, Y], Status) :-
@@ -69,9 +70,9 @@ parse_player_info(Player_info, Team_decks, Player_name, Counter_fall, Player_pos
 
 
 test(Data) :-
-  parse_json_data(Data, Game_board, Player_info, Team_decks),
-  parse_player_info(Player_info, Team_decks, Player_name, Counter_fall, Player_position, Fall, Number, Country, Player_deck),
-  write('Player Name: '), write(Player_name), nl,
+  parse_json_data(Data, Game_board, Player_info, Team_decks, Selected_player),
+  parse_player_info(Player_info, Team_decks, Selected_player, Counter_fall, Player_position, Fall, Number, Country, Player_deck),
+  write('Player Name: '), write(Selected_player), nl,
   write('Counter fall: '), write(Counter_fall), nl,
   write('Player position: '), write(Player_position), nl,
   read_term_from_atom(Player_position, Position, []),
@@ -82,11 +83,91 @@ test(Data) :-
   write('Country: '), write(Country), nl,
   write('Player Deck: '), write(Player_deck), nl,
   get_deck_card(Player_deck, 0, Card_value),
-  write('First card: '), write(Card_value), nl.
+  write('First card: '), write(Card_value), nl,
+  minmax(Game_board, Player_info, Team_decks, Selected_player, 3, true, 0, 0, Best_card),
+  write('Best card: '), write(Best_card), nl.
 
 
 testit() :-
-  test('{"game_board":"[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]","player_information":{"italie_1":{"current_case":"[0, 0]","pays":"italie","numero":1,"fall":false,"counter_fall":0},"italie_2":{"current_case":"[0, 0]","pays":"italie","numero":2,"fall":false,"counter_fall":0},"italie_3":{"current_case":"[0, 0]","pays":"italie","numero":3,"fall":false,"counter_fall":0},"hollande_1":{"current_case":"[0, 0]","pays":"hollande","numero":1,"fall":false,"counter_fall":0},"hollande_2":{"current_case":"[0, 0]","pays":"hollande","numero":2,"fall":false,"counter_fall":0},"hollande_3":{"current_case":"[0, 0]","pays":"hollande","numero":3,"fall":false,"counter_fall":0},"belgique_1":{"current_case":"[0, 0]","pays":"belgique","numero":1,"fall":false,"counter_fall":0},"belgique_2":{"current_case":"[0, 0]","pays":"belgique","numero":2,"fall":false,"counter_fall":0},"belgique_3":{"current_case":"[0, 0]","pays":"belgique","numero":3,"fall":false,"counter_fall":0},"allemagne_1":{"current_case":"[0, 0]","pays":"allemagne","numero":1,"fall":false,"counter_fall":0},"allemagne_2":{"current_case":"[0, 0]","pays":"allemagne","numero":2,"fall":false,"counter_fall":0},"allemagne_3":{"current_case":"[0, 0]","pays":"allemagne","numero":3,"fall":false,"counter_fall":0}},"teams_deck":{"italie":[5,7,11,1,2],"hollande":[1,11,6,10,1],"belgique":[7,4,10,3,2],"allemagne":[1,9,12,12,9]}}').
+  test('{"game_board":"[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]","player_information":{"italie_1":{"name":"italie_1","current_case":"[0, 0]","pays":"italie","numero":1,"fall":false,"counter_fall":0},"italie_2":{"name":"italie_2","current_case":"[0, 0]","pays":"italie","numero":2,"fall":false,"counter_fall":0},"italie_3":{"name":"italie_3","current_case":"[0, 0]","pays":"italie","numero":3,"fall":false,"counter_fall":0},"hollande_1":{"name":"hollande_1","current_case":"[0, 0]","pays":"hollande","numero":1,"fall":false,"counter_fall":0},"hollande_2":{"name":"hollande_2","current_case":"[0, 0]","pays":"hollande","numero":2,"fall":false,"counter_fall":0},"hollande_3":{"name":"hollande_3","current_case":"[0, 0]","pays":"hollande","numero":3,"fall":false,"counter_fall":0},"belgique_1":{"name":"belgique_1","current_case":"[0, 0]","pays":"belgique","numero":1,"fall":false,"counter_fall":0},"belgique_2":{"name":"belgique_2","current_case":"[0, 0]","pays":"belgique","numero":2,"fall":false,"counter_fall":0},"belgique_3":{"name":"belgique_3","current_case":"[0, 0]","pays":"belgique","numero":3,"fall":false,"counter_fall":0},"allemagne_1":{"name":"allemagne_1","current_case":"[0, 0]","pays":"allemagne","numero":1,"fall":false,"counter_fall":0},"allemagne_2":{"name":"allemagne_2","current_case":"[0, 0]","pays":"allemagne","numero":2,"fall":false,"counter_fall":0},"allemagne_3":{"name":"allemagne_3","current_case":"[0, 0]","pays":"allemagne","numero":3,"fall":false,"counter_fall":0}},"teams_deck":{"italie":[5,9,10,2,4],"hollande":[8,7,3,3,10],"belgique":[12,5,10,10,12],"allemagne":[9,8,3,10,1]},"selected_player":"italie_1"}').
+
+
+check_chance_case_y(X, Y, Game_board, Result) :-
+  write('Y: '), write(Y), nl,
+  length(Game_board, Board_length),
+  (Y < Board_length - 1 ->
+    nth0(Y, Game_board, Row),
+    nth0(X, Row, Status),
+    (Status == 2 ->
+      Result = true
+      ;
+      Result = false,
+      Y1 is Y + 1,
+      check_chance_case_y(X, Y1, Game_board, Result)
+    )
+    ;
+    Result = false
+  ).
+
+
+check_win_case(X, Y, Game_board, Result) :-
+  length(Game_board, Board_length),
+  (Y < Board_length - 1 ->
+    nth0(Y, Game_board, Row),
+    nth0(X, Row, Status),
+    (Status == 3 ->
+      Result = true
+      ;
+      Result = false,
+      Y1 is Y + 1,
+      check_win_case(X, Y1, Game_board, Result)
+    )
+    ;
+    Result = false
+  ).
+
+
+minmax(_, _, _, _, 0, _, _, _, Best_card) :- write(Best_card), nl.
+minmax(Game_board, Player_info, Team_decks, Selected_player, Dept, Maximise, Card_iterator, Best_score, Best_card) :-
+  Dept > 0,
+  parse_player_info(Player_info, Team_decks, Selected_player, _, Player_position, _, _, _, Player_deck),
+  length(Player_deck, Deck_length),
+  (Card_iterator < Deck_length - 1 ->
+    get_deck_card(Player_deck, Card_iterator, Card_value),
+    write(Card_iterator), write('th card: '), write(Card_value), nl,
+    read_term_from_atom(Player_position, [X, Y], []),
+    write('Player position: '), write('X: '), write(X), write(' Y: '), write(Y), nl,
+    Possible_X is X + Card_value,
+    write('Possible X: '), write(Possible_X), nl,
+    check_chance_case_y(Possible_X, 0, Game_board, Result),
+    write('Chance case: '), write(Result), nl,
+    (Result ->
+      Card_score = Card_value + 3
+      ;
+      check_win_case(Possible_X, 0, Game_board, Result1),
+      write('Win case: '), write(Result1), nl,
+      (Result1 ->
+        Card_score = Card_value + 15
+        ;
+        Card_score = Card_value
+      )
+    ),
+    write('Card score: '), write(Card_score), nl,
+    (Maximise ->
+      (Card_score > Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
+      Dept1 is Dept - 1,
+      Card_iterator1 is Card_iterator + 1,
+      Best_card = Card_value,
+      minmax(Game_board, Player_info, Team_decks, Selected_player, Dept1, false, Card_iterator1, New_score, New_best_card)
+      ;
+      (Card_score < Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
+      Dept1 is Dept - 1,
+      Card_iterator1 is Card_iterator + 1,
+      minmax(Game_board, Player_info, Team_decks, Selected_player, Dept1, true, Card_iterator1, New_score, New_best_card)
+    )
+    ;
+    true
+  ).
 
 
 /* --------------------------------------------------------------------- */
@@ -136,7 +217,7 @@ produire_reponse(_, [L1, L2, L3]) :-
 checkMClef([], Bool) :- Bool = false.
 checkMClef([Mot|ListeMots], Bool) :-
   (
-    Mot == 'position'
+    member(Mot, ['position', 'positions', 'positio', 'pos'])
     ->
     Bool = true
     ;

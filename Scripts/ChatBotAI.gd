@@ -50,8 +50,7 @@ func get_best_card_h0(team: String) -> int:
 		value = duplicated_deck.max()
 		
 	return -1
-	
-	
+		
 	
 func get_best_card_h1(team: String) -> int:
 	var country_index = get_country_index_from_team(team)

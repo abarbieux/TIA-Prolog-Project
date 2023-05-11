@@ -37,6 +37,15 @@ func get_teams_deck():
 		buffer[pays[i].name] = _deck
 		i += 1
 	return buffer
+	
+
+func get_selected_player():
+	var buffer = {}
+	var players_movable = instance._MovementManager.select_last_cyclist_movable()
+	if len(players_movable) > 0:
+		var selected_player = players_movable[0]
+		buffer = "%s_%s" % [selected_player.pays, selected_player.numero]
+	return buffer
 
 
 func get_game_information_dict():
@@ -44,4 +53,5 @@ func get_game_information_dict():
 	buffer["game_board"] = get_game_board()
 	buffer["player_information"] = get_players_information()
 	buffer["teams_deck"] = get_teams_deck()
+	buffer["selected_player"] = get_selected_player()
 	return buffer
