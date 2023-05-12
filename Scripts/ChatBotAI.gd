@@ -19,10 +19,7 @@ var heuristic_mode: int
 ##			So, the player plays the card "3" instead of "5" because it is the best chance to get a
 ##			"6" without using the said card (which in this case he doesn't have) and to save the "5"
 ##			which would be lower than "6". Doing so, we can have a positive outcome of our move at 57%
-##			chance and thus saving our high card for later to go further into the game faster.
-##	3: Same as the heuristic 2, but takes into account the possibility to block other players path
-##		by looking at which cards they have and if it's possible to make them pass their turn with
-##		one of our movements cards.
+##			chance and thus saving our high card for later to go further into the game faster and so getting more points to win.
 func _init(_instance):
 	instance = _instance
 	heuristic_mode = 1
