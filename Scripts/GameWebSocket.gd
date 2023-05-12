@@ -34,7 +34,7 @@ func _closed(was_clean = false):
 	set_process(false)
 
 
-func _connected(proto = ""):
+func _connected(_proto = ""):
 	pass
 
 
@@ -73,7 +73,7 @@ func _on_data():
 		panel._on_Message_received(message)
 
 
-func _process(delta):
+func _process(_delta):
 	_client.poll()
 
 
