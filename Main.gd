@@ -138,7 +138,7 @@ func init_pre_select_move_phase():
 	if is_definitely_the_end:
 		return
 	
-	if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
+	if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 		yield(get_tree().create_timer(0.1), "timeout")
 	
 	
@@ -146,14 +146,14 @@ func init_pre_select_move_phase():
 	var possible = check_all_possibles_path()
 	
 	if !possible:
-		if !is_unit_test_mode && countries[_country_turn_index].Tactic == 10:
+		if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 			ErrorComponent.pass_tour.show()
 			yield(ErrorComponent.pass_tour, "confirmed")
 		pass_turn()
 	else:
 		if is_unit_test_mode:
 			play_virtual_game()
-		elif countries[_country_turn_index].Tactic != 10:
+		elif countries[_country_turn_index].Tactic != 0:
 			var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
 			
 			_ChatBotAI.heuristic_mode = countries[_country_turn_index].Tactic
@@ -213,25 +213,29 @@ func _button_player_pressed(player, value, index) -> void:
 #		card.queue_free()
 	
 	is_selecting_case = true
-	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 10:
+	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
 		
 	if is_selecting_case:
-		if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
+		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			
 			
 			var check_card_chance = check_card_chance(value)
 			var error
+			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
 			
 			if check_card_chance != Vector2.ZERO:
+				print("vectore2.zero")
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
-			elif countries[_country_turn_index].Tactic == 2:
+			elif countries[_country_turn_index].Tactic == 3:
+				print("pass")
 				pass
 				#renvoyer la fonction de Diego
 			
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
+				print("player_selected : ", player_selected)
 				error = _MovementManager.init_movement(value, index, true)
 				
 			is_selecting_case = false
@@ -249,7 +253,7 @@ func _button_player_pressed(player, value, index) -> void:
 
 func check_card_chance(value):
 	var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
-	print("possible_cyclist : ", possible_cyclist)
+#	print("possible_cyclist : ", possible_cyclist)
 	for cyclist in possible_cyclist:
 		var x_position = cyclist.current_case.x + value
 		
@@ -260,8 +264,8 @@ func check_card_chance(value):
 			if check_chance == 2:
 				if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
 					player_selected = cyclist
-					print("player_selected : ", player_selected)
-					print("vector : ", Vector2(x_position, path))
+#					print("player_selected : ", player_selected)
+#					print("vector : ", Vector2(x_position, path))
 					return Vector2(x_position, path)
 	print("no chance")
 	return Vector2.ZERO

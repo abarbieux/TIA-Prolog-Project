@@ -14,18 +14,22 @@ func _on_OkButton_pressed() -> void:
 
 func _on_MenuButtonAllemagne_item_selected(index: int) -> void:
 	change_tactic(Countries[3], index)
+	print("index : ", index)
 
 
 func _on_MenuButtonBelgique_item_selected(index: int) -> void:
 	change_tactic(Countries[2], index)
+	print("index : ", index)
 
 
 func _on_MenuButtonHollande_item_selected(index: int) -> void:
 	change_tactic(Countries[1], index)
+	print("index : ", index)
 
 
 func _on_MenuButtonItalie_item_selected(index: int) -> void:
 	change_tactic(Countries[0], index)
+	print("index : ", index)
 
 func change_tactic(country, index: int) -> void:
 	country.Tactic = index

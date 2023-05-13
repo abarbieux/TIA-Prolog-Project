@@ -4,7 +4,7 @@ extends Object
 
 var name: String = ""
 var members: Array = []
-var Tactic: int = 10
+var Tactic: int = 0
 
 
 func _init(_name: String) -> void:

@@ -15,6 +15,7 @@ func init_movement(value: int, index: int, _carte_movement: bool = true, testpos
 		return false
 	
 	var cell: Vector2 = get_available_cell(value)
+	print("cell : ", cell)
 	
 	if cell != Vector2.INF:
 		var pos = get_new_pos(cell, value)
