@@ -216,7 +216,13 @@ func _button_player_pressed(player, value, index) -> void:
 		yield(self, "cell_pos_changed")
 	if is_selecting_case:
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
-			var error = _MovementManager.init_movement(value, index, true)
+			# change here
+			var check_card_chance = check_card_chance(value)
+			var error
+			if check_card_chance != Vector2.ZERO:
+				error = _MovementManager.init_movement(value, index, true, check_card_chance)
+			else:
+				error = _MovementManager.init_movement(value, index, true)
 			is_selecting_case = false
 			if error:
 				init_pre_select_move_phase()
@@ -229,6 +235,37 @@ func _button_player_pressed(player, value, index) -> void:
 	
 	hide_all_cell_button()
 
+func check_card_chance(value):
+	var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
+	for cyclist in possible_cyclist:
+			var x_position = cyclist.current_case.x + value
+			for path in _A_Star.chemins.size():
+				var check_chance = _A_Star.chemins[path][x_position]
+				if check_chance == 2:
+					if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
+						return Vector2(x_position, path)
+	return Vector2.ZERO
+
+func check_choiced_case_available(path_x: int, chemin_chosen: int, cyclist, value: int):
+	
+	var _count : int = 0
+	var check_pos_no_occupied : bool = true
+	if _MovementManager.is_valid_cell(chemin_chosen, path_x):
+		var best_path: PoolVector2Array = _A_Star._get_path(
+				cyclist.current_case, Vector2(path_x, chemin_chosen))
+		
+		if best_path.size() == 0 || best_path.size() > value:
+			return PoolVector2Array()
+		
+		for player in _players:
+			if player.current_case == best_path[-1]: 
+				check_pos_no_occupied = false
+				break
+			
+		if check_pos_no_occupied:
+			return best_path
+			
+	return PoolVector2Array()
 
 func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var _clamp = clamp(cyclist.current_case.x + value,0, clamp_max)
