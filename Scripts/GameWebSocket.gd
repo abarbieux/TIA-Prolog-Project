@@ -6,7 +6,7 @@ export var websocket_url = "ws://127.0.0.1:5000/ws"
 # Our WebSocketClient instance
 var _client = WebSocketClient.new()
 var panel
-var functions = ["getPosition", "conseilCarte"]
+var functions = ["getPosition", "conseilCarte", "isMoveAutorised"]
 var instance
 
 
@@ -68,6 +68,12 @@ func _on_data():
 					result_message = "La meilleure carte à jouer de l'équipe %s du joueur %s est la carte avec une valeur de %s" % [instance.countries[instance._country_turn_index].name, instance._MovementManager.get_last_cyclist_movable()[0].numero, result]
 				else:
 					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.countries[instance._country_turn_index]
+			"isMoveAutorised":
+				var card_played = int(args[1])
+				#var player_deck = Main._Deck.deck_carte_player[Main._country_turn_index]
+				if len(instance._MovementManager.get_available_cells(card_played)) == 0:
+					_client.get_peer(1).put_packet(("AI " + JSON.print(instance._GameAI.get_game_information_dict_without_card(card_played))).to_utf8())
+				return -1
 		panel._on_Message_received(result_message)
 	else:
 		panel._on_Message_received(message)

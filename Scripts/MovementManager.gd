@@ -39,6 +39,19 @@ func get_available_cell(value) -> Vector2:
 	
 	return Vector2.INF
 
+func get_available_cells(value) -> Array:
+	var _clamp = clamp(main.player_selected.current_case.x + value, 0, main.clamp_max)
+	var all_cells : Array = []
+	
+	for chemin_chosen in main._A_Star.chemins.size():
+		if is_valid_cell(chemin_chosen, _clamp):
+			
+			var path = get_best_path(chemin_chosen, _clamp)
+			if path != [] && path.size() <= abs(value):
+			
+				if !is_player_on_cell(chemin_chosen, _clamp):
+					all_cells.append(Vector2(chemin_chosen, _clamp))
+	return all_cells
 
 func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
 	main.player_selected.current_case = new_pos
