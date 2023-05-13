@@ -214,18 +214,24 @@ func _button_player_pressed(player, value, index) -> void:
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 10:
 		yield(self, "cell_pos_changed")
+		
 	if is_selecting_case:
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
 			# change here
+			
 			var check_card_chance = check_card_chance(value)
+			
 			var error
 			if check_card_chance != Vector2.ZERO:
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
+				
 			else:
 				error = _MovementManager.init_movement(value, index, true)
+				
 			is_selecting_case = false
 			if error:
 				init_pre_select_move_phase()
+				
 		else:
 			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
 			is_selecting_case = false
@@ -238,17 +244,21 @@ func _button_player_pressed(player, value, index) -> void:
 func check_card_chance(value):
 	var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
 	for cyclist in possible_cyclist:
-			var x_position = cyclist.current_case.x + value
-			for path in _A_Star.chemins.size():
-				var check_chance = _A_Star.chemins[path][x_position]
-				if check_chance == 2:
-					if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
-						return Vector2(x_position, path)
+		var x_position = cyclist.current_case.x + value
+		
+		for path in _A_Star.chemins.size():
+			
+			var check_chance = _A_Star.chemins[path][x_position]
+			
+			if check_chance == 2:
+				if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
+					player_selected = cyclist
+					return Vector2(x_position, path)
 	return Vector2.ZERO
 
 func check_choiced_case_available(path_x: int, chemin_chosen: int, cyclist, value: int):
 	
-	var _count : int = 0
+
 	var check_pos_no_occupied : bool = true
 	if _MovementManager.is_valid_cell(chemin_chosen, path_x):
 		var best_path: PoolVector2Array = _A_Star._get_path(
@@ -259,8 +269,9 @@ func check_choiced_case_available(path_x: int, chemin_chosen: int, cyclist, valu
 		
 		for player in _players:
 			if player.current_case == best_path[-1]: 
-				check_pos_no_occupied = false
-				break
+				if shift_position(player.current_case.y, player.current_case.x) == -1:
+					check_pos_no_occupied = false
+					break
 			
 		if check_pos_no_occupied:
 			return best_path
