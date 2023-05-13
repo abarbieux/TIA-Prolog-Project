@@ -517,7 +517,7 @@ custom_fonts/font = SubResource( 10 )
 text = "Joueur"
 clip_text = true
 align = 1
-items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null, "Min-Max", null, false, 2, null ]
 selected = 0
 
 [node name="MenuButtonHollande" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
@@ -529,7 +529,7 @@ custom_fonts/font = SubResource( 10 )
 text = "Joueur"
 clip_text = true
 align = 1
-items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null, "Min-Max", null, false, 2, null ]
 selected = 0
 
 [node name="MenuButtonBelgique" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
@@ -541,7 +541,7 @@ custom_fonts/font = SubResource( 10 )
 text = "Joueur"
 clip_text = true
 align = 1
-items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null, "Min-Max", null, false, 2, null ]
 selected = 0
 
 [node name="MenuButtonAllemagne" type="OptionButton" parent="IAChoiceMenu/Menu/VBoxContainer"]
@@ -553,7 +553,7 @@ custom_fonts/font = SubResource( 10 )
 text = "Joueur"
 clip_text = true
 align = 1
-items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null ]
+items = [ "Joueur", null, false, 10, null, "IA Carte Chance", null, false, 1, null, "IA Valeur Maximum", null, false, 0, null, "Min-Max", null, false, 2, null ]
 selected = 0
 
 [node name="Belgique" type="Label" parent="IAChoiceMenu/Menu"]

@@ -218,14 +218,18 @@ func _button_player_pressed(player, value, index) -> void:
 		
 	if is_selecting_case:
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 10:
-			# change here
+			
 			
 			var check_card_chance = check_card_chance(value)
-			
 			var error
+			
 			if check_card_chance != Vector2.ZERO:
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
-				
+			
+			elif countries[_country_turn_index].Tactic == 2:
+				pass
+				#renvoyer la fonction de Diego
+			
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
 				error = _MovementManager.init_movement(value, index, true)
