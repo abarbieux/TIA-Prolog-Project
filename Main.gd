@@ -77,7 +77,7 @@ func _ready() -> void:
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		OS.execute("taskkill", ["/im", "swipl.exe", "/F"], false)
+		var _server_pid = OS.execute("taskkill", ["/im", "swipl.exe", "/F"], false)
 
 
 func create_button():
