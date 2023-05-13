@@ -2,6 +2,7 @@ class_name Main
 extends Control
 
 
+
 #signal change_turn(team)
 
 const number_of_team_member: int = 3
@@ -35,6 +36,7 @@ onready var _path = $Map/Paths
 onready var panel = $Panel
 onready var UIComponent := $UIComponent
 onready var ErrorComponent := $ErrorComponent
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -196,6 +198,7 @@ func _button_pressed(_button, value, index) -> void :
 
 
 func _button_player_pressed(player, value, index) -> void:
+	
 	player_selected = player
 	
 	for child in UIComponent.choose_player_panel.get_children():
@@ -203,18 +206,22 @@ func _button_player_pressed(player, value, index) -> void:
 	
 	var cells = get_all_cell_available(value, player)
 	
-	for path in _path.get_children():
-		for btn in path.get_children():
-			for cell in cells:
-				if btn.editor_description == str(cell.x) + "," + str(cell.y):
-					btn.visible = true
-#
+	if cells.size() != 0:
+		for path in _path.get_children():
+			for btn in path.get_children():
+				for cell in cells:
+					if btn.editor_description == str(cell.x) + "," + str(cell.y):
+						btn.visible = true
+	else:
+		ErrorComponent.movement_error.show()
 #	for card in UIComponent.current_cards_buttons.get_children():
 #		card.queue_free()
 	
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
+		
+		
 		
 	if is_selecting_case:
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
@@ -230,8 +237,10 @@ func _button_player_pressed(player, value, index) -> void:
 			
 			elif countries[_country_turn_index].Tactic == 3:
 				print("pass")
-				pass
+				
 				#renvoyer la fonction de Diego
+				if len(GameWebSocket.instance._MovementManager.get_available_cells(value)) == 0:
+					GameWebSocket._client.get_peer(1).put_packet(("AI " + JSON.print(GameWebSocket.instance._GameAI.get_game_information_dict_without_card(value))).to_utf8())
 			
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
@@ -242,11 +251,12 @@ func _button_player_pressed(player, value, index) -> void:
 			if error:
 				init_pre_select_move_phase()
 				
-		else:
-			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
-			is_selecting_case = false
-			if error:
-				ErrorComponent.movement_error.show()
+#		else:
+#
+#			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
+#			is_selecting_case = false
+#			if error:
+#				ErrorComponent.movement_error.show()
 	
 	
 	hide_all_cell_button()
