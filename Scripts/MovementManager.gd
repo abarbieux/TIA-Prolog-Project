@@ -19,6 +19,7 @@ func init_movement(value: int, index: int, _carte_movement: bool = true, testpos
 	if cell != Vector2.INF:
 		var pos = get_new_pos(cell, value)
 		if pos != Vector2.INF:
+			print("mouvement enclencher")
 			move_player(pos, index, value, _carte_movement)
 			return false
 	
@@ -54,12 +55,13 @@ func get_available_cells(value) -> Array:
 	return all_cells
 
 func move_player(new_pos, index, value, carte_movement: bool = true) -> void:
+	
 	main.player_selected.current_case = new_pos
 	var offset = main.get_child(2).rect_pivot_offset * (Vector2(1, 1) - main.get_child(2).rect_scale)
 	main.player_selected.position = (main._path.get_child(
 			main.player_selected.current_case.y).curve.get_point_position(
 					main.player_selected.current_case.x) * main.get_child(2).rect_scale) + offset
-					
+	print("main.player_selected : ", main.player_selected)
 	main.add_score(value, main.player_selected.pays)
 	
 	if carte_movement:

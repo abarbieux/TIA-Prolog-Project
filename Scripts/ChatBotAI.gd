@@ -58,9 +58,9 @@ func get_best_card_h1(team: String) -> int:
 	while true:
 		var test_old = first_chance_case_distance
 		first_chance_case_distance = find_first_chance_case_distance(team, cyclist_number, first_chance_case_distance + 1)
-		print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
+#		print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
 		if test_old == first_chance_case_distance:
-			print("Error... %s" % test_old)
+#			print("Error... %s" % test_old)
 			break
 			
 		if first_chance_case_distance == -1:
@@ -69,12 +69,12 @@ func get_best_card_h1(team: String) -> int:
 		var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
 		sum_to_chance_case.sort()
 		if len(sum_to_chance_case) != 0:
-			print("sum_to_chance_case : ", sum_to_chance_case)
+#			print("sum_to_chance_case : ", sum_to_chance_case)
 			for card in sum_to_chance_case:
 				if instance._MovementManager.get_all_path_available(card, player_selected).size() > 0:
-					print("Playing sum card: ", card)
+#					print("Playing sum card: ", card)
 					return card
-		print("No sum found for %s" % first_chance_case_distance)
+#		print("No sum found for %s" % first_chance_case_distance)
 	return -1
 		
 
@@ -102,7 +102,7 @@ func get_cyclist_position(team, cyclist_number) -> Vector2:
 func find_sum_of(team: String, number: int) -> Array:
 	var country_index = get_country_index_from_team(team)
 	var team_deck: Array = instance._Deck.deck_carte_player[country_index]
-	print("Team Deck:", team_deck)
+#	print("Team Deck:", team_deck)
 	for card_1 in team_deck:
 		if card_1 > number:
 			continue
@@ -111,9 +111,9 @@ func find_sum_of(team: String, number: int) -> Array:
 		
 		var removed_card_deck = team_deck.duplicate(true)
 		removed_card_deck.erase(card_1)
-		print("Removed Deck:", removed_card_deck)
+#		print("Removed Deck:", removed_card_deck)
 		if number - card_1 in removed_card_deck:
-			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
+#			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
 			return [card_1, number - card_1]
 		
 		var accumulator = card_1;
@@ -125,7 +125,7 @@ func find_sum_of(team: String, number: int) -> Array:
 				accumulator += removed_card_deck[i]
 				cards.append(removed_card_deck[i])
 		if accumulator == number:
-			print("#101 Sum for %s %s" % [number, cards])
+#			print("#101 Sum for %s %s" % [number, cards])
 			return cards #.sort()
 	return []
 
@@ -170,7 +170,7 @@ func get_all_chances_cases() -> Array:
 ## @return the distance between the two positions.
 func distance(position1: Vector2, position2: Vector2) -> int:
 	#return int(round(pow((pow(position2[0] - position1[0], 2.0) + pow(position2[1] - position1[1], 2.0)), 0.5)))
-	print("Position 1: %s, Position 2: %s" % [String(position1), String(position2)])
+#	print("Position 1: %s, Position 2: %s" % [String(position1), String(position2)])
 	return int(position2.x - position1.x)
 	
 	

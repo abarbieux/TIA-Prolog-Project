@@ -182,9 +182,10 @@ func play_virtual_game():
 
 func check_all_possibles_path() -> bool:
 	for player in countries[_country_turn_index].members:
-		for carte in _Deck.deck_carte_player[_country_turn_index]:
-			if _MovementManager.get_all_path_available(carte, player).size() != 0:
-				return true
+		if player.counter_fall == 0:
+			for carte in _Deck.deck_carte_player[_country_turn_index]:
+				if _MovementManager.get_all_path_available(carte, player).size() != 0:
+					return true
 	
 	return false
 
@@ -226,6 +227,7 @@ func _button_player_pressed(player, value, index) -> void:
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 				
 			else:
+				player_selected = _MovementManager.select_last_cyclist_movable()[0]
 				error = _MovementManager.init_movement(value, index, true)
 				
 			is_selecting_case = false
@@ -243,6 +245,7 @@ func _button_player_pressed(player, value, index) -> void:
 
 func check_card_chance(value):
 	var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
+	print("possible_cyclist : ", possible_cyclist)
 	for cyclist in possible_cyclist:
 		var x_position = cyclist.current_case.x + value
 		
@@ -253,7 +256,10 @@ func check_card_chance(value):
 			if check_chance == 2:
 				if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
 					player_selected = cyclist
+					print("player_selected : ", player_selected)
+					print("vector : ", Vector2(x_position, path))
 					return Vector2(x_position, path)
+	print("no chance")
 	return Vector2.ZERO
 
 func check_choiced_case_available(path_x: int, chemin_chosen: int, cyclist, value: int):
