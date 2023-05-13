@@ -24,7 +24,9 @@ func get_players_information():
 	var buffer = {}
 	var i = 0
 	for _player in instance._players:
-		buffer[_player.pays + "_" + String((i % 3) + 1)] = _player._to_dict()
+		if not buffer.has(_player.pays):
+			buffer[_player.pays] = {}
+		buffer[_player.pays][_player.pays + "_" + String((i % 3) + 1)] = _player._to_dict()
 		i += 1
 	return buffer
 		
