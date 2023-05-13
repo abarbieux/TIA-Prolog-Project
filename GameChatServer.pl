@@ -32,8 +32,17 @@ choose_server(Data, ResponseString) :-
     atomics_to_string(FlattenList, ' ', ResponseString)
     ;
     (Protocol == 'AI' ->
-     write(Data), nl,
-		 ResponseString = "AI MODE"
+     split_string(Data, ' ', '', [_|Unparsed_game_data]),
+     atomic_list_concat(Unparsed_game_data, ' ', Game_data),
+     parse_json_data(Game_data, Game_board, Player_info, Team_decks, Selected_player),
+     parse_player_info(Player_info, Team_decks, Selected_player, _, Player_position, _, _, _, Player_deck),
+     read_term_from_atom(Player_position, [X, Y], []),
+     allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 5, 0, [], Final_best_permutation),
+     nth0(0, Final_best_permutation, Card_value),
+     string_concat(' ', Card_value, ResponseString1),
+		 string_concat('isMoveAutorised', ResponseString1, ResponseString2),
+     write('Card to play: '), write(ResponseString2), nl,
+     ResponseString  = ResponseString2
      ;
      true
     )
@@ -99,47 +108,17 @@ parse_player_info(Player_info, Team_decks, Player_name, Counter_fall, Player_pos
   Player_deck = Team_decks.get(Country).
 
 
-test(Data) :-
-  parse_json_data(Data, Game_board, Player_info, Team_decks, Selected_player),
-  get_country_from_player_name(Selected_player, Country),
-  get_next_selected_player(Player_info, Country, 1, inf, _, Final_next_player),
-  write('Next player: '), write(Final_next_player), nl,
-  parse_player_info(Player_info, Team_decks, Selected_player, Counter_fall, Player_position, Fall, Number, Country, Player_deck),
-  write('Player Name: '), write(Selected_player), nl,
-  write('Counter fall: '), write(Counter_fall), nl,
-  write('Player position: '), write(Player_position), nl,
-  read_term_from_atom(Player_position, Position, []),
-  get_position_status(Game_board, Position, Status),
-  write('Status of '), write(Player_position), write(': '), write(Status), nl,
-  write('Fall: '), write(Fall), nl,
-  write('Number: '), write(Number), nl,
-  write('Country: '), write(Country), nl,
-  write('Player Deck: '), write(Player_deck), nl,
-  get_deck_card(Player_deck, 0, Card_value),
-  write('First card: '), write(Card_value), nl,
-  parse_player_info(Player_info, Team_decks, Selected_player, _, Player_position, _, _, _, Player_deck),
-  read_term_from_atom(Player_position, [X, Y], []),
-  allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 5, 0, [], Final_best_permutation),
-  write('Best permutation: '), write(Final_best_permutation), nl.
-
-
-testit() :-
-  test('{"game_board":"[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]","player_information":{"italie":{"italie_1":{"name":"italie_1","current_case":"[6, 1]","pays":"italie","numero":1,"fall":false,"counter_fall":0},"italie_2":{"name":"italie_2","current_case":"[4, 3]","pays":"italie","numero":2,"fall":false,"counter_fall":0},"italie_3":{"name":"italie_3","current_case":"[2, 3]","pays":"italie","numero":3,"fall":false,"counter_fall":0}},"hollande":{"hollande_1":{"name":"hollande_1","current_case":"[14, 1]","pays":"hollande","numero":1,"fall":false,"counter_fall":0},"hollande_2":{"name":"hollande_2","current_case":"[3, 1]","pays":"hollande","numero":2,"fall":false,"counter_fall":0},"hollande_3":{"name":"hollande_3","current_case":"[5, 3]","pays":"hollande","numero":3,"fall":false,"counter_fall":0}},"belgique":{"belgique_1":{"name":"belgique_1","current_case":"[7, 3]","pays":"belgique","numero":1,"fall":false,"counter_fall":0},"belgique_2":{"name":"belgique_2","current_case":"[9, 2]","pays":"belgique","numero":2,"fall":false,"counter_fall":0},"belgique_3":{"name":"belgique_3","current_case":"[1, 2]","pays":"belgique","numero":3,"fall":false,"counter_fall":0}},"allemagne":{"allemagne_1":{"name":"allemagne_1","current_case":"[6, 3]","pays":"allemagne","numero":1,"fall":false,"counter_fall":0},"allemagne_2":{"name":"allemagne_2","current_case":"[7, 2]","pays":"allemagne","numero":2,"fall":false,"counter_fall":0},"allemagne_3":{"name":"allemagne_3","current_case":"[5, 2]","pays":"allemagne","numero":3,"fall":false,"counter_fall":0}}},"teams_deck":{"italie":[3,12,4,5],"hollande":[2,7],"belgique":[4,1],"allemagne":[10,9]},"selected_player":"italie_3"}').
-
-
 check_case_status(X, Y, Game_board, Result) :-
   length(Game_board, Board_length),
   (Y < Board_length ->
     get_position_status(Game_board, [X, Y], Status),
     (Status == 2 ->
-      write('It''s a chance case!'), nl,
       Result = chance_case
       ;
       Y1 is Y + 1,
       check_case_status(X, Y1, Game_board, Result)
       ;
       (Status == 3 ->
-        write('It''s a winning case!'), nl,
         Result = win_case
         ;
         Y1 is Y + 1,
@@ -151,63 +130,31 @@ check_case_status(X, Y, Game_board, Result) :-
   ).
 
 
-minmax(Game_board, Player_deck, [X, Y], Dept, Maximise, Card_iterator, Best_score, Best_card, Final_Best_Card) :-
-  (Dept > 0 ->
-    length(Player_deck, Deck_length),
-    (Card_iterator < Deck_length ->
-      get_deck_card(Player_deck, Card_iterator, Card_value),
-      write(Card_iterator), write('th card: '), write(Card_value), nl,
-      write('Player position: '), write('X: '), write(X), write(' Y: '), write(Y), nl,
-      %Possible_X is X + Card_value,
-      evaluate_card_score(Card_value, X, Game_board, Card_score),
-      write('Card score: '), write(Card_score), nl,
-      (Maximise ->
-        (Card_score >= Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
-        Dept1 is Dept - 1,
-        Card_iterator1 is Card_iterator + 1,
-        minmax(Game_board, Player_deck, [X, Y], Dept1, false, Card_iterator1, New_score, New_best_card, Final_Best_Card)
-        ;
-        (Card_score >= Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
-        Dept1 is Dept - 1,
-        Card_iterator1 is Card_iterator + 1,
-        minmax(Game_board, Player_deck, [X, Y], Dept1, true, Card_iterator1, New_score, New_best_card, Final_Best_Card)
-      )
-      ;
-      Final_Best_Card = Best_card
-    )
-    ;
-    Final_Best_Card = Best_card
-  ).
-
-
 allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation) :-
-  findall(Full_score-Permutation,
-          (permutation(Player_deck, Permutation),
-            duplicate_term(Player_info, Player_info_duplicate),
-            maxmax(Game_board, Player_info_duplicate, Selected_player, Player_deck, [X, Y], Dept, Card_iterator, Score, Full_score)
-          ),
-        Scores),
-  (Scores = [] ->
-    Best_score = 0,
-    Final_best_permutation = Best_permutation
+  findall(Permutation,
+          (permutation(Player_deck, Permutation)),
+        All_Permutations),
+  allmax_aux(Game_board, Player_info, Selected_player, All_Permutations, [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation),
+  write('Final best permutation: '), write(Final_best_permutation), nl.
+
+
+allmax_aux(_, _, _, [], _, _, Best_score, Best_permutation, Final_best_permutation) :-
+  write('Best permutation score: '), write(Best_score), nl,
+  Final_best_permutation = Best_permutation.
+allmax_aux(Game_board, Player_info, Selected_player, [Permutation_to_test|Rest_of_Permutations], [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation) :-
+  maxmax(Game_board, Player_info, Selected_player, Permutation_to_test, [X, Y], Dept, 0, 0, Full_score),
+  write('Permutation tested: '), write(Permutation_to_test), nl,
+  write('Permutation score: '), write(Full_score), nl,
+  (Full_score >= Best_score
+    ->
+    New_best_score = Full_score,
+    New_best_permutation = Permutation_to_test,
+    allmax_aux(Game_board, Player_info, Selected_player, Rest_of_Permutations, [X, Y], Dept, New_best_score, New_best_permutation, Final_best_permutation)
     ;
-    max_member(Best_score-Final_best_permutation, Scores),
-    write('Best score: '), write(Best_score), nl,
-    write('Final best permutation: '), write(Final_best_permutation), nl
+    New_best_score = Best_score,
+    New_best_permutation = Best_permutation,
+    allmax_aux(Game_board, Player_info, Selected_player, Rest_of_Permutations, [X, Y], Dept, New_best_score, New_best_permutation, Final_best_permutation)
   ).
-
-
-%allmax(Game_board, Player_deck, [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation) :-
-%  forall(permutation(Player_deck, Permutation),
-%  (
-%    write('Permutation: '), write(Permutation), nl,
-%    maxmax(Game_board, Permutation, [X, Y], Dept, 0, 0, Full_score),
-%    write('Full score: '), write(Full_score), nl,
-%    (Full_score >= Best_score -> New_score = Full_score, New_best_permutation = Permutation ; New_score = Best_score, New_best_permutation = Best_permutation),
-%    write('New best score: '), write(New_score), nl,
-%    write('New best permutation: '), write(New_best_permutation), nl
-%  )),
-%  Final_best_permutation = New_best_permutation.
 
 
 maxmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], Dept, Card_iterator, Score, Full_score) :-
@@ -215,18 +162,18 @@ maxmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], Dept, Card
       length(Player_deck, Deck_length),
       (Card_iterator < Deck_length ->
         get_deck_card(Player_deck, Card_iterator, Card_value),
-        write(Card_iterator), write('th card: '), write(Card_value), nl,
-        write('Player position: '), write('X: '), write(X), write(' Y: '), write(Y), nl,
         evaluate_card_score(Card_value, X, Game_board, Card_score),
-        write('Card score: '), write(Card_score), nl,
         New_score is Score + Card_score,
         New_X is X + Card_value,
         Dept1 is Dept - 1,
         Card_iterator1 is Card_iterator + 1,
         get_country_from_player_name(Selected_player, Country),
-        Player_info.get('Country').get(Selected_player).put('current_case', [New_X, Y]),
+        Player_dict = Player_info.get(Country).get(Selected_player),
+        maplist(atom_string, [New_X, Y], StringList), atomic_list_concat(StringList, ', ', String),
+        string_concat('[', String, String1), string_concat(String1, ']', String2),
+        b_set_dict(current_case, Player_dict, String2),
         get_next_selected_player(Player_info, Country, 1, inf, _, Final_next_player),
-        get_player_position(Player_info.get(Final_next_player), [Next_P_X, Next_P_Y]),
+        get_player_position(Player_info.get(Country).get(Final_next_player), [Next_P_X, Next_P_Y]),
         maxmax(Game_board, Player_info, Final_next_player, Player_deck, [Next_P_X, Next_P_Y], Dept1, Card_iterator1, New_score, Full_score)
         ;
         Full_score = Score
@@ -236,6 +183,34 @@ maxmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], Dept, Card
     ).
 
 
+%minmax(Game_board, Player_deck, [X, Y], Dept, Maximise, Card_iterator, Best_score, Best_card, Final_Best_Card) :-
+%  (Dept > 0 ->
+%    length(Player_deck, Deck_length),
+%    (Card_iterator < Deck_length ->
+%      get_deck_card(Player_deck, Card_iterator, Card_value),
+%      write(Card_iterator), write('th card: '), write(Card_value), nl,
+%      write('Player position: '), write('X: '), write(X), write(' Y: '), write(Y), nl,
+%      evaluate_card_score(Card_value, X, Game_board, Card_score),
+%      write('Card score: '), write(Card_score), nl,
+%      (Maximise ->
+%        (Card_score >= Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
+%        Dept1 is Dept - 1,
+%        Card_iterator1 is Card_iterator + 1,
+%        minmax(Game_board, Player_deck, [X, Y], Dept1, false, Card_iterator1, New_score, New_best_card, Final_Best_Card)
+%        ;
+%        (Card_score <= Best_score -> New_score = Card_score, New_best_card = Card_value ; New_score = Best_score, New_best_card = Best_card),
+%        Dept1 is Dept - 1,
+%        Card_iterator1 is Card_iterator + 1,
+%        minmax(Game_board, Player_deck, [X, Y], Dept1, true, Card_iterator1, New_score, New_best_card, Final_Best_Card)
+%      )
+%      ;
+%      Final_Best_Card = Best_card
+%    )
+%    ;
+%    Final_Best_Card = Best_card
+%  ).
+
+
 evaluate_card_score(Card_value, X, Game_board, Card_score) :-
   Possible_X is X + Card_value,
   check_case_status(Possible_X, 0, Game_board, Status),
@@ -243,7 +218,7 @@ evaluate_card_score(Card_value, X, Game_board, Card_score) :-
     Card_score is Card_value + 4
     ;
     (Status == win_case ->
-      Card_score is Card_value + 15
+      Card_score is Card_value + 16
       ;
       Card_score is Card_value
     )
