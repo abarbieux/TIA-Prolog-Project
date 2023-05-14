@@ -211,19 +211,22 @@ func _button_player_pressed(player, value, index) -> void:
 			for btn in path.get_children():
 				for cell in cells:
 					if btn.editor_description == str(cell.x) + "," + str(cell.y):
+						print("enter")
 						btn.visible = true
 	else:
 		ErrorComponent.movement_error.show()
 #	for card in UIComponent.current_cards_buttons.get_children():
 #		card.queue_free()
-	
+	print("pressed")
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
+		print("has pass")
 		
 		
 		
 	if is_selecting_case:
+		print("is_selecting_case")
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			
 			
@@ -236,12 +239,9 @@ func _button_player_pressed(player, value, index) -> void:
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
 			elif countries[_country_turn_index].Tactic == 3:
-				print("pass")
 				
-				#renvoyer la fonction de Diego
-				if len(GameWebSocket.instance._MovementManager.get_available_cells(value)) == 0:
-					GameWebSocket._client.get_peer(1).put_packet(("AI " + JSON.print(GameWebSocket.instance._GameAI.get_game_information_dict_without_card(value))).to_utf8())
-			
+				pass
+				
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
 				print("player_selected : ", player_selected)
@@ -251,12 +251,12 @@ func _button_player_pressed(player, value, index) -> void:
 			if error:
 				init_pre_select_move_phase()
 				
-#		else:
-#
-#			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
-#			is_selecting_case = false
-#			if error:
-#				ErrorComponent.movement_error.show()
+		else:
+
+			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
+			is_selecting_case = false
+			if error:
+				ErrorComponent.movement_error.show()
 	
 	
 	hide_all_cell_button()
