@@ -225,7 +225,7 @@ func _button_player_pressed(player, value, index, megaif: bool = false) -> void:
 	if is_selecting_case:
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			var check_card_chance = check_card_chance(value)
-			var error
+			var error = false
 			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
 			
 			if (check_card_chance != Vector2.ZERO and check_card_chance != Vector2(-100,-100)) or megaif:
@@ -239,6 +239,7 @@ func _button_player_pressed(player, value, index, megaif: bool = false) -> void:
 				var new_deck = buffer["teams_deck"][country]
 				for cached_card in _GameWebSocket.deck_cache:
 					new_deck = _GameAI.remove_card_from_deck(new_deck, cached_card)
+				print("Old deck: %s" % String(_GameAI.get_teams_deck()[country]))
 				buffer["teams_deck"][country] = new_deck
 				print("New deck: %s" % String(new_deck))
 				if len(new_deck) > 0:
@@ -247,7 +248,6 @@ func _button_player_pressed(player, value, index, megaif: bool = false) -> void:
 					value = _ChatBotAI.get_best_card_h0(country)
 					_button_player_pressed(player, value, index, true)
 				is_selecting_case = false
-
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
 				print("player_selected : ", player_selected)

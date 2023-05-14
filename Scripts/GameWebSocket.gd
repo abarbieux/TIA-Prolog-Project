@@ -16,7 +16,7 @@ func _init(_instance):
 
 
 func _ready():
-	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
+	var _pid = OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
 	
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
@@ -82,6 +82,8 @@ func _on_data():
 					for cached_card in deck_cache:
 						new_deck = instance._GameAI.remove_card_from_deck(new_deck, cached_card)
 					buffer["teams_deck"][country] = new_deck
+					print("Old deck: %s" % String(instance._GameAI.get_teams_deck()[country]))
+					print("New deck: %s" % String(new_deck))
 					if len(new_deck) > 0:
 						_client.get_peer(1).put_packet(("AI " + JSON.print(buffer)).to_utf8())
 					else:
