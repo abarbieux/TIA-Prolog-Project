@@ -31,6 +31,7 @@ var score_italie: int = 0
 var is_end := false
 var is_definitely_the_end := false
 var is_selecting_case := false
+var timer_ia : float = 0.1
 
 onready var _path = $Map/Paths
 onready var panel = $Panel
@@ -141,7 +142,7 @@ func init_pre_select_move_phase():
 		return
 	
 	if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
-		yield(get_tree().create_timer(0.1), "timeout")
+		yield(get_tree().create_timer(timer_ia), "timeout")
 	
 	
 	UIComponent.current_team.change_text(countries[_country_turn_index].name)
@@ -307,7 +308,7 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
 			if _A_Star._get_path(
-				cyclist.current_case, Vector2(cyclist.current_case.x + value, chemin_chosen)):
+				cyclist.current_case, Vector2(cyclist.current_case.x + value, chemin_chosen)) <= value:
 				if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
 					cells.append(Vector2(_clamp, chemin_chosen))
 				elif shift_position(chemin_chosen, _clamp) != -1 :
