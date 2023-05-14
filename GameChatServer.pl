@@ -26,7 +26,6 @@ choose_server(Data, ResponseString) :-
    read_atomics(Data, [Protocol|Message]),
    (Protocol == 'Chatbot' ->
     produire_reponse(Message, L_ligne_reponse),
-    write(L_ligne_reponse),
     ecrire_reponse(L_ligne_reponse),
     flatten(L_ligne_reponse, FlattenList),
     atomics_to_string(FlattenList, ' ', ResponseString)
@@ -37,11 +36,10 @@ choose_server(Data, ResponseString) :-
      parse_json_data(Game_data, Game_board, Player_info, Team_decks, Selected_player),
      parse_player_info(Player_info, Team_decks, Selected_player, _, Player_position, _, _, _, Player_deck),
      read_term_from_atom(Player_position, [X, Y], []),
-     allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 5, 0, [], Final_best_permutation),
+     allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 3, 0, [], Final_best_permutation),
      nth0(0, Final_best_permutation, Card_value),
      string_concat(' ', Card_value, ResponseString1),
 		 string_concat('isMoveAutorised', ResponseString1, ResponseString2),
-     write('Card to play: '), write(ResponseString2), nl,
      ResponseString  = ResponseString2
      ;
      true
@@ -59,8 +57,13 @@ parse_json_data(Data, Game_board, Player_info, Team_decks, Selected_player) :-
 
 
 get_position_status(Game_board, [X, Y], Status) :-
+  (X > 105 ->
+    X1 is 105
+    ;
+    X1 is X
+  ),
   nth0(Y, Game_board, Row),
-  nth0(X, Row, Status).
+  nth0(X1, Row, Status).
 
 
 get_deck_card(Team_deck, Card_index, Card_value) :-
@@ -115,9 +118,6 @@ check_case_status(X, Y, Game_board, Result) :-
     (Status == 2 ->
       Result = chance_case
       ;
-      Y1 is Y + 1,
-      check_case_status(X, Y1, Game_board, Result)
-      ;
       (Status == 3 ->
         Result = win_case
         ;
@@ -134,17 +134,13 @@ allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], Dept, Best
   findall(Permutation,
           (permutation(Player_deck, Permutation)),
         All_Permutations),
-  allmax_aux(Game_board, Player_info, Selected_player, All_Permutations, [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation),
-  write('Final best permutation: '), write(Final_best_permutation), nl.
+  allmax_aux(Game_board, Player_info, Selected_player, All_Permutations, [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation).
 
 
-allmax_aux(_, _, _, [], _, _, Best_score, Best_permutation, Final_best_permutation) :-
-  write('Best permutation score: '), write(Best_score), nl,
+allmax_aux(_, _, _, [], _, _, _, Best_permutation, Final_best_permutation) :-
   Final_best_permutation = Best_permutation.
 allmax_aux(Game_board, Player_info, Selected_player, [Permutation_to_test|Rest_of_Permutations], [X, Y], Dept, Best_score, Best_permutation, Final_best_permutation) :-
   maxmax(Game_board, Player_info, Selected_player, Permutation_to_test, [X, Y], Dept, 0, 0, Full_score),
-  write('Permutation tested: '), write(Permutation_to_test), nl,
-  write('Permutation score: '), write(Full_score), nl,
   (Full_score >= Best_score
     ->
     New_best_score = Full_score,
@@ -215,12 +211,12 @@ evaluate_card_score(Card_value, X, Game_board, Card_score) :-
   Possible_X is X + Card_value,
   check_case_status(Possible_X, 0, Game_board, Status),
   (Status == chance_case ->
-    Card_score is Card_value + 4
+    Card_score = Card_value + 4
     ;
     (Status == win_case ->
-      Card_score is Card_value + 16
+      Card_score = Card_value + 16
       ;
-      Card_score is Card_value
+      Card_score = Card_value
     )
   ).
 
@@ -974,7 +970,7 @@ regle_rep(deplacer,5,
 
 regle_rep(conseilles,5, 
   [ [conseilles],2,[faire] ],
-  [ [conseilCarte,;]
+  [ [conseilCarte]
   ]).
 
 /* Que me conseilles tu de faire  */

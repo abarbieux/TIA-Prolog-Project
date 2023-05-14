@@ -197,15 +197,14 @@ func _button_pressed(_button, value, index) -> void :
 	UIComponent.choose_player(value, index, _MovementManager.select_last_cyclist_movable())
 
 
-func _button_player_pressed(player, value, index) -> void:
-	
+func _button_player_pressed(player, value, index, megaif: bool = false) -> void:
 	player_selected = player
 	
 	for child in UIComponent.choose_player_panel.get_children():
 		child.queue_free()
-	
+
 	var cells = get_all_cell_available(value, player)
-	
+	var check_error = false
 	if cells.size() != 0:
 		for path in _path.get_children():
 			for btn in path.get_children():
@@ -213,7 +212,9 @@ func _button_player_pressed(player, value, index) -> void:
 					if btn.editor_description == str(cell.x) + "," + str(cell.y):
 						btn.visible = true
 	else:
-		ErrorComponent.movement_error.show()
+		if countries[_country_turn_index].Tactic == 0:
+			ErrorComponent.movement_error.show()
+		check_error = true
 #	for card in UIComponent.current_cards_buttons.get_children():
 #		card.queue_free()
 	
@@ -227,12 +228,25 @@ func _button_player_pressed(player, value, index) -> void:
 			var error
 			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
 			
-			if check_card_chance != Vector2.ZERO and check_card_chance != Vector2(-100,-100) :
+			if (check_card_chance != Vector2.ZERO and check_card_chance != Vector2(-100,-100)) or megaif:
 				
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
-			elif countries[_country_turn_index].Tactic == 3 and check_card_chance == Vector2.ZERO:
-				pass
+			elif countries[_country_turn_index].Tactic == 3 and (check_card_chance == Vector2.ZERO or check_error == true):
+				_GameWebSocket.deck_cache.append(value)
+				var buffer = _GameAI.get_game_information_dict()
+				var country = _MovementManager.get_last_cyclist_movable()[0].pays
+				var new_deck = buffer["teams_deck"][country]
+				for cached_card in _GameWebSocket.deck_cache:
+					new_deck = _GameAI.remove_card_from_deck(new_deck, cached_card)
+				buffer["teams_deck"][country] = new_deck
+				print("New deck: %s" % String(new_deck))
+				if len(new_deck) > 0:
+					_GameWebSocket._client.get_peer(1).put_packet(("AI " + JSON.print(buffer)).to_utf8())
+				else:
+					value = _ChatBotAI.get_best_card_h0(country)
+					_button_player_pressed(player, value, index, true)
+				is_selecting_case = false
 
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
@@ -368,6 +382,7 @@ func pass_turn():
 	
 	UIComponent.display_deck_button(_Deck.deck_carte_player[_country_turn_index])
 	update_team_carte_display()
+	_GameWebSocket.deck_cache = []
 	init_pre_select_move_phase()
 
 
