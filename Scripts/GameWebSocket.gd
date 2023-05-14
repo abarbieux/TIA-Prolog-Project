@@ -44,9 +44,12 @@ func _on_data():
 	var message = _client.get_peer(1).get_packet().get_string_from_utf8()
 	print(message)
 	if _check_liability(message):
-		var args = message.split(" ")
+		var args = Array(message.split(" "))
+		var command = args[0].replace(" ", "").replace("\"", "")
+		args = args.slice(1, len(args))
 		var result_message = "Cette fonction n'est pas encore implémentée..."
-		match args[0].replace(" ", "").replace("\"", ""):
+		var send_message = true
+		match command:
 			"getPosition":
 				var country
 				var cyclist_number
@@ -69,12 +72,11 @@ func _on_data():
 				else:
 					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.countries[instance._country_turn_index]
 			"isMoveAutorised":
-				var card_played = int(args[1])
-				#var player_deck = Main._Deck.deck_carte_player[Main._country_turn_index]
-				if len(instance._MovementManager.get_available_cells(card_played)) == 0:
-					_client.get_peer(1).put_packet(("AI " + JSON.print(instance._GameAI.get_game_information_dict_without_card(card_played))).to_utf8())
-				return -1
-		panel._on_Message_received(result_message)
+				var card_played = int(args[0])
+				instance._button_player_pressed(instance._MovementManager.get_last_cyclist_movable()[0], card_played, 0)
+				send_message = false
+		if send_message:
+			panel._on_Message_received(result_message)
 	else:
 		panel._on_Message_received(message)
 

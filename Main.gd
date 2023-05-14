@@ -158,15 +158,16 @@ func init_pre_select_move_phase():
 			play_virtual_game()
 		elif countries[_country_turn_index].Tactic != 0:
 			var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
-			
 			_ChatBotAI.heuristic_mode = countries[_country_turn_index].Tactic
-			
-			var chosen_card = _ChatBotAI.get_best_card(countries[_country_turn_index].name)
-			
-			
-			turn_already_past = false
-			_button_player_pressed(possible_cyclist[0],chosen_card, 0)
-			
+			if countries[_country_turn_index].Tactic != 3:
+				var chosen_card = _ChatBotAI.get_best_card(countries[_country_turn_index].name, null)
+				turn_already_past = false
+				_button_player_pressed(possible_cyclist[0], chosen_card, 0)
+			else:
+				var method = Method.new("POST", _GameAI.get_game_information_dict())
+				var _result = _ChatBotAI.get_best_card("", method)
+				turn_already_past = false
+
 
 
 func play_virtual_game():
@@ -180,8 +181,6 @@ func play_virtual_game():
 	_button_player_pressed(possible_cyclist[randomnly_selected_cyclist],
 			num_of_cards[randomnly_selected_card], 0)
 	
-	
-
 
 func check_all_possibles_path() -> bool:
 	for player in countries[_country_turn_index].members:
@@ -221,12 +220,18 @@ func _button_player_pressed(player, value, index) -> void:
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
+<<<<<<< Updated upstream
 		
+=======
+>>>>>>> Stashed changes
 		
 		
 		
 	if is_selecting_case:
+<<<<<<< Updated upstream
 		
+=======
+>>>>>>> Stashed changes
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			
 			
@@ -239,9 +244,8 @@ func _button_player_pressed(player, value, index) -> void:
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
 			elif countries[_country_turn_index].Tactic == 3:
-				
 				pass
-				
+
 			else:
 				player_selected = _MovementManager.select_last_cyclist_movable()[0]
 				print("player_selected : ", player_selected)
@@ -251,12 +255,12 @@ func _button_player_pressed(player, value, index) -> void:
 			if error:
 				init_pre_select_move_phase()
 				
-		else:
-
-			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
-			is_selecting_case = false
-			if error:
-				ErrorComponent.movement_error.show()
+#		else:
+#
+#			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
+#			is_selecting_case = false
+#			if error:
+#				ErrorComponent.movement_error.show()
 	
 	
 	hide_all_cell_button()

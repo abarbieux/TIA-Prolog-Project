@@ -25,10 +25,11 @@ func _init(_instance):
 	heuristic_mode = 1
 	
 	
-func get_best_card(team: String) -> int:
+func get_best_card(team: String = "", method: Method = null) -> int:
 	match heuristic_mode:
-		0: return get_best_card_h0(team)
 		1: return get_best_card_h1(team)
+		2: return get_best_card_h0(team)
+		3: return get_best_card_h2(method)
 		_: return get_best_card_h0(team)
 	
 
@@ -45,7 +46,6 @@ func get_best_card_h0(team: String) -> int:
 			break
 		duplicated_deck.erase(value)
 		value = duplicated_deck.max()
-		
 	return -1
 		
 	
@@ -56,12 +56,8 @@ func get_best_card_h1(team: String) -> int:
 	var cyclist_number: int = player_selected.numero
 	var first_chance_case_distance: int = team_deck.min()
 	while true:
-		var test_old = first_chance_case_distance
 		first_chance_case_distance = find_first_chance_case_distance(team, cyclist_number, first_chance_case_distance + 1)
-#		print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
-		if test_old == first_chance_case_distance:
-#			print("Error... %s" % test_old)
-			break
+		print("First chance case possible for %s n°%s is %s cases away." % [team, cyclist_number, first_chance_case_distance])
 			
 		if first_chance_case_distance == -1:
 			return get_best_card_h0(team)
@@ -69,14 +65,27 @@ func get_best_card_h1(team: String) -> int:
 		var sum_to_chance_case: Array = find_sum_of(team, first_chance_case_distance)
 		sum_to_chance_case.sort()
 		if len(sum_to_chance_case) != 0:
-#			print("sum_to_chance_case : ", sum_to_chance_case)
+			print("sum_to_chance_case : ", sum_to_chance_case)
 			for card in sum_to_chance_case:
 				if instance._MovementManager.get_all_path_available(card, player_selected).size() > 0:
-#					print("Playing sum card: ", card)
+					print("Playing sum card: ", card)
 					return card
-#		print("No sum found for %s" % first_chance_case_distance)
+		print("No sum found for %s" % first_chance_case_distance)
 	return -1
+
+
+func get_best_card_h2(method: Method) -> int:
+	if method == null:
+		return get_best_card_h1(instance._MovementManager.get_last_cyclist_movable()[0].pays)
 		
+	if method.call_method == "POST":
+		instance._GameWebSocket._client.get_peer(1).put_packet(("AI " + JSON.print(instance._GameAI.get_game_information_dict())).to_utf8())
+		return -1
+	elif method.call_method == "GET":
+		var data = JSON.parse(method.data)
+		return data["card_value"]
+	return -1
+
 
 ## Get the given cyclist position in a @Vector2 format.
 ## @parameter team: The team to get the cyclist from.
@@ -93,8 +102,8 @@ func get_cyclist_position(team, cyclist_number) -> Vector2:
 		return Vector2(-1.0, -1.0)
 	else:
 		return found_cyclist.current_case
-		
-		
+
+
 ## Find the array of cards from the given team deck that makes the sum of a number.
 ## @parameter team: The team to calculate the cards sum from.
 ## @parameter number: The number that the sum has to match.
@@ -102,7 +111,7 @@ func get_cyclist_position(team, cyclist_number) -> Vector2:
 func find_sum_of(team: String, number: int) -> Array:
 	var country_index = get_country_index_from_team(team)
 	var team_deck: Array = instance._Deck.deck_carte_player[country_index]
-#	print("Team Deck:", team_deck)
+	print("Team Deck:", team_deck)
 	for card_1 in team_deck:
 		if card_1 > number:
 			continue
@@ -111,9 +120,9 @@ func find_sum_of(team: String, number: int) -> Array:
 		
 		var removed_card_deck = team_deck.duplicate(true)
 		removed_card_deck.erase(card_1)
-#		print("Removed Deck:", removed_card_deck)
+		print("Removed Deck:", removed_card_deck)
 		if number - card_1 in removed_card_deck:
-#			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
+			print("#90 Sum for %s %s" % [number, [card_1, number - card_1]])
 			return [card_1, number - card_1]
 		
 		var accumulator = card_1;
@@ -125,7 +134,7 @@ func find_sum_of(team: String, number: int) -> Array:
 				accumulator += removed_card_deck[i]
 				cards.append(removed_card_deck[i])
 		if accumulator == number:
-#			print("#101 Sum for %s %s" % [number, cards])
+			print("#101 Sum for %s %s" % [number, cards])
 			return cards #.sort()
 	return []
 
