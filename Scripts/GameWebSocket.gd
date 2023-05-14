@@ -15,7 +15,7 @@ func _init(_instance):
 
 
 func _ready():
-	#OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
+	OS.execute("swipl", ["-s", "./GameChatServer.pl"], false)
 	
 	_client.connect("connection_closed", self, "_closed")
 	_client.connect("connection_error", self, "_closed")
@@ -72,8 +72,13 @@ func _on_data():
 				else:
 					result_message = "La demande de conseil pour la team %s ne peut aboutir..." % instance.countries[instance._country_turn_index]
 			"isMoveAutorised":
-				var card_played = int(args[0])
-				instance._button_player_pressed(instance._MovementManager.get_last_cyclist_movable()[0], card_played, 0)
+				var card_to_play = int(args[0])
+				if len(instance._MovementManager.get_available_cells(card_to_play)) == 0:
+					var buffer = instance._GameAI.get_game_information_dict()
+					var new_deck = instance._GameAI.remove_card_from_deck(buffer["teams_deck"][instance._MovementManager.get_last_cyclist_movable()[0].pays], card_to_play)
+					buffer["teams_deck"][instance._MovementManager.get_last_cyclist_movable()[0].pays] = new_deck
+					_client.get_peer(1).put_packet(("AI " + JSON.print(buffer)).to_utf8())
+				instance._button_player_pressed(instance._MovementManager.get_last_cyclist_movable()[0], card_to_play, 0)
 				send_message = false
 		if send_message:
 			panel._on_Message_received(result_message)
