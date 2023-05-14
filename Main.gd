@@ -220,18 +220,10 @@ func _button_player_pressed(player, value, index) -> void:
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
-<<<<<<< Updated upstream
-		
-=======
->>>>>>> Stashed changes
-		
-		
+
 		
 	if is_selecting_case:
-<<<<<<< Updated upstream
-		
-=======
->>>>>>> Stashed changes
+
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			
 			
@@ -255,18 +247,19 @@ func _button_player_pressed(player, value, index) -> void:
 			if error:
 				init_pre_select_move_phase()
 				
-#		else:
-#
-#			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
-#			is_selecting_case = false
-#			if error:
-#				ErrorComponent.movement_error.show()
+		else:
+
+			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
+			is_selecting_case = false
+			if error:
+				ErrorComponent.movement_error.show()
 	
 	
 	hide_all_cell_button()
 
 func check_card_chance(value):
 	var possible_cyclist: Array = _MovementManager.select_last_cyclist_movable()
+	var chance_in_y := false
 #	print("possible_cyclist : ", possible_cyclist)
 	for cyclist in possible_cyclist:
 		var x_position = cyclist.current_case.x + value
@@ -276,13 +269,19 @@ func check_card_chance(value):
 			var check_chance = _A_Star.chemins[path][x_position]
 			
 			if check_chance == 2:
+				chance_in_y = true
+				
 				if check_choiced_case_available(x_position, path, cyclist, value).size() != 0:
 					player_selected = cyclist
 #					print("player_selected : ", player_selected)
 #					print("vector : ", Vector2(x_position, path))
 					return Vector2(x_position, path)
 	print("no chance")
-	return Vector2.ZERO
+	
+	if chance_in_y :
+		return Vector2(-100,-100)
+	else:
+		return Vector2.ZERO
 
 func check_choiced_case_available(path_x: int, chemin_chosen: int, cyclist, value: int):
 	
