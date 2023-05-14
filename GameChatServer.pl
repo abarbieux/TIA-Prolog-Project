@@ -36,7 +36,7 @@ choose_server(Data, ResponseString) :-
      parse_json_data(Game_data, Game_board, Player_info, Team_decks, Selected_player),
      parse_player_info(Player_info, Team_decks, Selected_player, _, Player_position, _, _, _, Player_deck),
      read_term_from_atom(Player_position, [X, Y], []),
-     allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 3, 0, [], Final_best_permutation),
+     allmax(Game_board, Player_info, Selected_player, Player_deck, [X, Y], 5, 0, [], Final_best_permutation),
      nth0(0, Final_best_permutation, Card_value),
      string_concat(' ', Card_value, ResponseString1),
 		 string_concat('isMoveAutorised', ResponseString1, ResponseString2),
