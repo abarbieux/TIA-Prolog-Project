@@ -220,13 +220,9 @@ func _button_player_pressed(player, value, index) -> void:
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
-
 		
 	if is_selecting_case:
-
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
-			
-			
 			var check_card_chance = check_card_chance(value)
 			var error
 			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
@@ -246,9 +242,7 @@ func _button_player_pressed(player, value, index) -> void:
 			is_selecting_case = false
 			if error:
 				init_pre_select_move_phase()
-				
 		else:
-
 			var error = _MovementManager.init_movement(value, index, true, selected_cell_pos)
 			is_selecting_case = false
 			if error:
