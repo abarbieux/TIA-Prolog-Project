@@ -308,7 +308,7 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
 			if _A_Star._get_path(
-				cyclist.current_case, Vector2(cyclist.current_case.x + value, chemin_chosen)) <= value:
+				cyclist.current_case, Vector2(cyclist.current_case.x + value, chemin_chosen)).size() <= value:
 				if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
 					cells.append(Vector2(_clamp, chemin_chosen))
 				elif shift_position(chemin_chosen, _clamp) != -1 :
