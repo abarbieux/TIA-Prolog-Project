@@ -211,22 +211,21 @@ func _button_player_pressed(player, value, index) -> void:
 			for btn in path.get_children():
 				for cell in cells:
 					if btn.editor_description == str(cell.x) + "," + str(cell.y):
-						print("enter")
 						btn.visible = true
 	else:
 		ErrorComponent.movement_error.show()
 #	for card in UIComponent.current_cards_buttons.get_children():
 #		card.queue_free()
-	print("pressed")
+	
 	is_selecting_case = true
 	if !is_unit_test_mode && countries[_country_turn_index].Tactic == 0:
 		yield(self, "cell_pos_changed")
-		print("has pass")
+		
 		
 		
 		
 	if is_selecting_case:
-		print("is_selecting_case")
+		
 		if is_unit_test_mode || countries[_country_turn_index].Tactic != 0:
 			
 			
@@ -235,7 +234,7 @@ func _button_player_pressed(player, value, index) -> void:
 			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
 			
 			if check_card_chance != Vector2.ZERO:
-				print("vectore2.zero")
+				
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
 			elif countries[_country_turn_index].Tactic == 3:
@@ -307,10 +306,12 @@ func get_all_cell_available(value, cyclist) -> PoolVector2Array:
 	var cells:PoolVector2Array = []
 	for chemin_chosen in _A_Star.chemins.size():
 		if _MovementManager.is_valid_cell(chemin_chosen, _clamp):
-			if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
-				cells.append(Vector2(_clamp, chemin_chosen))
-			elif shift_position(chemin_chosen, _clamp) != -1 :
-				cells.append(Vector2(_clamp, chemin_chosen))
+			if _A_Star._get_path(
+				cyclist.current_case, Vector2(cyclist.current_case.x + value, chemin_chosen)):
+				if !_MovementManager.is_player_on_cell(chemin_chosen, _clamp):
+					cells.append(Vector2(_clamp, chemin_chosen))
+				elif shift_position(chemin_chosen, _clamp) != -1 :
+					cells.append(Vector2(_clamp, chemin_chosen))
 				
 	return cells
 

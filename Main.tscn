@@ -467,6 +467,7 @@ position = Vector2( 1385.71, 0 )
 texture = ExtResource( 15 )
 
 [node name="IAChoiceMenu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 14 )
