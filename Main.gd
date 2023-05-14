@@ -231,11 +231,11 @@ func _button_player_pressed(player, value, index) -> void:
 			var error
 			print("countries[_country_turn_index].Tactic : ", countries[_country_turn_index].Tactic)
 			
-			if check_card_chance != Vector2.ZERO:
+			if check_card_chance != Vector2.ZERO and check_card_chance != Vector2(-100,-100) :
 				
 				error = _MovementManager.init_movement(value, index, true, check_card_chance)
 			
-			elif countries[_country_turn_index].Tactic == 3:
+			elif countries[_country_turn_index].Tactic == 3 and check_card_chance == Vector2.ZERO:
 				pass
 
 			else:
@@ -278,7 +278,7 @@ func check_card_chance(value):
 					return Vector2(x_position, path)
 	print("no chance")
 	
-	if chance_in_y :
+	if !chance_in_y :
 		return Vector2(-100,-100)
 	else:
 		return Vector2.ZERO
